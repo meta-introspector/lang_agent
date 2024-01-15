@@ -1,0 +1,5 @@
+(executable
+ (public_name lang_agent)
+ (name chunker
+ )
+ (libraries lang_agent))
