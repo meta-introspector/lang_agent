@@ -126,12 +126,12 @@ type ollama_response =
   ; created_at : string
   ; response : string
   ; isdone : bool [@key "done"]
-  ; context: (int list) option
-  ; total_duration:int option
-  ; load_duration: int option
-  ; prompt_eval_count: int option
-  ; eval_count: int option
-  ; eval_duration : int option
+  ; context: (int list) option[@yojson.option]
+  ; total_duration:int option[@yojson.option]
+  ; load_duration: int option[@yojson.option]
+  ; prompt_eval_count: int option[@yojson.option]
+  ; eval_count: int option[@yojson.option]
+  ; eval_duration : int option[@yojson.option]
   }
 [@@deriving yojson]
 
@@ -146,7 +146,8 @@ let myproc (body:string):string =
       (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );       
       record_opt.response        
     with
-    | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (_, exn) ->
+    | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (loc, exn) ->
+      Printf.eprintf "Loc at  %s\n" (Printexc.to_string loc);
       Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "error"
   (* | exn -> *)
   (*   Printf.eprintf "Unexpected error: %s\n" (   to_string exn); "errorr2" *)
@@ -158,7 +159,7 @@ let split_n = String.split_on_char '\n'
 let extract_content body = 
   let fpp =  (split_n body ) in
   let fp2 = List.map myproc fpp  in
-  Lwt.return (String.concat " " fp2)
+  Lwt.return (String.concat "" fp2)
   
   
   (* Yojson.member "response" *)
