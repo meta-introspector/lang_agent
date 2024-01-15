@@ -1,0 +1,12 @@
+* idea : create an ocaml functional agent for talking to llms.
+** bootstrap on ollama, then to llama.cpp, then embed inside of llama.cpp as well.
+** use threads
+** produce/consume quasi quoted interfaces to other systems using metacoq streams
+** only allow valid interactions
+** define workflows in ocaml or metacoq streams
+** follow urls that contain the requested system encoded in url. produces urls that describe systems.
+** metacoq urls
+** postprocess responses and insert urls with annotations that can be visited or not by agent,
+can expand the results significantly. filtered by the user agent.
+
+dune exec -- ./bin/argiope.exe https://mistral.ai

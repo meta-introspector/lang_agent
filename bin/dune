@@ -1,5 +1,10 @@
 (executable
  (public_name lang_agent)
- (name chunker
- )
- (libraries lang_agent))
+ (name chunker )
+ (modules chunker )
+ (libraries lang_agent lwt))
+(executable
+ (public_name argiope)
+ (name argiope )
+ (modules argiope )
+ (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
