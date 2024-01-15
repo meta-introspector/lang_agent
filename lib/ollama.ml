@@ -130,6 +130,7 @@ type ollama_response =
   ; total_duration:int option[@yojson.option]
   ; load_duration: int option[@yojson.option]
   ; prompt_eval_count: int option[@yojson.option]
+  ; prompt_eval_duration : int option[@yojson.option]
   ; eval_count: int option[@yojson.option]
   ; eval_duration : int option[@yojson.option]
   }
