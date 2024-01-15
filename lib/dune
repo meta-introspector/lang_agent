@@ -1,0 +1,6 @@
+(library
+ (libraries ezcurl-lwt yojson ppx_yojson_conv_lib )
+ (preprocess
+  (pps ppx_yojson_conv ppx_yojson lwt_ppx))
+
+ (name lang_agent))
