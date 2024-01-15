@@ -1,3 +1,10 @@
+
+(env
+ (_
+  (flags
+   (:standard ;;-warn-error -9-27-26
+     -dtypedtree -dparsetree -dlambda -annot  -dsource -dump-into-file -drawlambda  ))))
+
 (library
  (libraries ezcurl-lwt yojson ppx_yojson_conv_lib )
  (preprocess

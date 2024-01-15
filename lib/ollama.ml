@@ -1,6 +1,6 @@
 (* open Lwt.Syntax *)
 (* open Yojson *)
-
+(* open Printexc *)
 open Ppx_yojson_conv_lib.Yojson_conv.Primitives
 
 include Yojson.Safe
@@ -87,17 +87,6 @@ let send_raw_k
   (client : client_t)
   ?(model = "mistral")
   ?(prompt = "tell me a joke")  
-  (* ?max_tokens *)
-  (* ~messages *)
-  (* ?temperature *)
-  (* ?top_p *)
-  (* ?stream *)
-  (* ?n *)
-  (* ?stop *)
-  (* ?frequency_penalty *)
-  (* ?logit_bias *)
-  (* ?presence_penalty *)
-  (* ?user *)
   ()
   =
   let body =
@@ -110,14 +99,9 @@ let send_raw_k
   in
   let headers =
     [ "content-type", "application/json"
-    (* ; "Authorization", String.concat " " [ "Bearer"; client.api_key ] *)
     ]
   in
   let endpoint = "/api/generate" in
-  (* let pp = [ *)
-  (*       ("model","mistral"); *)
-  (*       ("prompt","tell me a epic battle story about camels and llamas fighting") *)
-  (*     ] in *)
   let%lwt resp =
     Ezcurl_lwt.post
       ~client:client.c
@@ -137,19 +121,46 @@ let send_raw_k
 (*   "done": false *)
 (* } *)
 
-type ocaml_response =
+type ollama_response =
   { model : string
   ; created_at : string
   ; response : string
-  ; isdone : bool
+  ; isdone : bool [@key "done"]
+  ; context: (int list) option
+  ; total_duration:int option
+  ; load_duration: int option
+  ; prompt_eval_count: int option
+  ; eval_count: int option
+  ; eval_duration : int option
   }
-[@@deriving yojson_of]
+[@@deriving yojson]
 
-let extract_content body = (print_endline body );
-  Lwt.return "ok"
-(*let json = Yojson.Safe.from_string body in  *)
-  (* let record_opt = ollama_response_of_yojson json in *)
-  (* record_opt *)
+(* open Ppx_yojson_conv_lib.Yojson_conv.Primitives *)
+       
+let myproc (body:string):string =
+  if (String.length body ) == 0 then ""
+  else    
+    try
+      let json = Yojson.Safe.from_string body in
+      let record_opt = (ollama_response_of_yojson json) in
+      (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );       
+      record_opt.response        
+    with
+    | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (_, exn) ->
+      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "error"
+  (* | exn -> *)
+  (*   Printf.eprintf "Unexpected error: %s\n" (   to_string exn); "errorr2" *)
+
+
+    
+let split_n = String.split_on_char '\n'
+    
+let extract_content body = 
+  let fpp =  (split_n body ) in
+  let fp2 = List.map myproc fpp  in
+  Lwt.return (String.concat " " fp2)
+  
+  
   (* Yojson.member "response" *)
   (* recvfrom(6, "63\r\n{\"model\":\"mistral\",\"created_at\":\"2024-01-15T09:32:11.66655731Z\",\"response\":\" common\",\"done\":false}\n\r\n", 16384, 0, NULL, NULL) = 105
      
