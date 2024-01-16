@@ -14,3 +14,5 @@ can expand the results significantly. filtered by the user agent.
 
 dune exec -- ./bin/argiope.exe "https://writemycode.com?goal=snakegame"
 
+
+dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/blob/3d485ff60e2872cbb920980a5fd2dbde908215ed/bin/argiope.ml#L28?q="argiope is a virtual hyperspace navigation simulator"
