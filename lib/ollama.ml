@@ -34,30 +34,6 @@ let create_client model =
   { model; gen_url = ( ^ ) base_url; c = Ezcurl_lwt.make () }
 ;;
 
-
-(* let () = *)
-(*   let request = *)
-(*     let* addresses = Lwt_unix.getaddrinfo "localhost" "11434" [] in *)
-(*     let server = Lwt_unix.((List.hd addresses).ai_addr) in *)
-
-(*     Lwt_io.(with_connection server (fun (incoming, outgoing) -> *)
-(*       let* () = write outgoing "GET / HTTP/1.1\r\n" in *)
-(*       let* () = write outgoing "Connection: close\r\n\r\n" in *)
-(*       let* response = read incoming in *)
-(*       Lwt.return (Some response))) *)
-(*   in *)
-
-(*   let timeout = *)
-(*     let* () = Lwt_unix.sleep 5. in *)
-(*     Lwt.return None *)
-(*   in *)
-
-(*   match Lwt_main.run (Lwt.pick [request; timeout]) with *)
-(*   | Some response -> print_string response *)
-(*   | None -> prerr_endline "Request timed out"; exit 1 *)
-
-
-
 type role =
   [ `System
   | `User
@@ -75,8 +51,6 @@ type message =
   ; role : role
   }
 [@@deriving yojson_of]
-
-
   
 (** raw API request:
  * @param k for continuation to avoid redefining labeled parameters
@@ -113,14 +87,6 @@ let send_raw_k
   in
   k resp
 
-
-(* { *)
-(*   "model": "llama2", *)
-(*   "created_at": "2023-08-04T08:52:19.385406455-07:00", *)
-(*   "response": "The", *)
-(*   "done": false *)
-(* } *)
-
 type ollama_response =
   { model : string
   ; created_at : string
@@ -144,7 +110,7 @@ let myproc (body:string):string =
     try
       let json = Yojson.Safe.from_string body in
       let record_opt = (ollama_response_of_yojson json) in
-      (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );       
+      (* (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );        *)
       record_opt.response        
     with
     | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (loc, exn) ->
@@ -157,12 +123,13 @@ let myproc (body:string):string =
     
 let split_n = String.split_on_char '\n'
     
-let extract_content body = 
+let extract_content1 body = 
   let fpp =  (split_n body ) in
   let fp2 = List.map myproc fpp  in
-  Lwt.return (String.concat "" fp2)
-  
-  
+  String.concat "" fp2
+let extract_content body = 
+  Lwt.return (extract_content1 body)
+    
   (* Yojson.member "response" *)
   (* recvfrom(6, "63\r\n{\"model\":\"mistral\",\"created_at\":\"2024-01-15T09:32:11.66655731Z\",\"response\":\" common\",\"done\":false}\n\r\n", 16384, 0, NULL, NULL) = 105
      

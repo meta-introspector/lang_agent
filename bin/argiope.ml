@@ -7,7 +7,7 @@ module Uri_tbl = CCHashtbl.Make(struct
     let hash u = Hashtbl.hash (to_string u)
     end)
 
-let verbose_ = ref 0
+let verbose_ = ref 99
 
 (* let llama_throw client txt = *)
 (*   let headers = [] in *)
@@ -24,17 +24,33 @@ let verbose_ = ref 0
 (*         ()) in  *)
 (*   Ok { headers; code; body; info } *)
 
-(* A function to create a thread that connects to a resource *)
+    (* A function to create a thread that connects to a resource *)
+let connect_to_resource2 txt =
+  let client = Ezcurl_lwt.make () in 
+  Ezcurl_lwt.get ~client ~range:"0-500000"~url:txt ()
+
 let connect_to_resource txt =
+  (*replaces Ezcurl_lwt.get ~client ~range:"0-500000"~url:(Uri.to_string uri) () *)
   let headers = [ "content-type", "application/json" ]  in
   let endpoint = "/api/generate" in
   let model = "mistral" in
   let client = Ollama.create_client model in
   Printf.eprintf "DEBUG %s / %s\n" endpoint txt;
+  let prefix = "Consider the following URL and simulate its loading. " in
+  let postfix = "Now emit the resutls in html with <a='https://blah' /a> links. " in
+  let body =
+    List.filter
+      (fun (_, v) -> v <> `Null)
+      [ "model", `String model
+      ; "prompt",`String (prefix ^ txt ^postfix)
+      ]
+    |> fun l -> Yojson.Safe.to_string (`Assoc l)
+  in
+
   Ezcurl_lwt.post
       ~client:client.c
       ~headers
-      ~content:(`String txt)
+      ~content:(`String body)
       ~url:(client.gen_url endpoint)
       ~params:[]
       ()
@@ -79,6 +95,7 @@ module Run = struct
   let bad_code c = c >= 400
 
   let find_urls (body:string) : Uri.t list =
+    
     let body = Soup.parse body in
     let open Soup.Infix in
     let nodes = body $$ "a[href]" in
@@ -91,7 +108,7 @@ module Run = struct
       [] nodes
 
   let worker (self:t) : unit Lwt.t =
-    (* let client = Ezcurl_lwt.make () in *)
+
     let rec loop() =
       if Queue.is_empty self.tasks then Lwt.return ()
       else if self.max >= 0 && self.n > self.max then Lwt.return ()
@@ -102,11 +119,11 @@ module Run = struct
         self.n <- 1 + self.n;
 
         Printf.eprintf "fetching %s\n%!" (Uri.to_string uri);
-        (connect_to_resource (Uri.to_string uri))
-        (* Ezcurl_lwt.get ~client ~range:"0-500000"~url:(Uri.to_string uri) () *)
+        (connect_to_resource (Uri.to_string uri))        
         >>= fun resp ->
         begin match resp with
           | Ok {Ezcurl_lwt.code; body; _} ->
+            (* Printf.eprintf "DEBUGOK %s\n" body; *)
             if bad_code code then (
               if !verbose_>1 then (
                 Printf.eprintf "bad code when fetching %s: %d\n%!" (Uri.to_string uri) code;
@@ -115,7 +132,9 @@ module Run = struct
             ) else (
               (* if !verbose_ then Printf.eprintf "body for %s:\n%s\n" (Uri.to_string uri) body; *)
               let cur_host = Uri.host_with_default ~default:self.default_host uri in
-              let uris = find_urls body in
+              let body1 = Ollama.extract_content1 body in
+              Printf.eprintf "CHCEKURLS %s\n" body1;
+              let uris = find_urls body1 in
               List.iter
                 (fun uri' ->
                    match Uri.host uri' with
@@ -136,6 +155,7 @@ module Run = struct
             );
             Lwt.return ()
           | Error (_, msg) ->
+            Printf.eprintf "DEBUGERR %s\n" msg;
             if !verbose_>2 then (
               Printf.eprintf "error when fetching %s:\n  %s\n%!" (Uri.to_string uri) msg;
             );
