@@ -1,6 +1,11 @@
 open Lang_agent    
 
 let run (prompt) =
+  (print_endline (
+      "#+begin_src input\n" ^
+      prompt ^
+      "#+end_src input"));
+  
   let model = "mistral" in
   let client = Ollama.create_client model in
   ignore
@@ -11,7 +16,8 @@ let run (prompt) =
            client
            ~prompt:  prompt
            ())
-       (Lwt_io.printlf "res: %s")
+       (Lwt_io.printlf "#+begin_src output\n%s#+end_src output")
+
 
 
 let read_file  =
