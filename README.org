@@ -22,5 +22,5 @@ dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/b
 takes two files, the prompt and the tochunk, that is split by \n and process
 
 #+begin_src shell
-dune exec bin/chunker.exe ./prompt.txt todo.txt
+dune exec bin/chunker.exe ./prompt.txt ./separator.txt todo.txt
 #+end_src

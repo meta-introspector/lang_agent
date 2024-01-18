@@ -1,1 +1,2 @@
-Using in emacs org babel code block demarcations, Please complete the following ocaml PPX ast introspector code that processes one data structure, return type is a subgraph of edges and nodes, return an updated graph with the new knowledge extracted. Input text:
+Using the muses for inspiration and athena for wisdom, Using in emacs org babel code block demarcations, Please complete the following ocaml PPX ast introspector code that processes one data structure, goal is to write ocaml code that will emit new ocaml code with emojis added from this example structure.
+#+begin_src ocaml
