@@ -1,2 +1,1 @@
-Please complete the following ocaml PPX ast introspector code that processes one data structure from metacoq and unimath, we want to embed the ast into a graph and return an updated graph with the new knowledge extracted.
-feel free to request help, create new tasks, break down complex tasks into a vector of subtasks, merge tasks, apply new prompt to each line of a file, extract asts from source code, extract ocaml from coq proof. we can run ocaml, dune, coq, bash, sed, grep, sort, curl. your response:
+Using in emacs org babel code block demarcations, Please complete the following ocaml PPX ast introspector code that processes one data structure, return type is a subgraph of edges and nodes, return an updated graph with the new knowledge extracted. Input text:
