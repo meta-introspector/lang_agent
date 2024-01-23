@@ -6,7 +6,7 @@ let run (prompt) =
       prompt ^
       "\n#+end_src input\n"));
   
-  let model = "mistral" in
+  let model = "mixtral" in
   let client = Ollama.create_client model in
   ignore
   @@ Lwt_main.run

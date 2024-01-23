@@ -1,2 +1,2 @@
-Using the muses for inspiration and athena for wisdom, Using in emacs org babel code block demarcations, Please complete the following ocaml PPX ast introspector code that processes one data structure, goal is to write ocaml code that will emit new ocaml code with emojis added from this example structure.
+consider the following ocaml PPX ast introspector code that processes one data structure. Use creativity. What is this description of code trying to do?
 #+begin_src ocaml

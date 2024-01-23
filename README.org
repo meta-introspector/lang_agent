@@ -24,3 +24,5 @@ takes two files, the prompt and the tochunk, that is split by \n and process
 #+begin_src shell
 dune exec bin/chunker.exe ./prompt.txt ./separator.txt todo.txt
 #+end_src
+
+dune exec bin/chunker.exe ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml
