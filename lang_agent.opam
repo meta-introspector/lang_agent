@@ -11,7 +11,13 @@ doc: "https://url/to/documentation"
 bug-reports: "https://github.com/username/reponame/issues"
 depends: [
   "ocaml"
-  "dune" {>= "3.12"}
+  "dune" {>= "3.7"}
+  "ppx_yojson"
+  "lwt_ppx"
+  "ppx_yojson_conv"
+  "ppx_yojson_conv_lib"
+  "ezcurl-lwt"
+  "yojson"
   "odoc" {with-doc}
 ]
 build: [

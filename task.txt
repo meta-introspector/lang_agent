@@ -1,4 +1,3 @@
-split up this following text into logical chunks 
 From Ltac2 Require Import Ltac2.
 From Ltac2 Require Option.
 Set Ltac Debug.

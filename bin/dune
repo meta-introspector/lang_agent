@@ -15,3 +15,8 @@
  (name argiope )
  (modules argiope )
  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+(executable
+ (public_name worker)
+ (name worker )
+ (modules worker )
+ (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

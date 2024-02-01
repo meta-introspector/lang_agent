@@ -1,2 +1,6 @@
-consider the following ocaml PPX ast introspector code that processes one data structure. Use creativity. What is this description of code trying to do?
+We are going on a journey to convert unimath, the modern homotopy system into a comic book form preserving its main information and mapping each part of it into art that contains the math and can be reinterpreted if you have the key.
+We want to convert unimath into a series of zero knowledge proof snarks that extract interesting properties about the system that only an expert would know. 
+split up this following text into logical	 chunks for each snark.
+Use creativity. Create a screenplay for a explainer youtube video like 3b1b. Invoke the muses, and ask each one in turn to bless your endevour. Ask Athena for wisdom. Ask Mars for courage. Use all of this to create a wonderful interpretation of the following math code in coq.
+
 #+begin_src ocaml
