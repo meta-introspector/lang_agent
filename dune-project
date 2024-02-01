@@ -1,4 +1,4 @@
-(lang dune 3.12)
+(lang dune 3.7)
 
 (name lang_agent)
 
@@ -19,7 +19,7 @@
  (name lang_agent)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune)
+ (depends ocaml dune ppx_yojson_conv_lib)
  (tags
   (topics "to describe" your project)))
 
