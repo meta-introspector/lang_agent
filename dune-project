@@ -11,7 +11,7 @@
 
 (maintainers "Maintainer Name")
 
-(license LICENSE)
+(license GPL)
 
 (documentation https://url/to/documentation)
 
