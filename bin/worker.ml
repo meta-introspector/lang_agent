@@ -10,12 +10,11 @@ let run (prompt) =
   let client = Ollama.create_client model in
   ignore
   @@ Lwt_main.run
+(* ~prompt:prompt ~model:model*)
   @@ Lwt.bind
        Ollama.(
          send
-           client
-           ~prompt:  prompt
-           ())
+           client prompt ())
        (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
 
 

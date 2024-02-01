@@ -33,7 +33,7 @@ let connect_to_resource txt =
   (*replaces Ezcurl_lwt.get ~client ~range:"0-500000"~url:(Uri.to_string uri) () *)
   let headers = [ "content-type", "application/json" ]  in
   let endpoint = "/api/generate" in
-  let model = "mistral" in
+  let model = "mixtral" in
   let client = Ollama.create_client model in
   Printf.eprintf "DEBUG %s / %s\n" endpoint txt;
   let prefix = "Consider the following URL and simulate its loading. " in

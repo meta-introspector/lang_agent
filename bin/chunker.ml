@@ -11,11 +11,10 @@ let run (prompt) =
   ignore
   @@ Lwt_main.run
   @@ Lwt.bind
-       Ollama.(
-         send
-           client
-           ~prompt:  prompt
-           ())
+    Ollama.( send
+               client
+               ~prompt:  prompt
+               () )
        (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
 
 

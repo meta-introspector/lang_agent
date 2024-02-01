@@ -4,7 +4,7 @@ synopsis: "A short synopsis"
 description: "A longer description"
 maintainer: ["Maintainer Name"]
 authors: ["Author Name"]
-license: "LICENSE"
+license: "GPL"
 tags: ["topics" "to describe" "your" "project"]
 homepage: "https://github.com/username/reponame"
 doc: "https://url/to/documentation"
@@ -14,6 +14,10 @@ depends: [
   "dune" {>= "3.7"}
   "ppx_yojson"
   "lwt_ppx"
+  "containers"
+  "lambdasoup"
+  "uri"
+  "ezcurl"
   "ppx_yojson_conv"
   "ppx_yojson_conv_lib"
   "ezcurl-lwt"

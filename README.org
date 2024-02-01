@@ -26,3 +26,9 @@ dune exec bin/chunker.exe ./prompt.txt ./separator.txt todo.txt
 #+end_src
 
 dune exec bin/chunker.exe ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml
+
+
+* worker
+#+begin_src shell
+dune exec bin/worker.exe ./prompt.txt ./separator.txt task.txt
+#+end_src
