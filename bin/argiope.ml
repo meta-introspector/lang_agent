@@ -25,9 +25,9 @@ let verbose_ = ref 99
 (*   Ok { headers; code; body; info } *)
 
     (* A function to create a thread that connects to a resource *)
-let connect_to_resource2 txt =
-  let client = Ezcurl_lwt.make () in 
-  Ezcurl_lwt.get ~client ~range:"0-500000"~url:txt ()
+(* let connect_to_resource2 txt = *)
+(*   let client = Ezcurl_lwt.make () in  *)
+(*   Ezcurl_lwt.get ~client ~range:"0-500000"~url:txt () *)
 
 let connect_to_resource txt =
   (*replaces Ezcurl_lwt.get ~client ~range:"0-500000"~url:(Uri.to_string uri) () *)

@@ -14,7 +14,7 @@ let run (prompt) =
   @@ Lwt.bind
        Ollama.(
          send
-           client prompt ())
+           client model prompt ())
        (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
 
 

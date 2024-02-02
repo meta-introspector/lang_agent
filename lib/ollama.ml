@@ -57,7 +57,7 @@ type message =
 let send_raw_k
   k
   (client : client_t)
-  (model : string)
+  (model )
   (prompt : string)  
   ()
   =
