@@ -29,11 +29,11 @@ let verbose_ = ref 99
 (*   let client = Ezcurl_lwt.make () in  *)
 (*   Ezcurl_lwt.get ~client ~range:"0-500000"~url:txt () *)
 
-let connect_to_resource txt =
+let connect_to_resource txt model =
   (*replaces Ezcurl_lwt.get ~client ~range:"0-500000"~url:(Uri.to_string uri) () *)
   let headers = [ "content-type", "application/json" ]  in
   let endpoint = "/api/generate" in
-  let model = "mixtral" in
+  let model = model in
   let client = Ollama.create_client model in
   Printf.eprintf "DEBUG %s / %s\n" endpoint txt;
   let prefix = "Consider the following URL and simulate its loading. " in
@@ -59,6 +59,7 @@ let connect_to_resource txt =
 module Run = struct
   type t = {
     domains: Str_set.t; (* domains to recursively crawl *)
+    model: string; (* model to pass *)
     tasks: Uri.t Queue.t;
     default_host: string;
     max: int;
@@ -75,7 +76,7 @@ module Run = struct
       Queue.push u self.tasks
     )
 
-  let make ~j ~domains ~default_host ~max start : t =
+  let make ~j ~domains ~model ~default_host ~max start : t =
     let tasks = Queue.create () in
     (* include the domains of [start] in [domains] *)
     let domains =
@@ -86,7 +87,7 @@ module Run = struct
         domains start
     in
     let self = {
-      domains; j; max; tasks; default_host; seen=Uri_tbl.create 256;
+      domains; model; j; max; tasks; default_host; seen=Uri_tbl.create 256;
       bad=[]; n=0;
     } in
     List.iter (fun uri -> push_task self uri) start;
@@ -107,7 +108,7 @@ module Run = struct
          with _ -> l)
       [] nodes
 
-  let worker (self:t) : unit Lwt.t =
+  let worker (self:t)  : unit Lwt.t =
 
     let rec loop() =
       if Queue.is_empty self.tasks then Lwt.return ()
@@ -119,7 +120,7 @@ module Run = struct
         self.n <- 1 + self.n;
 
         Printf.eprintf "fetching %s\n%!" (Uri.to_string uri);
-        (connect_to_resource (Uri.to_string uri))        
+        (connect_to_resource (Uri.to_string uri) self.model)        
         >>= fun resp ->
         begin match resp with
           | Ok {Ezcurl_lwt.code; body; _} ->
@@ -170,7 +171,7 @@ module Run = struct
   let run (self:t) : _ Lwt.t =
     Printf.printf "run %d jobs…\ndomain(s): [%s]\n%!" self.j
       (String.concat "," @@ Str_set.elements self.domains);
-    let workers = CCList.init self.j (fun _ -> worker self) in
+    let workers = CCList.init self.j (fun _ -> worker self ) in
     (* wait for all workers to be done *)
     Lwt.join workers >|= fun () ->
     self.bad, self.n, Queue.length self.tasks
@@ -183,19 +184,23 @@ let help_str =
 usage: argiope url [url*] [option*]
 |}
 
+let model_name = ref ""
+       
 let () =
+
   let domains = ref Str_set.empty in
   let start = ref [] in
   let j = ref 20 in
   let max_ = ref ~-1 in
   let opts = [
+    "-m", Arg.Set_string model_name, "Model_name";
     "-v", Arg.Unit (fun _ -> incr verbose_), " verbose";
     "--domain", Arg.String (fun s -> domains := Str_set.add s !domains), " include given domain";
     "-d", Arg.String (fun s -> domains := Str_set.add s !domains), " alias to --domainm";
     "--max", Arg.Set_int max_, " max number of pages to explore";
     "-j", Arg.Set_int j, " number of jobs (default 20)";
   ] |> Arg.align in
-  Arg.parse opts (CCList.Ref.push start) help_str;
+  Arg.parse opts  (CCList.Ref.push start) help_str;
   if !start = [] then (
     Arg.usage opts help_str;
   ) else (
@@ -206,7 +211,7 @@ let () =
       | exception _ -> failwith "need absolute URIs"
     in
     let run =
-      Run.make ~default_host ~j:!j ~domains:!domains ~max:!max_ start
+      Run.make ~default_host ~j:!j ~model:!model_name ~domains:!domains ~max:!max_ start 
     in
     (* crawl *)
     let bad, num, remaining = Lwt_main.run (Run.run run) in

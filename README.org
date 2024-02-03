@@ -12,23 +12,22 @@
 or not by agent,
 can expand the results significantly. filtered by the user agent.
 
-dune exec -- ./bin/argiope.exe "https://writemycode.com?goal=snakegame"
+dune exec bin/argiope.exe "https://writemycode.com/?goal=snakegame" -- -m mistral
 
-
-dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/blob/3d485ff60e2872cbb920980a5fd2dbde908215ed/bin/argiope.ml#L28?q="argiope is a virtual hyperspace navigation simulator"
+dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/blob/3d485ff60e2872cbb920980a5fd2dbde908215ed/bin/argiope.ml#L28?q="argiope is a virtual hyperspace navigation simulator" -m mistral
 
 
 * chunker
 takes two files, the prompt and the tochunk, that is split by \n and process
 
 #+begin_src shell
-dune exec bin/chunker.exe ./prompt.txt ./separator.txt todo.txt
+dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt todo.txt mistral
 #+end_src
 
-dune exec bin/chunker.exe ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml
+dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml mistral
 
 
 * worker
 #+begin_src shell
-dune exec bin/worker.exe ./prompt.txt ./separator.txt task.txt
+dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
 #+end_src
