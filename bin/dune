@@ -20,3 +20,8 @@
  (name worker )
  (modules worker )
  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+(executable
+ (public_name scanner)
+ (name scanner )
+ (modules scanner )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

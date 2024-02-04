@@ -31,3 +31,9 @@ dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt ~/2024/01/07/ppx-intro
 #+begin_src shell
 dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
 #+end_src
+
+
+* scanner
+#+begin_src shell
+dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/
+#+end_src
