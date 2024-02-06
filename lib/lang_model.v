@@ -11,7 +11,6 @@ pair_Type is  similar to total2 of unimath
 (*Unimath*)
 Definition UU := Type.
 Inductive empty : UU := .
-
 Notation "∅" := empty.
 Notation "'λ' x .. y , t" := (fun x => .. (fun y => t) ..)
   (at level 200, x binder, y binder, right associativity).
@@ -23,8 +22,6 @@ Notation "'∑'  x .. y , P" := (total2 (λ x, .. (total2 (λ y, P)) ..))
 Reserved Notation "A × B" (at level 75, right associativity).
 Definition dirprod (X Y : UU) := ∑ x:X, Y.
 Notation "A × B" := (dirprod A B): type_scope.
-
-
 (** The one-element type *)
 
 Inductive unit : UU :=
@@ -35,49 +32,52 @@ Inductive unit : UU :=
 Inductive bool : UU :=
   | true : bool
   | false : bool.
-
-
-
 Inductive coprod (A B:UU) : UU :=
 | ii1 : A -> coprod A B
 | ii2 : B -> coprod A B.
-
-
 Arguments tpair {_} _ _ _.
 Arguments pr1 {_ _} _.
 Arguments pr2 {_ _} _.
-
-
-
-
-
 Definition dirprod_pr1 {X Y : UU} := pr1 : X × Y -> X.
 Definition dirprod_pr2 {X Y : UU} := pr2 : X × Y -> Y.
-
-
 Reserved Notation "x ,, y" (at level 60, right associativity).
 Notation "x ,, y" := (tpair _ x y).
 Definition make_dirprod {X Y : UU} (x:X) (y:Y) : X × Y := x,,y.
 
-(**)
-Class
-  pair_type (  t_a:Type)
-  ( t_b: Type ).
+(*
+  typeclass
+ *)
+Class  pair_type (t_a:Type)( t_b: Type ).
 
-Class Protocol_type 
-  (t_state_machine: Type) :=
+  complete the coq proof.
+Class Protocol_type   (t_state_machine: Type) :=  {    state_machine  :  unit -> t_state_machine  }.
+Inductive Protocols {t_state_machine: Type} : Type :=| Pt_state_machine (x: t_state_machine) .
+Inductive StateMachine  : Type :=| St_start| St_step| St_end.
+Inductive Protocols2 : Type := | Pt_state_machine2 (c :StateMachine ) .
+Global Instance   t_Protocol :  Protocol_type  Protocols2.
+intros.
+(*1 goal (ID 17)  
+  ============================
+  Protocol_type Protocols2
+*)
+Qed.
+
+
+
+
+Class  Network_type  ( t_address:Type) ( t_connection:Type) :=
   {
-    state_machine  :  unit -> t_state_machine
-  }.
-
-Class  Network_type
-  ( t_address:Type)
-  ( t_connection:Type) := {
     net_connect  : t_address -> t_connection
   }.
 
-Class  auth_type (t_key:Type)
-  (t_auth:Type):=
+Record  TNetwork_type   :=  {
+    t_address:Type;
+    t_connection:Type
+  }.
+
+
+
+Class auth_type (t_key:Type) (t_auth:Type):=
   {
     authenticate  : t_key -> t_auth
   }.
@@ -89,8 +89,10 @@ Class  Connection_type
   (t_state_machine:Type)
   (t_connection:Type) :=
   {
-    ct_connect  :  t_address -> t_connection
+    ct_connect  :  t_address -> t_connection;
+    ct_disconnect  :  t_address -> t_connection
   }.
+
 
 Class connection_type2  (t_auth:Type)  (t_network:Type)
   (t_protocol:Type)  (t_connection:Type)  := 
@@ -98,31 +100,44 @@ Class connection_type2  (t_auth:Type)  (t_network:Type)
     connect  : t_auth -> t_network ->t_protocol -> t_connection
   }.
     
-Class archtype_type
-  ( t_name:Type)
+Class archetype_type
+  (t_name:Type)
   (t_attributes:Type)
   (t_stories:Type)
   (t_embodiments:Type)
   (t_identity:Type)
   := {  }.
 
-Class heros_journey_type(    t_call_to_adventure:Type)
+Class heros_journey_type
+  (t_call_to_adventure:Type)
   (t_refusal:Type)
   (t_resurrection:Type)
   (*fill in the rest*)
-  := { 
-  }.
+  := {   }.
 
 Class introspector_prompt_model
-  (  t_context:Type)
+  (t_context:Type)
   (t_environment:Type)
-  (t_goal:Type)  (t_language:Type)  (t_state_machine:Type)  (t_protocol:Type)  (t_project:Type)  (t_notations:Type)  (t_error_retry_handler:Type)  (t_logging_handler:Type)  (t_introspection_visitor:Type)
-  (t_short_term_memory:Type)  (t_long_term_memory:Type)  (t_lemmas:Type)  (t_proofs:Type)
-(t_sets:Type)(t_types:Type)(t_propositions:Type)
-(t_universes:Type)(t_objects:Type)
-(t_validators:Type)(t_grammars:Type)
-(t_prelude:Type)
-(t_string:Type)
+  (t_goal:Type)
+  (t_language:Type)
+  (t_state_machine:Type)
+  (t_protocol:Type)
+  (t_project:Type)
+  (t_notations:Type)
+
+  (t_error_retry_handler:Type)
+  (t_logging_handler:Type)
+  (t_introspection_visitor:Type)
+
+  (t_short_term_memory:Type)
+  (t_long_term_memory:Type)
+
+  (t_lemmas:Type)  (t_proofs:Type)
+  (t_sets:Type)(t_types:Type)(t_propositions:Type)
+  (t_universes:Type)(t_objects:Type)
+  (t_validators:Type)(t_grammars:Type)
+  (t_prelude:Type)
+  (t_string:Type)
   := {
     prompt_type  : (*t_auth -> t_network*) t_protocol -> t_string
   }.
@@ -186,7 +201,7 @@ Class lang_model
 
 (* create a ocaml abstract typeclass of mythos *)
 Class mythos
-  (    t_region:Type)
+  (t_region:Type)
   (t_epoch:Type)
   (t_language:Type)
   (t_archtypes:Prop × Prop)
@@ -246,6 +261,12 @@ Instance  greek_athena_mythos :
 
 
 Require Coq.extraction.Extraction.
+Extraction "test.ml" Protocols2 .
+
 Extraction Language Haskell.
 Extraction "test.hs" greek_athena_mythos .
 
+
+
+Global Instance t_Network_type : Network_type TNetwork_type.
+Qed.
