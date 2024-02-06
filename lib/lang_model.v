@@ -11,7 +11,19 @@ pair_Type is  similar to total2 of unimath
 (*Unimath*)
 Definition UU := Type.
 Inductive empty : UU := .
+
 Notation "∅" := empty.
+Notation "'λ' x .. y , t" := (fun x => .. (fun y => t) ..)
+  (at level 200, x binder, y binder, right associativity).
+  (* type this in emacs in agda-input method with \lambda *)
+Record total2 { T: UU } ( P: T -> UU ) := tpair { pr1 : T; pr2 : P pr1 }.
+Notation "'∑'  x .. y , P" := (total2 (λ x, .. (total2 (λ y, P)) ..))
+  (at level 200, x binder, y binder, right associativity) : type_scope.
+  (* type this in emacs in agda-input method with \sum *)
+Reserved Notation "A × B" (at level 75, right associativity).
+Definition dirprod (X Y : UU) := ∑ x:X, Y.
+Notation "A × B" := (dirprod A B): type_scope.
+
 
 (** The one-element type *)
 
@@ -24,29 +36,20 @@ Inductive bool : UU :=
   | true : bool
   | false : bool.
 
-Record total2 { T: UU } ( P: T -> UU ) := tpair { pr1 : T; pr2 : P pr1 }.
+
 
 Inductive coprod (A B:UU) : UU :=
 | ii1 : A -> coprod A B
 | ii2 : B -> coprod A B.
 
-Notation "'λ' x .. y , t" := (fun x => .. (fun y => t) ..)
-  (at level 200, x binder, y binder, right associativity).
-  (* type this in emacs in agda-input method with \lambda *)
-
-Notation "'∑'  x .. y , P" := (total2 (λ x, .. (total2 (λ y, P)) ..))
-  (at level 200, x binder, y binder, right associativity) : type_scope.
-  (* type this in emacs in agda-input method with \sum *)
 
 Arguments tpair {_} _ _ _.
 Arguments pr1 {_ _} _.
 Arguments pr2 {_ _} _.
 
 
-Definition dirprod (X Y : UU) := ∑ x:X, Y.
 
-Reserved Notation "A × B" (at level 75, right associativity).
-Notation "A × B" := (dirprod A B): type_scope.
+
 
 Definition dirprod_pr1 {X Y : UU} := pr1 : X × Y -> X.
 Definition dirprod_pr2 {X Y : UU} := pr2 : X × Y -> Y.
@@ -242,4 +245,7 @@ Instance  greek_athena_mythos :
 }.
 
 
+Require Coq.extraction.Extraction.
+Extraction Language Haskell.
+Extraction "test.hs" greek_athena_mythos .
 
