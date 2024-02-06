@@ -1,4 +1,4 @@
-* run 
+* run
 sudo  docker run --mount type=bind,source=/mnt/data1/2024/,target=/mnt/tmp  -it h4ckermike/lang_agent:default bash
 
 * idea : create an ocaml functional agent for talking to llms.
