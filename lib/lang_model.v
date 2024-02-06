@@ -242,6 +242,4 @@ Instance  greek_athena_mythos :
 }.
 
 
-From MetaCoq.Template Require config utils All.
-From MetaCoq.Template Require Import TemplateMonad.
 
