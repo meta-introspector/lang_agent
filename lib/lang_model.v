@@ -379,11 +379,6 @@ Record total3 { T: Type }{ T2: Type }  := tpair2 { pra1 : T; pra2 : T2 }.
 Definition warrior_woman2 := tpair2 ArchetypeWarrior ArchetypeWoman.
 Definition warrior_woman := ArchetypeWarriorWoman.
 
-
-Extraction "mythos.ml" evoke.
-
-
-
 #[export]Instance  greek_athena_mythos :
   mythos
     GreekAuthors(*t_author*)
@@ -595,3 +590,12 @@ Extraction "begin.ml" begin.
 Extraction "mythos.ml" evoke.
 Extraction "test_archetype_instance.ml" archetype_instance.
 
+
+Extraction Language JSON.
+Extraction "athena.json" greek_athena_mythos.
+
+Extraction "begin.json" begin.
+Extraction "mythos.json" evoke.
+
+Extraction Language Haskell.
+Extraction "athena.hs" greek_athena_mythos.

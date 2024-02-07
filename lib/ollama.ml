@@ -61,6 +61,7 @@ let send_raw_k
   (prompt : string)  
   ()
   =
+  print_endline ( "DEBUG:" ^ prompt ); 
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)

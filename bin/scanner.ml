@@ -1,26 +1,72 @@
-
+open Lang_agent    
 (* A function that returns the last line of a file that matches a given pattern *)
-let last_line_matching ic : string =
-  let line = ref "" in
-  try
-    while true; do
-      line := input_line ic
-    done;
-    ! line
-  with End_of_file ->
-    close_in ic;
-    !line
+(* let last_line_matching ic : string = *)
+(*   let line = ref "" in *)
+(*   try *)
+(*     while true; do *)
+(*       line := input_line ic *)
+(*     done; *)
+(*     ! line *)
+(*   with End_of_file -> *)
+(*     close_in ic; *)
+(*     !line *)
 
-    (* let result = if Str.string_match pattern line 0 then Some line else None in *)
-    (* match last_line_matching pattern ic with *)
-    (* | Some _ as r -> r *)
-    (* | None -> result *)
-
-
-(* A regular expression that matches a (filename:linenumber) pair
-   let pair_pattern = Str.regexp "([^:]+):\\([0-9]+\\)"
-  
+(* split_file : string -> int -> unit *)
+(* split_file file n splits the file into chunks of n lines each
+special case the last line is in is own chunk
  *)
+let split_file ic n =
+  let chunks = ref [] in
+  let chunk = ref 0 in
+  let buf = Buffer.create 1024 in
+  let eof = ref false in
+  let line = ref "" in 
+  while not !eof do
+    incr chunk;
+    let lines = ref 0 in
+    while not !eof && !lines < n do
+      try
+        line := input_line ic;
+        Buffer.add_string buf !line;
+        Buffer.add_char buf '\n';
+        incr lines
+      with
+        End_of_file ->        
+          eof := true
+    done;
+
+    chunks := List.append !chunks  [ Buffer.contents buf ];
+    Buffer.clear buf;
+    if not ! eof then     
+      (*append the last line as a chunk*)
+      chunks := List.append !chunks  [ !line ]    
+    (* clear the buffer *)
+    
+  done;
+  (* close the input file *)
+  chunks
+
+(* (\*fix this ocaml code and complete it based on the comments*\) *)
+(* let chunk_file_into_parts ic asize : string list = *)
+(*   let line = ref "" in *)
+(*   let chunks = ref [] in *)
+(*   let chunk = ref "" in     *)
+(*   try *)
+(*     while true; do *)
+(*       line := input_line ic; *)
+(*       chunk := !chunk ^ ! line; *)
+(*       if String.length !chunk > asize then *)
+(*         ( *)
+(*           chunks := List.append !chunks  [!chunk]; *)
+(*           chunk := "" *)
+(*         ) *)
+(*     done;  !chunks   *)
+(*   with End_of_file -> *)
+(*     close_in ic; *)
+(*     (\* append the final line as a new chunk*\) *)
+(*     !chunks *)
+
+
 (*coq/lib/loc.ml *)
 (* type source = *)
 (*   (\* OCaml won't allow using DirPath.t in InFile *\) *)
@@ -62,14 +108,27 @@ let parse_file_points (line: string)  =
   let parts1 = String.split_on_char ',' line in
   process_fp parts1
 
-(* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
-let traverse_and_print path  =
+let run_model (model:string)(prompt:string)  =
+  (print_endline (
+      "\n#+begin_src input "^model^"\n" ^
+      prompt ^
+      "\n#+end_src input\n"));  
+  let client = Ollama.create_client model in
+  ignore
+  @@ Lwt_main.run
+  @@ Lwt.bind
+       Ollama.(
+    send
+      client model prompt ())
+       (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
+
+ (* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
+let traverse_and_print path model prompt1  =
   (print_endline ("DEBUG0:" ^  path));
   let rec aux dir =
     let entries = Sys.readdir dir in
     Array.iter (fun entry ->
         let full_path = Filename.concat dir entry in
-                
         if Sys.is_directory full_path then
           (
             (print_endline ("DEBUG1:" ^  full_path));
@@ -88,13 +147,23 @@ let traverse_and_print path  =
           | S_REG ->
              if Sys.file_exists  full_path then
                (* (print_endline ("DEBUG2 " ^  full_path)); *)
-             let ic = open_in full_path in
-             let ll =  last_line_matching ic in
-             print_endline ("DEBUG2 " ^  String.concat "@" (parse_file_points ll))
-             (*
-               (print_endline ("DEBUG2 " ^  full_path  ^ " LL " ^ ll));
-               fp
-              *)
+               let ic = open_in full_path in
+
+               let chunks = split_file ic 512 in
+               (* let ll =  last_line_matching ic in
+             let chunks =  chunks_in ic in
+                *)
+               let do_one  (data)=
+                 let prompt = prompt1 ^ data in
+                 run_model model prompt;
+                 data
+               in
+               let ln =List.map do_one ! chunks  in
+               let lr = List.rev ln in
+               match lr  with
+               | [] -> print_endline ("DEBUG@ERROR")
+               | le::_ ->
+                  print_endline ("DEBUG2 " ^  String.concat "@" (parse_file_points le))
                 
       ) entries
   in
@@ -117,7 +186,7 @@ let () =
 
   Arg.parse opts anon_fun help_str;
   Printf.printf "DEBUG %s\n" !start;
-  traverse_and_print !start 
+  traverse_and_print !start "mistral" "Test:"
   (*
     map_lookup_file_snippets fp snippet_size
    *)
