@@ -32,12 +32,12 @@ dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
 
 * scanner
 #+begin_src shell
-dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/
+dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/ -p "think about this:"
 #+end_src
 
 
 #+begin_src shell
-dune exec bin/scanner.exe -- -s ./huggingface/unimath/batch2/data_30/
+  dune exec bin/scanner.exe -- -s ./huggingface/unimath/batch2/data_30/ -p "Consider the following valid trace of a COQ proof in unimath and interpret it creatively:" 
 #+end_src
 
 
@@ -54,5 +54,4 @@ dune exec bin/scanner.exe -- -s ./huggingface/unimath/batch2/data_30/
 ** produces urls that describe systems that are the result of the thinking
 ** metacoq urls
 ** postprocess responses and insert urls with annotations that can be visited
-or not by agent,
-can expand the results significantly. filtered by the user agent.
+or not by agent, can expand the results significantly. filtered by the user agent.

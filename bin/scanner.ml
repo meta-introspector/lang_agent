@@ -1,4 +1,6 @@
 open Lang_agent    
+let window_size = ref 1024
+    
 (* A function that returns the last line of a file that matches a given pattern *)
 (* let last_line_matching ic : string = *)
 (*   let line = ref "" in *)
@@ -149,7 +151,7 @@ let traverse_and_print path model prompt1  =
                (* (print_endline ("DEBUG2 " ^  full_path)); *)
                let ic = open_in full_path in
 
-               let chunks = split_file ic 512 in
+               let chunks = split_file ic ! window_size in
                (* let ll =  last_line_matching ic in
              let chunks =  chunks_in ic in
                 *)
@@ -175,18 +177,20 @@ let anon_fun filename =
   input_files := filename::!input_files
 
 let () =
-
   let start = ref "" in
-  let window_size = ref 128 in  
+  let prompt = ref "" in
+  let model = ref "mistral" in
   let help_str = "test" in
   let opts = [
       "-s", Arg.Set_string start, "startdir";
+      "-p", Arg.Set_string prompt, "prompt";
+      "-m", Arg.Set_string model, "model";
       "-w", Arg.Set_int window_size, "window_size";
   ] |> Arg.align in
 
   Arg.parse opts anon_fun help_str;
   Printf.printf "DEBUG %s\n" !start;
-  traverse_and_print !start "mistral" "Test:"
+  traverse_and_print !start !model !prompt
   (*
     map_lookup_file_snippets fp snippet_size
    *)
