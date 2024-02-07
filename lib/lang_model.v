@@ -275,60 +275,145 @@ Class lang_model
 
 (* create a ocaml abstract typeclass of mythos *)
 Class mythos
+  (t_author:Type)
+  (t_mythos:Type)
+  (t_archetypes:Type)
+  (t_authority:Type)
+  (t_authorization:Type)
   (t_region:Type)
   (t_epoch:Type)
   (t_language:Type)
-  (t_archtypes:Prop ×u Prop)
+  (t_emotions:Type)
+
   (t_names:Type)(t_prompt_type:Type)
   (t_response_type:Type   )
- := {
-       invoke : t_prompt_type -> t_response_type
+  := {
+    create :t_author ->t_mythos;
+    invoke : t_prompt_type -> t_response_type;
+    evoke : t_prompt_type -> t_emotions;
+    reify : t_mythos -> t_archetypes;
+    (* embody : t_archetypes ->t_mythos; *)
+    (* translate : t_mythos -> t_language-> t_language; *)
+    
 }.
 
 (*
   now create a mythos of athena please  
  *)
 
-Class archtype_warrior := { }.
-Class archtype_woman := { }.
+Class  archetype_warrior
+  (t_warrior:Type)
+  (t_monster:Type)
+  (t_outcome:Type)
+
+  := {
+    fight :  t_warrior ->t_monster -> t_outcome;
+  }.
+Class archetype_woman
+  (t_woman:Type)
+  (t_man:Type)
+  (t_embryo:Type)
+  (t_baby:Type)
+  := {
+    
+    (*simple life*)
+    concieve_a : t_woman -> t_embryo;
+    
+    (*complex life*)
+    concieve_s : t_woman ->t_man -> t_embryo;
+    carry_baby : t_woman -> t_embryo -> t_baby;
+    give_birth : t_woman -> t_baby
+  }.
 
 (*
-   (archtype_warrior:Type)
-  (archtype_woman:Type )
+   (archetype_warrior:Type)
+  (archetype_woman:Type )
  *)
-#[export] Instance   t_archtype_athena :  pair_type archtype_warrior archtype_woman :=  {  }.
+(* Definition warrior_woman := pair_type archetype_warrior archetype_woman. *)
 
 
-Definition   t_archtype_athena2 := make_dirprod  archtype_warrior  archtype_woman.
+
+(* Definition   t_archetype_athena2 := make_dirprod  archetype_warrior  archetype_woman. *)
 
 Class  t_names_nil := {  }.
 Class  t_region_greece := {  }.
 Class  t_epoch_classical := {  }.
 Class t_language_classical_greek := {}.
 
-(* Inductive  t_archtype_athena2 : Type *)
-(*   := Athena t_archtype_athena. *)
+(* Inductive  t_archetype_athena2 : Type *)
+(*   := Athena t_archetype_athena. *)
+
+Inductive ArchetypeWarrior :=
+  | Cadet
+  | Warrior.
+Inductive ArchetypeWoman :=
+  | Girl
+  | Woman.
+
+Inductive ArchetypeWarriorWoman :=
+  | WarriorWoman (a:ArchetypeWarrior) (b:ArchetypeWoman).
+
+Inductive GreekAuthors :=
+  |OtherAuthor
+  |Homer.
+
+Inductive GreekMythos :=
+  | OtherMythos
+  |MythosOfAthena.
+
+Inductive GreekKings :=
+  | OtherKing
+  | Pisistratus.
+
+Inductive Authorization :=
+| Authorized
+| Unauthorized.
+
+Inductive Emotions :=
+|Happy
+|Joy
+|Sad.
+  
+Record total3 { T: Type }{ T2: Type }  := tpair2 { pra1 : T; pra2 : T2 }.
+
+Definition warrior_woman2 := tpair2 ArchetypeWarrior ArchetypeWoman.
+Definition warrior_woman := ArchetypeWarriorWoman.
+
+
+Extraction "mythos.ml" evoke.
+
+
 
 #[export]Instance  greek_athena_mythos :
-  (*
-(t_region_greece:Type)(t_epoch_classical:Type)(t_language_classical_greek:Type)(t_archtype_athena:Type)(t_names_nil:Type)(string:Type)string
-  )*)
   mythos
-    t_region_greece
-    t_epoch_classical
-    t_language_classical_greek
-    t_archtype_athena2
-    t_names_nil
-    string
-    string
+    GreekAuthors(*t_author*)
+    GreekMythos(*t_mythos*)
+    ArchetypeWarriorWoman(*t_archetypes*)
+    GreekKings (*(t_authority*)
+    Authorization (*(t_authorization*)
+    t_region_greece (*t_region:Type*)
+    t_epoch_classical  (*t_epoch:Type*)
+  t_language_classical_greek(*t_language:Type*)
+  Emotions(*t_emotions:Type*)
+  t_names_nil(*t_names*)
+  string(*t_prompt_type*)
+  string(*t_response_type*)
     
   := {
 (* (self)
   This is a mythos of Athena, the goddess of wisdom
  and warfare in Greek mythology.
  *)
-    invoke (prompt:string) := SomeString
-      (* "Is it because of your mother you say " ^ prompt *)
+    invoke (prompt:string) := SomeString;
+                                (* "Is it because of your mother you say " ^ prompt *)
+
+    create (auth:GreekAuthors) := MythosOfAthena;
+    evoke (a:string) := Joy;
+    reify (a :GreekMythos) := WarriorWoman (Warrior) (Woman);
+    (* ArchetypeWarriorWoman; *)
+    (* embody : t_archetypes ->t_mythos; *)
+    (* translate : t_mythos -> t_language-> t_language; *)
+
 }.
 
 
@@ -341,10 +426,28 @@ Class t_language_classical_greek := {}.
 Class archetype_type
   (t_name:Type)
   (t_attributes:Type)
+  (t_attribute:Type)
   (t_stories:Type)
+  (t_story:Type)
   (t_embodiments:Type)
+  (t_embodiment:Type)
   (t_identity:Type)
-  := {  }.
+  := {
+
+    (*this identity has this attribute name creating attributes*)
+    attribute : t_identity -> t_name -> t_attributes;
+    pay_tribute : t_identity -> t_name -> t_attributes;
+    pay_homage : t_identity -> t_name -> t_attributes;
+
+    (*this archetype is embodied in this entity creating an embdiment*)
+    archetype_instance : t_identity -> t_name -> t_embodiment;
+    (*
+      this embodied name occurs in story
+     *)
+    story : t_name -> t_story;
+    
+    
+  }.
 
 (*
 The hero's journey is a narrative structure commonly used in storytelling and literature. It involves the main character, the "hero," on a quest to overcome challenges and achieve a goal. The journey typically consists of several stages or phases that the hero must go through.
@@ -383,7 +486,7 @@ Class heros_journey_type
   (t_narrative:Type)      
   (t_prophecy:Type)
   (t_retry:Type)(*error handling*)
-  (t_cave:Type)(*archtype*)
+  (t_cave:Type)(*archetype*)
   (t_sword:Type)
   (t_denied:Type)
   (t_failure:Type)
@@ -455,7 +558,7 @@ Inductive Diagonalization :=
 | StateMachine1 (a:StateMachine  )
 | Protocols22 (a:Protocols2 )
 | String (a:string)
-(* | AAthena (a:t_archtype_athena2) *)
+(* | AAthena (a:t_archetype_athena2) *)
 .
 
 From MetaCoq.Template Require Import All.
@@ -486,5 +589,9 @@ Unset Extraction Optimize.
 (* Recursive Extraction  begin_method. *)
 (* Recursive Extraction       add_method. *)
 (* Recursive Extraction  begin_val. *)
-Extraction "test.ml" begin.
+Extraction "test.ml" greek_athena_mythos.
+
+Extraction "begin.ml" begin.
+Extraction "mythos.ml" evoke.
+Extraction "test_archetype_instance.ml" archetype_instance.
 
