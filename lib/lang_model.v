@@ -58,8 +58,8 @@ Arguments pr2 {_ _} _.
 Definition dirprod_pr1 {X Y : UU} := pr1 : X ×u Y -> X.
 Definition dirprod_pr2 {X Y : UU} := pr2 : X ×u Y -> Y.
 Reserved Notation "x ,,u y" (at level 60, right associativity).
-Notation "x ,,u y" := (tpair _ x y).
-Definition make_dirprod {X Y : UU} (x:X) (y:Y) : X ×u Y := x,,uy.
+(* Notation "x ,,u y" := (tpair _ x y). *)
+(* Definition make_dirprod {X Y : UU} (x:X) (y:Y) : X ×u Y := x,,uy. *)
 
 (*
   typeclass
