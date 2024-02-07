@@ -14,6 +14,8 @@ RUN /home/opam/.opam/4.12/bin/dune --version
 #RUN apt-get -y install opam
 RUN opam install --yes --deps-only .
 RUN opam install --yes ppx_yojson_conv_lib
+RUN opam repo add coq-released https://coq.inria.fr/opam/released
+RUN opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 
 RUN opam install --yes ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
 RUN dune build .
