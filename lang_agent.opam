@@ -22,6 +22,10 @@ depends: [
   "ppx_yojson_conv_lib"
   "ezcurl-lwt"
   "yojson"
+  "coq-equations" {>= "1.3"}
+  "coq-metacoq-template" {>= "1.0+8.15"}
+  "coq-metacoq-translations" {>= "1.0+8.15"}
+  "coq-metacoq" {>= "1.0+8.15"}
   "odoc" {with-doc}
 ]
 build: [

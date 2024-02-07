@@ -19,7 +19,14 @@
  (name lang_agent)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson)
+ (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
+   
+  (coq-equations (>= 1.3))
+  (coq-metacoq-template (>= 1.0+8.15))
+  (coq-metacoq-translations (>= 1.0+8.15))
+  (coq-metacoq (>= 1.0+8.15))
+   
+ )
 
  (tags
   (topics "to describe" your project)))
