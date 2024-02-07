@@ -1,3 +1,20 @@
+(* Require Import MirrorSolve.FirstOrder. *)
+(* Require Import MirrorSolve.BV. *)
+(* Require Import MirrorSolve.SMT. *)
+(* Require Import MirrorSolve.UF. *)
+(* Require Import MirrorSolve.FOList. *)
+(* Require Import MirrorSolve.HLists. *)
+
+(* Import HListNotations. *)
+
+(* Require Import Coq.Strings.String. *)
+
+(* Require Import MirrorSolve.Reflection.Core. *)
+(* Require Import MirrorSolve.Reflection.FM. *)
+
+(* Require Import Coq.ZArith.BinInt. *)
+(* Require Import MirrorSolve.Automation.Equations. *)
+
 (*
 Intuitional language model
 everyone creates different versions of this for themselves.
@@ -16,12 +33,12 @@ Notation "'λ' x .. y , t" := (fun x => .. (fun y => t) ..)
   (at level 200, x binder, y binder, right associativity).
   (* type this in emacs in agda-input method with \lambda *)
 Record total2 { T: UU } ( P: T -> UU ) := tpair { pr1 : T; pr2 : P pr1 }.
-Notation "'∑'  x .. y , P" := (total2 (λ x, .. (total2 (λ y, P)) ..))
+Notation "'∑u'  x .. y , P" := (total2 (λ x, .. (total2 (λ y, P)) ..))
   (at level 200, x binder, y binder, right associativity) : type_scope.
   (* type this in emacs in agda-input method with \sum *)
-Reserved Notation "A × B" (at level 75, right associativity).
-Definition dirprod (X Y : UU) := ∑ x:X, Y.
-Notation "A × B" := (dirprod A B): type_scope.
+Reserved Notation "A ×u B" (at level 75, right associativity).
+Definition dirprod (X Y : UU) := ∑u x:X, Y.
+Notation "A ×u B" := (dirprod A B): type_scope.
 (** The one-element type *)
 
 Inductive unit : UU :=
@@ -38,11 +55,11 @@ Inductive coprod (A B:UU) : UU :=
 Arguments tpair {_} _ _ _.
 Arguments pr1 {_ _} _.
 Arguments pr2 {_ _} _.
-Definition dirprod_pr1 {X Y : UU} := pr1 : X × Y -> X.
-Definition dirprod_pr2 {X Y : UU} := pr2 : X × Y -> Y.
-Reserved Notation "x ,, y" (at level 60, right associativity).
-Notation "x ,, y" := (tpair _ x y).
-Definition make_dirprod {X Y : UU} (x:X) (y:Y) : X × Y := x,,y.
+Definition dirprod_pr1 {X Y : UU} := pr1 : X ×u Y -> X.
+Definition dirprod_pr2 {X Y : UU} := pr2 : X ×u Y -> Y.
+Reserved Notation "x ,,u y" (at level 60, right associativity).
+Notation "x ,,u y" := (tpair _ x y).
+Definition make_dirprod {X Y : UU} (x:X) (y:Y) : X ×u Y := x,,uy.
 
 (*
   typeclass
@@ -67,7 +84,7 @@ Definition newstate3 (u : unit) : Protocols2 :=
   | tt => Pt_state_machine2 St_start
   end.
 
-Global Instance t_Protocol :
+#[export] Instance t_Protocol :
   Protocol_type Protocols2 :=
     {
       state_machine := newstate3
@@ -75,7 +92,14 @@ Global Instance t_Protocol :
 
 Class  Network_type  ( t_address:Type) ( t_connection:Type) :=
   {
-    net_connect  : t_address -> t_connection
+    net_connect  : t_address -> t_connection;
+    net_tracert  : t_address -> t_connection;
+    net_ping  : t_address -> t_connection;
+    net_whois  : t_address -> t_connection;
+    net_tcpdump  : t_address -> t_connection;
+    net_proxy  : t_address -> t_connection;
+    net_mitmproxy  : t_address -> t_connection;
+    net_subnet  : t_address -> t_connection;                                        
   }.
 
 Record  TNetwork_type   :=  {
@@ -101,7 +125,11 @@ Inductive  TNetwork_type3 :=
 (*Create a coq inductive type and record type to implement for the following type class *)
 Class auth_type (t_key:Type) (t_auth:Type):=
   {
-    authenticate  : t_key -> t_auth
+    authenticate  : t_key -> t_auth;
+    auth_share  : t_key ;
+    auth_generate  : t_key ;
+    auth_revoke  : t_key ;
+    auth_refresh  : t_key ;                               
   }.
 
 Record  TAuth_type   :=  {
@@ -117,6 +145,7 @@ Class  Connection_type
   (t_connection:Type) :=
   {
     ct_connect  :  t_address -> t_connection;
+    ct_state  :  t_connection -> t_state_machine;  
     ct_disconnect  :  t_address -> t_connection
   }.
 
@@ -141,32 +170,53 @@ Record  TConnection_type2   :=  {
   }.
 
 Class introspector_prompt_model
-  (t_context:Type)
-  (t_environment:Type)
-  (t_goal:Type)
   (t_language:Type)
+  (t_project:Type) :={
+    prompt : string
+  }.
+
+Class introspector_network_model
   (t_state_machine:Type)
   (t_protocol:Type)
-  (t_project:Type)
-  (t_notations:Type)
+  := {
+    prompt_type  : (*t_auth -> t_network*) t_protocol -> string
+  }.
 
+  Class introspector_event_model
   (t_error_retry_handler:Type)
   (t_logging_handler:Type)
   (t_introspection_visitor:Type)
+    := {
+      event :string
+  }.
 
+  Class introspector_memory_model
   (t_short_term_memory:Type)
   (t_long_term_memory:Type)
-
-  (t_lemmas:Type)  (t_proofs:Type)
-  (t_sets:Type)(t_types:Type)(t_propositions:Type)
-  (t_universes:Type)(t_objects:Type)
-  (t_validators:Type)(t_grammars:Type)
-  (t_prelude:Type)
-  (t_string:Type)
-  := {
-    prompt_type  : (*t_auth -> t_network*) t_protocol -> t_string
+    := {
+      memory :string
   }.
-    
+
+  Class introspector_proof_model
+    (t_prelude:Type)
+    (t_context:Type)
+    (t_environment:Type)
+    (t_goal:Type)
+    (t_notations:Type)
+    (t_lemmas:Type)  (t_proofs:Type)
+    (t_sets:Type)(t_types:Type)(t_propositions:Type)
+    (t_universes:Type)(t_objects:Type)
+    (t_validators:Type)
+    := {
+      proof :string
+    }.
+
+  Class introspector_grammar_model
+    (t_grammars:Type)
+    := {
+      grammar: string
+  }.
+
 
 Class class_type_result
   (t_name:Type)   
@@ -229,7 +279,7 @@ Class mythos
   (t_region:Type)
   (t_epoch:Type)
   (t_language:Type)
-  (t_archtypes:Prop × Prop)
+  (t_archtypes:Prop ×u Prop)
   (t_names:Type)(t_prompt_type:Type)
   (t_response_type:Type   )
  := {
@@ -247,7 +297,7 @@ Class archtype_woman := { }.
    (archtype_warrior:Type)
   (archtype_woman:Type )
  *)
-Global Instance   t_archtype_athena :  pair_type archtype_warrior archtype_woman :=  {  }.
+#[export] Instance   t_archtype_athena :  pair_type archtype_warrior archtype_woman :=  {  }.
 
 
 Definition   t_archtype_athena2 := make_dirprod  archtype_warrior  archtype_woman.
@@ -260,7 +310,7 @@ Class t_language_classical_greek := {}.
 (* Inductive  t_archtype_athena2 : Type *)
 (*   := Athena t_archtype_athena. *)
 
-Instance  greek_athena_mythos :
+#[export]Instance  greek_athena_mythos :
   (*
 (t_region_greece:Type)(t_epoch_classical:Type)(t_language_classical_greek:Type)(t_archtype_athena:Type)(t_names_nil:Type)(string:Type)string
   )*)
@@ -284,10 +334,10 @@ Instance  greek_athena_mythos :
 
 
 
-(*
-Global Instance t_Network_type : Network_type TNetwork_type.
-Qed.
-*)
+(* Instance t_Network_type : Network_type TNetwork_type := { *)
+
+(*   }. *)
+
 
 Class archetype_type
   (t_name:Type)
@@ -448,9 +498,33 @@ Inductive Diagonalization :=
 | String (a:string)
 (* | AAthena (a:t_archtype_athena2) *)
 .
-          
-Require Coq.extraction.Extraction.
-Extraction "test.ml" Diagonalization .
 
-Extraction Language Haskell.
-Extraction "test.hs" Diagonalization .
+From MetaCoq.Template Require Import All.
+
+From MetaCoq.Template Require Import Ast Loader TemplateMonad.
+
+          
+(* Require Coq.extraction.Extraction.
+Extraction Language JSON.
+ *)
+Extraction Language OCaml.
+Unset Extraction Optimize.
+(* Recursive Extraction Diagonalization. *)
+Recursive Extraction net_connect.
+Recursive Extraction state_machine.
+Recursive Extraction TNetwork_type.
+Recursive Extraction connect.
+Recursive Extraction      prompt.
+Recursive Extraction      prompt_type.
+Recursive Extraction      event.
+Recursive Extraction      grammar.
+Recursive Extraction      proof.
+Recursive Extraction  tpair .
+Recursive Extraction  total2 .
+
+ 
+Recursive Extraction      begin_type .
+(* Recursive Extraction  begin_method. *)
+(* Recursive Extraction       add_method. *)
+(* Recursive Extraction  begin_val. *)
+

@@ -12,3 +12,8 @@
 
  (name lang_agent))
 
+(coq.theory
+ (name lang_model)
+ (package lang_agent)
+ (synopsis "A Coq theory that uses MetaCoq")
+ (theories  MetaCoq MetaCoq.Template  Equations Ltac2 ))

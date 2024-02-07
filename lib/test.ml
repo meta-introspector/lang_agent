@@ -1,5 +1,5 @@
 
-type empty = |
+type empty
 
 type stateMachine =
 | St_start

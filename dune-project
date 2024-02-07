@@ -1,5 +1,5 @@
-(lang dune 3.7)
-
+(lang dune 3.8)
+(using coq 0.8)
 (name lang_agent)
 
 (generate_opam_files true)
