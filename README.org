@@ -1,8 +1,50 @@
-* run
-sudo  docker run --mount type=bind,source=/mnt/data1/2024/,target=/mnt/tmp  -it h4ckermike/lang_agent:default bash
-
 * idea : create an ocaml functional agent for talking to llms.
-** hijack urls
+
+
+#+begin_src shell
+dune exec bin/argiope.exe "https://writemycode.com/?goal=snakegame" -- -m mistral
+#+end_src
+
+#+begin_src shell
+dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/blob/3d485ff60e2872cbb920980a5fd2dbde908215ed/bin/argiope.ml#L28?q="argiope is a virtual hyperspace navigation simulator" -m mistral
+#+end_src
+
+* run from docker
+#+begin_src shell
+sudo  docker run --mount type=bind,source=/mnt/data1/2024/,target=/mnt/tmp  -it h4ckermike/lang_agent:default bash
+#+end_src
+
+* chunker
+takes two files, the prompt and the tochunk, that is split by \n and process
+
+#+begin_src shell
+dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt todo.txt mistral
+#+end_src
+
+#+begin_src shell
+dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml mistral
+#+end_src
+
+* worker
+#+begin_src shell
+dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
+#+end_src
+
+* scanner
+#+begin_src shell
+dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/
+#+end_src
+
+
+#+begin_src shell
+dune exec bin/scanner.exe -- -s ./huggingface/unimath/batch2/data_30/
+#+end_src
+
+
+** wild ideas
+
+** hijack urls with an ai in  the middle proxy server.
+
 ** bootstrap on ollama, then to llama.cpp, then embed inside of llama.cpp as well.
 ** use threads, ezcurl-lwt
 ** produce/consume quasi quoted interfaces to other systems using metacoq streams, streams of encoded type declarations, functions, kinds, records, constructors etc.
@@ -14,29 +56,3 @@ sudo  docker run --mount type=bind,source=/mnt/data1/2024/,target=/mnt/tmp  -it 
 ** postprocess responses and insert urls with annotations that can be visited
 or not by agent,
 can expand the results significantly. filtered by the user agent.
-
-dune exec bin/argiope.exe "https://writemycode.com/?goal=snakegame" -- -m mistral
-
-dune exec -- ./bin/argiope.exe https://github.com/meta-introspector/lang_agent/blob/3d485ff60e2872cbb920980a5fd2dbde908215ed/bin/argiope.ml#L28?q="argiope is a virtual hyperspace navigation simulator" -m mistral
-
-
-* chunker
-takes two files, the prompt and the tochunk, that is split by \n and process
-
-#+begin_src shell
-dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt todo.txt mistral
-#+end_src
-
-dune exec bin/chunker.exe -- ./prompt.txt ./separator.txt ~/2024/01/07/ppx-introspector/test/test2b.ml mistral
-
-
-* worker
-#+begin_src shell
-dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
-#+end_src
-
-
-* scanner
-#+begin_src shell
-dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/
-#+end_src
