@@ -42,7 +42,6 @@ let dobind prompt the_client self:string=
        Chat_completion.(
     send
       the_client
-      (*~model:self.agt_model*)
       ~temperature:self.agt_temp
       ~max_tokens:self.agt_tokens
       ~messages: [ { role = `System; content = self.agt_system_prompt }
@@ -82,6 +81,7 @@ class  open_ai_lang_model  = object (* (self) *)
   method  lang_prompt
            (connection : 't_connection)
            (prompt:'t_prompt) :'t_response=
-    let res = (dobind prompt connection self) in  
+    let connection1 =  connection.agt_driver in
+    let res = (dobind prompt connection1 connection ) in  
     "FIXME" ^ prompt ^res
 end
