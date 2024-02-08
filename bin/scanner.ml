@@ -94,7 +94,7 @@ let rec parse_loc_list a : string =
 let parse_loc (line :string)  =
   let parts2 = String.split_on_char ':' line in
   let fname = parse_loc_list parts2  in
-  (print_endline ("DEBUG5:" ^ fname));
+  (* (print_endline ("DEBUG5:" ^ fname)); *)
   fname
      (* { *)
      (*   lc_fname = fname; (\** filename or toplevel input *\) *)
@@ -115,24 +115,20 @@ let parse_file_points (line: string)  =
   that can be used where Ollama is replaced with some variable
   that can be any subclass of a base language binding class
  *)
-let run_model client (model:string)(prompt:string)  =
-  (print_endline (
-      "\n#+begin_src input "^model^"\n" ^
-      prompt ^
-      "\n#+end_src input\n"));  
+(* let run_model client (model:string)(prompt:string)  = *)
+(*   (print_endline ( *)
+(*       "\n#+begin_src input "^model^"\n" ^ *)
+(*       prompt ^ *)
+(*       "\n#+end_src input\n"));   *)
+(*   let res = (client#lang_prompt client prompt ) in *)
+(*   (\* (print_endline "\n#+begin_src output\n"^res^"\n#+end_src output"); *\) *)
+(*   res *)
 
-  ignore
-  @@ Lwt_main.run
-  @@ Lwt.bind
-       Ollama.(
-    send
-      client model prompt ())
-       (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
 
  (* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
-let traverse_and_print: 'client_t -> string -> string -> string ->unit =
-  fun client path model prompt1  ->
-  (print_endline ("DEBUG0:" ^  path));
+let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string ->unit =
+  fun client1 param_record path model prompt1  ->
+  (print_endline ("DEBUG0:" ^  model ^path));
   let rec aux dir =
     let entries = Sys.readdir dir in
     Array.iter (fun entry ->
@@ -147,8 +143,8 @@ let traverse_and_print: 'client_t -> string -> string -> string ->unit =
           let fs = Unix.lstat full_path in
             match fs.st_kind with
             | S_CHR -> (print_endline ("DEBUG2 char" ^  full_path)); 
-            | S_SOCK -> (print_endline ("DEBUG2 char"^  full_path)); 
-            | S_BLK -> (print_endline ("DEBUG2 block"^  full_path)); 
+            | S_SOCK -> (print_endline ("DEBUG3 char"^  full_path)); 
+            | S_BLK -> (print_endline ("DEBUG4 block"^  full_path)); 
             | S_FIFO -> (print_endline ("DEBUG2 FIFO"^  full_path)); 
             | S_LNK -> (print_endline ("DEBUG2 LINK"^  full_path)); 
             | S_DIR -> (print_endline ("DEBUG2 DIR" ^  full_path));
@@ -163,15 +159,16 @@ let traverse_and_print: 'client_t -> string -> string -> string ->unit =
                   *)
                  let do_one  (data)=
                    let prompt = prompt1 ^ data in
-                   run_model client model prompt;
-                   data
+                   let res = (client1#lang_prompt param_record prompt ) in
+                   data ^ res
                  in
-                 let ln =List.map do_one ! chunks  in
+                 let ln = List.map do_one ! chunks  in
                  let lr = List.rev ln in
                  match lr  with
                  | [] -> print_endline ("DEBUG@ERROR")
-                 | le::_ ->
-                    print_endline ("DEBUG2 " ^  String.concat "@" (parse_file_points le))
+                 | _ ->
+                   (*
+                     le::_ ->print_endline ("DEBUG20 " ^  String.concat "@" (parse_file_points le)) *)()
                   
         ) entries
     in
@@ -197,16 +194,26 @@ let () =
   ] |> Arg.align in
 
   Arg.parse opts anon_fun help_str;
-  Printf.printf "DEBUG %s\n" !start;
-
-  (* if !binding == "ollama" then *)
-  (*   Printf.printf "SKIP\n"; *)
-  (*   (\* let client = Ollama.create_client ! model in *\) *)
-  (*   (\* traverse_and_print client !start !model !prompt *\) *)
+  Printf.printf "DEBUG3 Starting path %s\n" !start;
+  (print_endline ("DEBUG4 MODEL :" ^ ! model) );
+  (print_endline ("DEBUG5 BINDING :" ^ ! binding) );
+  
   if !binding == "openai" then
-    let o = new Openai_client.open_ai_lang_model in
-    let client = Openai_client.create_init in
-    traverse_and_print client !start !model !prompt
-                       (*
-    map_lookup_file_snippets fp snippet_size
-   *)
+    (print_endline ("DEBUG OPENAI :") );
+    let open_ai_client = new Openai_client.open_ai_lang_model in 
+    (* let client = Openai_client.create_init in *)
+    
+    (*Lang_model.client_t aka record of parameters
+     *)
+    let client_param_record = (open_ai_client#lang_init())  in
+    
+    let str_out = (open_ai_client#lang_prompt client_param_record "Hello" ) in
+      
+    traverse_and_print open_ai_client client_param_record !start !model !prompt; 
+    (*         map_lookup_file_snippets fp snippet_size       *)
+    if !binding == "ollama" then
+      let ollama_client = new Openai_client.open_ai_lang_model in 
+      (* let client_old = Ollama.create_client ! model in *)
+      let client_param_record = (open_ai_client#lang_init())  in
+      traverse_and_print ollama_client client_param_record !start !model !prompt;         
+      (print_endline ("DEBUG1 :" ^ str_out) )
