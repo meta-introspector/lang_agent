@@ -1,0 +1,29 @@
+Create a Global instance of this abstract class pattern in
+coq with Inductive and Record Types.
+
+Class Protocol_type   (t_state_machine: Type) :=
+  {
+    state_machine  :  unit -> t_state_machine
+  }.
+
+Class  Network_type  ( t_address:Type) ( t_connection:Type) :=
+  {
+    net_connect  : t_address -> t_connection
+  }.
+
+Class auth_type (t_key:Type) (t_auth:Type):=
+  {
+    authenticate  : t_key -> t_auth
+  }.
+    
+Class  Connection_type
+  (t_address:Type)
+  (t_key:Type)
+  (t_auth:Type)
+  (t_state_machine:Type)
+  (t_connection:Type) :=
+  {
+    ct_connect  :  t_address -> t_connection
+    ct_disconnect  :  t_address -> t_connection
+  }.
+

@@ -1,0 +1,123 @@
+{
+  "what": "module", "name": "Main", "need_magic": false,
+  "need_dummy": false, "used_modules": [
+    
+  ],
+  "declarations": [
+    {
+      "what": "decl:ind", "name": "mythos",
+      "argnames": [
+        "t_author", "t_mythos", "t_archetypes", "t_authority",
+        "t_authorization", "t_region", "t_epoch", "t_language",
+        "t_emotions", "t_names", "t_prompt_type", "t_response_type"
+      ],
+      "constructors": [
+        {
+          "name": "Build_mythos",
+          "argtypes": [
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_author"
+              }, "right": {
+                "what": "type:var", "name": "t_mythos"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_prompt_type"
+              }, "right": {
+                "what": "type:var", "name": "t_response_type"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_prompt_type"
+              }, "right": {
+                "what": "type:var", "name": "t_emotions"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_mythos"
+              }, "right": {
+                "what": "type:var", "name": "t_archetypes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:term", "name": "evoke",
+      "type": {
+        "what": "type:arrow",
+        "left": {
+          "what": "type:glob", "name": "mythos",
+          "args": [
+            {
+              "what": "type:varidx", "name": 1
+            }, {
+              "what": "type:varidx", "name": 2
+            }, {
+              "what": "type:varidx", "name": 3
+            }, {
+              "what": "type:varidx", "name": 4
+            }, {
+              "what": "type:varidx", "name": 5
+            }, {
+              "what": "type:varidx", "name": 6
+            }, {
+              "what": "type:varidx", "name": 7
+            }, {
+              "what": "type:varidx", "name": 8
+            }, {
+              "what": "type:varidx", "name": 9
+            }, {
+              "what": "type:varidx", "name": 10
+            }, {
+              "what": "type:varidx", "name": 11
+            }, {
+              "what": "type:varidx", "name": 12
+            }
+          ]
+        },
+        "right": {
+          "what": "type:arrow",
+          "left": {
+            "what": "type:varidx", "name": 11
+          }, "right": {
+            "what": "type:varidx", "name": 9
+          }
+        }
+      },
+      "value": {
+        "what": "expr:lambda", "argnames": [
+          "mythos0"
+        ],
+        "body": {
+          "what": "expr:case",
+          "expr": {
+            "what": "expr:rel", "name": "mythos0"
+          },
+          "cases": [
+            {
+              "what": "case",
+              "pat": {
+                "what": "pat:constructor", "name": "Build_mythos",
+                "argnames": [
+                  "_", "_", "evoke0", "_"
+                ]
+              }, "body": {
+                "what": "expr:rel", "name": "evoke0"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

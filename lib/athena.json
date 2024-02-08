@@ -1,0 +1,300 @@
+{
+  "what": "module", "name": "Main", "need_magic": false,
+  "need_dummy": true, "used_modules": [
+    
+  ],
+  "declarations": [
+    {
+      "what": "decl:ind", "name": "mythos",
+      "argnames": [
+        "t_author", "t_mythos", "t_archetypes", "t_authority",
+        "t_authorization", "t_region", "t_epoch", "t_language",
+        "t_emotions", "t_names", "t_prompt_type", "t_response_type"
+      ],
+      "constructors": [
+        {
+          "name": "Build_mythos",
+          "argtypes": [
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_author"
+              }, "right": {
+                "what": "type:var", "name": "t_mythos"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_prompt_type"
+              }, "right": {
+                "what": "type:var", "name": "t_response_type"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_prompt_type"
+              }, "right": {
+                "what": "type:var", "name": "t_emotions"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_mythos"
+              }, "right": {
+                "what": "type:var", "name": "t_archetypes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "archetypeWarrior", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "Cadet", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Warrior", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "archetypeWoman", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "Girl", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Woman", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "archetypeWarriorWoman",
+      "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "WarriorWoman",
+          "argtypes": [
+            {
+              "what": "type:glob", "name": "archetypeWarrior", "args": [
+                
+              ]
+            },
+            {
+              "what": "type:glob", "name": "archetypeWoman", "args": [
+                
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "greekAuthors", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "OtherAuthor", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Homer", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "greekMythos", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "OtherMythos", "argtypes": [
+            
+          ]
+        }, {
+          "name": "MythosOfAthena", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "greekKings", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "OtherKing", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Pisistratus", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "authorization", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "Authorized", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Unauthorized", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:ind", "name": "emotions", "argnames": [
+        
+      ],
+      "constructors": [
+        {
+          "name": "Happy", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Joy", "argtypes": [
+            
+          ]
+        }, {
+          "name": "Sad", "argtypes": [
+            
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:term", "name": "greek_athena_mythos",
+      "type": {
+        "what": "type:glob", "name": "mythos",
+        "args": [
+          {
+            "what": "type:glob", "name": "greekAuthors", "args": [
+              
+            ]
+          }, {
+            "what": "type:glob", "name": "greekMythos", "args": [
+              
+            ]
+          },
+          {
+            "what": "type:glob", "name": "archetypeWarriorWoman",
+            "args": [
+              
+            ]
+          }, {
+            "what": "type:glob", "name": "greekKings", "args": [
+              
+            ]
+          },
+          {
+            "what": "type:glob", "name": "authorization", "args": [
+              
+            ]
+          }, {
+            "what": "type:dummy"
+          }, {
+            "what": "type:dummy"
+          }, {
+            "what": "type:dummy"
+          }, {
+            "what": "type:glob", "name": "emotions", "args": [
+              
+            ]
+          }, {
+            "what": "type:dummy"
+          }, {
+            "what": "type:dummy"
+          }, {
+            "what": "type:dummy"
+          }
+        ]
+      },
+      "value": {
+        "what": "expr:lambda", "argnames": [
+          
+        ],
+        "body": {
+          "what": "expr:constructor", "name": "Build_mythos",
+          "args": [
+            {
+              "what": "expr:lambda", "argnames": [
+                "_"
+              ],
+              "body": {
+                "what": "expr:constructor", "name": "MythosOfAthena",
+                "args": [
+                  
+                ]
+              }
+            },
+            {
+              "what": "expr:coerce", "value": {
+                "what": "expr:dummy"
+              }
+            },
+            {
+              "what": "expr:lambda", "argnames": [
+                "_"
+              ],
+              "body": {
+                "what": "expr:constructor", "name": "Joy", "args": [
+                  
+                ]
+              }
+            },
+            {
+              "what": "expr:lambda", "argnames": [
+                "_"
+              ],
+              "body": {
+                "what": "expr:constructor", "name": "WarriorWoman",
+                "args": [
+                  {
+                    "what": "expr:constructor", "name": "Warrior",
+                    "args": [
+                      
+                    ]
+                  },
+                  {
+                    "what": "expr:constructor", "name": "Woman",
+                    "args": [
+                      
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

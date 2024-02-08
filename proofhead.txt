@@ -1,0 +1,47 @@
+Here are the top lines from a trace from a proof in coq.
+please try and reconstruct the main ideas of the proof from this
+snippets of traces in count order.
+be creative. create a narrative.
+
+  38596   C : category
+  24973 Level 0: In environment
+  18318 <coq-core.plugins.ltac::simple_refine@0> $1
+  13370 while it is expected to have type
+  12285 TcDebug (1) > 
+  12142   V : monoidal_cat
+  11337   x : ob C
+  10396   D : disp_cat C
+   9708 C : category
+   8201   C₂ : category
+   8201   C₁ : category
+   7837 cannot be applied to the term
+   7810   y : ob C
+   7474   simple refine (p _) ||
+   7474     simple refine (p _ _) ||
+   7474 simple refine p ||
+   7457 Level 0: Illegal application (Non-functional construction): 
+   6273  "?y" : "?T0"
+   5912   (Prelude.reverse_coercion T
+   5281   D : category
+   5189   E : enrichment C V
+   5108   M : monoidal C
+   4611   V : category
+   4611   Mon_V : monoidal V
+   4562   F : C₁ ⟶ C₂
+   4296   (pr21 x') 
+   4161   P : hset_struct_with_smash_closed
+   4152 V : monoidal_cat
+   4122 Evaluated term: assoc
+   4118  (pr11 x') 
+   3998    (isofhlevel 1
+   3846 of type
+   3779 Evaluated term: assoc'
+   3756 where
+   3756 Level 1: evaluation returns
+   3737 uconstr of type tacvalue
+   3737   simple refine p ||
+   3737     simple refine (p _) ||
+   3737 fun p =>
+   3708   c : ob C
+   3660 <coq-core.plugins.ltac::exact@0> $1
+   3581   simple refine (p _ _) ||

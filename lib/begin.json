@@ -1,0 +1,310 @@
+{
+  "what": "module", "name": "Main", "need_magic": false,
+  "need_dummy": false, "used_modules": [
+    
+  ],
+  "declarations": [
+    {
+      "what": "decl:ind", "name": "heros_journey_type",
+      "argnames": [
+        "t_apotheosis", "t_risk", "t_adventure", "t_threshold", "t_mentor",
+        "t_road_of_trials", "t_skills", "t_wisdom", "t_perspective",
+        "t_state_machine", "t_event", "t_call", "t_goal", "t_fufillment",
+        "t_reward", "t_treasure", "t_recognition", "t_elixer",
+        "t_narrative", "t_prophecy", "t_retry", "t_cave", "t_sword",
+        "t_denied", "t_failure", "t_accepted", "t_home", "t_challenge",
+        "t_enemies", "t_monsters", "t_obstacles", "t_action", "t_descent0",
+        "t_decision", "t_being", "t_hero", "t_observation", "t_descent",
+        "t_world", "t_journey", "t_situation", "t_critical", "t_team",
+        "t_opportunity", "t_allies"
+      ],
+      "constructors": [
+        {
+          "name": "Build_heros_journey_type",
+          "argtypes": [
+            {
+              "what": "type:var", "name": "t_event"
+            }, {
+              "what": "type:var", "name": "t_recognition"
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_call"
+              }, "right": {
+                "what": "type:var", "name": "t_adventure"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_journey"
+              }, "right": {
+                "what": "type:var", "name": "t_state_machine"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_world"
+              },
+              "right": {
+                "what": "type:arrow",
+                "left": {
+                  "what": "type:var", "name": "t_being"
+                }, "right": {
+                  "what": "type:var", "name": "t_event"
+                }
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_team"
+              }, "right": {
+                "what": "type:var", "name": "t_allies"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_mentor"
+              }
+            }, {
+              "what": "type:var", "name": "t_threshold"
+            }, {
+              "what": "type:var", "name": "t_observation"
+            }, {
+              "what": "type:var", "name": "t_descent"
+            }, {
+              "what": "type:var", "name": "t_apotheosis"
+            }, {
+              "what": "type:var", "name": "t_decision"
+            }, {
+              "what": "type:var", "name": "t_action"
+            }, {
+              "what": "type:var", "name": "t_action"
+            }, {
+              "what": "type:var", "name": "t_action"
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_challenge"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_challenge"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_sword"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_wisdom"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              },
+              "right": {
+                "what": "type:arrow",
+                "left": {
+                  "what": "type:var", "name": "t_call"
+                }, "right": {
+                  "what": "type:var", "name": "t_denied"
+                }
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_sword"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              }, "right": {
+                "what": "type:var", "name": "t_home"
+              }
+            },
+            {
+              "what": "type:arrow",
+              "left": {
+                "what": "type:var", "name": "t_hero"
+              },
+              "right": {
+                "what": "type:arrow",
+                "left": {
+                  "what": "type:var", "name": "t_failure"
+                }, "right": {
+                  "what": "type:var", "name": "t_retry"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "what": "decl:term", "name": "begin",
+      "type": {
+        "what": "type:arrow",
+        "left": {
+          "what": "type:glob", "name": "heros_journey_type",
+          "args": [
+            {
+              "what": "type:varidx", "name": 1
+            }, {
+              "what": "type:varidx", "name": 2
+            }, {
+              "what": "type:varidx", "name": 3
+            }, {
+              "what": "type:varidx", "name": 4
+            }, {
+              "what": "type:varidx", "name": 5
+            }, {
+              "what": "type:varidx", "name": 6
+            }, {
+              "what": "type:varidx", "name": 7
+            }, {
+              "what": "type:varidx", "name": 8
+            }, {
+              "what": "type:varidx", "name": 9
+            }, {
+              "what": "type:varidx", "name": 10
+            }, {
+              "what": "type:varidx", "name": 11
+            }, {
+              "what": "type:varidx", "name": 12
+            }, {
+              "what": "type:varidx", "name": 13
+            }, {
+              "what": "type:varidx", "name": 14
+            }, {
+              "what": "type:varidx", "name": 15
+            }, {
+              "what": "type:varidx", "name": 16
+            }, {
+              "what": "type:varidx", "name": 17
+            }, {
+              "what": "type:varidx", "name": 18
+            }, {
+              "what": "type:varidx", "name": 19
+            }, {
+              "what": "type:varidx", "name": 20
+            }, {
+              "what": "type:varidx", "name": 21
+            }, {
+              "what": "type:varidx", "name": 22
+            }, {
+              "what": "type:varidx", "name": 23
+            }, {
+              "what": "type:varidx", "name": 24
+            }, {
+              "what": "type:varidx", "name": 25
+            }, {
+              "what": "type:varidx", "name": 26
+            }, {
+              "what": "type:varidx", "name": 27
+            }, {
+              "what": "type:varidx", "name": 28
+            }, {
+              "what": "type:varidx", "name": 29
+            }, {
+              "what": "type:varidx", "name": 30
+            }, {
+              "what": "type:varidx", "name": 31
+            }, {
+              "what": "type:varidx", "name": 32
+            }, {
+              "what": "type:varidx", "name": 33
+            }, {
+              "what": "type:varidx", "name": 34
+            }, {
+              "what": "type:varidx", "name": 35
+            }, {
+              "what": "type:varidx", "name": 36
+            }, {
+              "what": "type:varidx", "name": 37
+            }, {
+              "what": "type:varidx", "name": 38
+            }, {
+              "what": "type:varidx", "name": 39
+            }, {
+              "what": "type:varidx", "name": 40
+            }, {
+              "what": "type:varidx", "name": 41
+            }, {
+              "what": "type:varidx", "name": 42
+            }, {
+              "what": "type:varidx", "name": 43
+            }, {
+              "what": "type:varidx", "name": 44
+            }, {
+              "what": "type:varidx", "name": 45
+            }
+          ]
+        },
+        "right": {
+          "what": "type:arrow",
+          "left": {
+            "what": "type:varidx", "name": 40
+          }, "right": {
+            "what": "type:varidx", "name": 10
+          }
+        }
+      },
+      "value": {
+        "what": "expr:lambda", "argnames": [
+          "heros_journey_type0"
+        ],
+        "body": {
+          "what": "expr:case",
+          "expr": {
+            "what": "expr:rel", "name": "heros_journey_type0"
+          },
+          "cases": [
+            {
+              "what": "case",
+              "pat": {
+                "what": "pat:constructor",
+                "name": "Build_heros_journey_type",
+                "argnames": [
+                  "_", "_", "_", "begin0", "_", "_", "_", "_", "_", "_",
+                  "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_",
+                  "_", "_"
+                ]
+              }, "body": {
+                "what": "expr:rel", "name": "begin0"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
