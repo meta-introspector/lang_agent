@@ -242,10 +242,7 @@ class type archtype_warrior = object
 end
 
 class type archtype_woman = object
-  
 end
-
-
 
 class  t_archtype_athena : [
     archtype_warrior,
@@ -271,8 +268,6 @@ class greek_athena_mythos : [
   method invoke (prompt:'t_string) = "Is it because of your mother you say " ^ prompt
 end
 
-
-
 (*
  openai like  
  *)
@@ -285,21 +280,21 @@ type (* assistent prompt 't_system_content, *) t_system_content_string = string
 type (* 't_prompt, *) t_prompt_string = string
 type (* 't_response *) t_response_string = string
 
-type client_t =  {
-    (* agt_curl : Curl.t *)
-   agt_key : t_key_string
+type 't client_t =  {
+    agt_driver : 't
+  ; agt_key : t_key_string
   ; agt_url : t_address_string    
   ; agt_model : t_model_name
-   ; agt_temp : t_temperature_float
-   ; agt_tokens : t_max_tokens_int
-   ; agt_system_prompt : t_system_content_string
+  ; agt_temp : t_temperature_float
+  ; agt_tokens : t_max_tokens_int
+  ; agt_system_prompt : t_system_content_string
     (* ; agt_user_prompt : t_prompt_string *)
   }
 
-let mk_client_t =
+let mk_client_t f =
   {
-    (* agt_curl  *)
-    agt_key =""
+    agt_driver = f
+  ; agt_key =""
   ; agt_url =""
   ; agt_model=""
   ; agt_temp =0.0
@@ -321,8 +316,8 @@ let mk_client_t =
 (*     agt_system_prompt *)
 (*   } *)
 
-class virtual openai_like_lang_model : [
-    client_t,
+class virtual ['t] openai_like_lang_model : [
+    't client_t,
     (* 't_key, *) t_key_string,
     (* url 't_address, *) t_address_string,
     (* url 't_model, *) t_model_name,

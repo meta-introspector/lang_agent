@@ -208,6 +208,7 @@ let () =
     let client_param_record = (open_ai_client#lang_init())  in
     
     let str_out = (open_ai_client#lang_prompt client_param_record "Hello" ) in
+    (print_endline ("DEBUG OPENAI1 :" ^str_out) );
       
     traverse_and_print open_ai_client client_param_record !start !model !prompt; 
     (*         map_lookup_file_snippets fp snippet_size       *)

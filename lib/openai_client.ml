@@ -64,9 +64,13 @@ let dobind prompt the_client self:string=
           (* 't_response *) t_response_string
   ] lang_connection_type*)
 
+
+    
 class  open_ai_lang_model  = object (* (self) *)
-  inherit openai_like_lang_model
-  method  lang_init  () :Lang_model.client_t =   mk_client_t
+  inherit [Client.t] openai_like_lang_model
+  method  lang_init  () : Client.t Lang_model.client_t  =
+    let client = Client.create "no_api_key_yet" in
+    mk_client_t client
 
   method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self 
   method  lang_open   (self: 't_connection) (
@@ -76,11 +80,8 @@ class  open_ai_lang_model  = object (* (self) *)
   method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self
   method  lang_set_system_content (self: 't_connection) (_ (*prompt*): 't_prompt)=  self
   method  lang_prompt
-           (_ : 't_connection)
+           (connection : 't_connection)
            (prompt:'t_prompt) :'t_response=
-    (* match self.agt_client with *)
-    (* | None ->"" *)
-    (* | Some the_client -> *)
-    (* let res = (dobind prompt the_client self) in   "TOODO" ^ res  *)
-    "FIXME" ^ prompt
+    let res = (dobind prompt connection self) in  
+    "FIXME" ^ prompt ^res
 end
