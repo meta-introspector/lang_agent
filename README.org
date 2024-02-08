@@ -35,9 +35,10 @@ dune exec bin/worker.exe -- ./prompt.txt ./separator.txt task.txt mistral
 dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/ -p "think about this:"
 #+end_src
 
-
 #+begin_src shell
-  dune exec bin/scanner.exe -- -s ./huggingface/unimath/batch2/data_30/ -p "Consider the following valid trace of a COQ proof in unimath and interpret it creatively:" 
+      dune exec bin/scanner.exe --\
+      -s ./huggingface/unimath/batch2/data_30/ \
+      -p "Consider the following valid trace of a COQ proof in unimath and interpret it creatively:" 
 #+end_src
 
 

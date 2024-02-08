@@ -34,13 +34,25 @@ class type  [
   method authenticate  : 't_key -> 't_auth
 end
 
-class type  [
-          't_address,
+class type [
+          't_connection,
           't_key,
-          't_auth,
-          't_state_machine
-        ] connection_type = object
-  method connect  :  't_address -> 't_connection
+          't_address,
+          't_model,          
+          't_temperature,
+          't_max_tokens,
+          't_system_content,
+          't_prompt,
+          't_response
+        ] lang_connection_type = object
+  method lang_init  :   unit -> 't_connection
+  method lang_auth  :   't_connection ->'t_key -> 't_connection
+  method lang_open  :  't_connection -> 't_address -> 't_connection
+  method lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
+  method lang_set_model  : 't_connection -> 't_model -> 't_connection
+  method lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
+  method lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
+  method lang_prompt :  't_connection -> 't_prompt -> 't_response
 end
 
 class type
@@ -232,6 +244,8 @@ end
 class type archtype_woman = object
   
 end
+
+
 
 class  t_archtype_athena : [
     archtype_warrior,
