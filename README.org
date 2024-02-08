@@ -36,10 +36,11 @@ dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/ -p
 #+end_src
 
 #+begin_src shell
-      dune exec bin/scanner.exe --\
-      -s ./huggingface/unimath/batch2/data_30/ \
-      -p "Consider the following valid trace of a COQ proof in unimath and interpret it creatively:" 
+      dune exec bin/scanner.exe --  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following valid trace of a COQ proof in unimath and interpret it creatively:"  -b openai -m mistral
 #+end_src
+
+#+RESULTS:
+: DEBUG ./huggingface/unimath/batch2/data_30/
 
 
 ** wild ideas
