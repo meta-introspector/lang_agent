@@ -34,7 +34,7 @@ class type  [
   method authenticate  : 't_key -> 't_auth
 end
 
-class type [
+class type virtual [
           't_connection,
           't_key,
           't_address,
@@ -45,14 +45,14 @@ class type [
           't_prompt,
           't_response
         ] lang_connection_type = object
-  method lang_init  :   unit -> 't_connection
-  method lang_auth  :   't_connection ->'t_key -> 't_connection
-  method lang_open  :  't_connection -> 't_address -> 't_connection
-  method lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
-  method lang_set_model  : 't_connection -> 't_model -> 't_connection
-  method lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
-  method lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
-  method lang_prompt :  't_connection -> 't_prompt -> 't_response
+  method virtual lang_init  :   unit -> 't_connection
+  method virtual lang_auth  :   't_connection ->'t_key -> 't_connection
+  method virtual lang_open  :  't_connection -> 't_address -> 't_connection
+  method virtual lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
+  method virtual lang_set_model  : 't_connection -> 't_model -> 't_connection
+  method virtual lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
+  method virtual lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
+  method virtual lang_prompt :  't_connection -> 't_prompt -> 't_response
 end
 
 class type
@@ -269,4 +269,76 @@ class greek_athena_mythos : [
       and warfare in Greek mythology.
  *)
   method invoke (prompt:'t_string) = "Is it because of your mother you say " ^ prompt
+end
+
+
+
+(*
+ openai like  
+ *)
+type (* 't_key, *) t_key_string = string
+type (* url 't_address, *) t_address_string = string
+type (* enume of available 't_model, *) t_model_name = string
+type (* 't_temperature, *) t_temperature_float = Float.t
+type (* 't_max_tokens, *) t_max_tokens_int = Int.t
+type (* assistent prompt 't_system_content, *) t_system_content_string = string
+type (* 't_prompt, *) t_prompt_string = string
+type (* 't_response *) t_response_string = string
+
+type client_t =  {
+    (* agt_curl : Curl.t *)
+   agt_key : t_key_string
+  ; agt_url : t_address_string    
+  ; agt_model : t_model_name
+   ; agt_temp : t_temperature_float
+   ; agt_tokens : t_max_tokens_int
+   ; agt_system_prompt : t_system_content_string
+    (* ; agt_user_prompt : t_prompt_string *)
+  }
+
+let mk_client_t =
+  {
+    (* agt_curl  *)
+    agt_key =""
+  ; agt_url =""
+  ; agt_model=""
+  ; agt_temp =0.0
+  ; agt_tokens =128
+  ; agt_system_prompt ="You are legion"
+  }
+
+(* let create_init = *)
+(*   let agt_temp = 0.0 in *)
+(*   let agt_tokens = 4000 in *)
+(*   let agt_system_prompt = "" in *)
+(*   let agt_model = "" in *)
+(*   let agt_client = None in *)
+(*   { *)
+(*     agt_client; *)
+(*     agt_model; *)
+(*     agt_temp; *)
+(*     agt_tokens; *)
+(*     agt_system_prompt *)
+(*   } *)
+
+class virtual openai_like_lang_model : [
+    client_t,
+    (* 't_key, *) t_key_string,
+    (* url 't_address, *) t_address_string,
+    (* url 't_model, *) t_model_name,
+    (* 't_temperature, *) t_temperature_float ,
+    (* 't_max_tokens, *) t_max_tokens_int ,
+    (* 't_system_content, *) t_system_content_string,
+    (* 't_prompt, *) t_prompt_string,
+    (* 't_response *) t_response_string
+        ] lang_connection_type  = object
+          method virtual lang_init  :   unit -> 't_connection
+  method virtual lang_auth  :   't_connection ->'t_key -> 't_connection
+  method virtual lang_open  :  't_connection -> 't_address -> 't_connection
+  method virtual lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
+  method virtual lang_set_model  : 't_connection -> 't_model -> 't_connection
+  method virtual lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
+  method virtual lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
+  method virtual lang_prompt :  't_connection -> 't_prompt -> 't_response
+
 end

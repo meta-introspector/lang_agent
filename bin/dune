@@ -25,3 +25,8 @@
  (name scanner )
  (modules scanner )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+(executable
+ (public_name test1)
+ (name test1 )
+ (modules test1 )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

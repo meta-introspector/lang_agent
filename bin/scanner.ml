@@ -110,12 +110,17 @@ let parse_file_points (line: string)  =
   let parts1 = String.split_on_char ',' line in
   process_fp parts1
 
-let run_model (model:string)(prompt:string)  =
+(*
+  in ocaml rewrite the following code to be more generic method
+  that can be used where Ollama is replaced with some variable
+  that can be any subclass of a base language binding class
+ *)
+let run_model client (model:string)(prompt:string)  =
   (print_endline (
       "\n#+begin_src input "^model^"\n" ^
       prompt ^
       "\n#+end_src input\n"));  
-  let client = Ollama.create_client model in
+
   ignore
   @@ Lwt_main.run
   @@ Lwt.bind
@@ -125,7 +130,8 @@ let run_model (model:string)(prompt:string)  =
        (Lwt_io.printlf "\n#+begin_src output\n%s\n#+end_src output")
 
  (* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
-let traverse_and_print path model prompt1  =
+let traverse_and_print: 'client_t -> string -> string -> string ->unit =
+  fun client path model prompt1  ->
   (print_endline ("DEBUG0:" ^  path));
   let rec aux dir =
     let entries = Sys.readdir dir in
@@ -139,37 +145,37 @@ let traverse_and_print path model prompt1  =
         else
           (*Unix.file_kind  *)
           let fs = Unix.lstat full_path in
-          match fs.st_kind with
-          | S_CHR -> (print_endline ("DEBUG2 char" ^  full_path)); 
-          | S_SOCK -> (print_endline ("DEBUG2 char"^  full_path)); 
-          | S_BLK -> (print_endline ("DEBUG2 block"^  full_path)); 
-          | S_FIFO -> (print_endline ("DEBUG2 FIFO"^  full_path)); 
-          | S_LNK -> (print_endline ("DEBUG2 LINK"^  full_path)); 
-          | S_DIR -> (print_endline ("DEBUG2 DIR" ^  full_path));
-          | S_REG ->
-             if Sys.file_exists  full_path then
-               (* (print_endline ("DEBUG2 " ^  full_path)); *)
-               let ic = open_in full_path in
+            match fs.st_kind with
+            | S_CHR -> (print_endline ("DEBUG2 char" ^  full_path)); 
+            | S_SOCK -> (print_endline ("DEBUG2 char"^  full_path)); 
+            | S_BLK -> (print_endline ("DEBUG2 block"^  full_path)); 
+            | S_FIFO -> (print_endline ("DEBUG2 FIFO"^  full_path)); 
+            | S_LNK -> (print_endline ("DEBUG2 LINK"^  full_path)); 
+            | S_DIR -> (print_endline ("DEBUG2 DIR" ^  full_path));
+            | S_REG ->
+               if Sys.file_exists  full_path then
+                 (* (print_endline ("DEBUG2 " ^  full_path)); *)
+                 let ic = open_in full_path in
 
-               let chunks = split_file ic ! window_size in
-               (* let ll =  last_line_matching ic in
-             let chunks =  chunks_in ic in
-                *)
-               let do_one  (data)=
-                 let prompt = prompt1 ^ data in
-                 run_model model prompt;
-                 data
-               in
-               let ln =List.map do_one ! chunks  in
-               let lr = List.rev ln in
-               match lr  with
-               | [] -> print_endline ("DEBUG@ERROR")
-               | le::_ ->
-                  print_endline ("DEBUG2 " ^  String.concat "@" (parse_file_points le))
-                
-      ) entries
-  in
-  aux path
+                 let chunks = split_file ic ! window_size in
+                 (* let ll =  last_line_matching ic in
+                    let chunks =  chunks_in ic in
+                  *)
+                 let do_one  (data)=
+                   let prompt = prompt1 ^ data in
+                   run_model client model prompt;
+                   data
+                 in
+                 let ln =List.map do_one ! chunks  in
+                 let lr = List.rev ln in
+                 match lr  with
+                 | [] -> print_endline ("DEBUG@ERROR")
+                 | le::_ ->
+                    print_endline ("DEBUG2 " ^  String.concat "@" (parse_file_points le))
+                  
+        ) entries
+    in
+    aux path
 
 let input_files = ref []
 
@@ -180,17 +186,27 @@ let () =
   let start = ref "" in
   let prompt = ref "" in
   let model = ref "mistral" in
+  let binding = ref "ollama" in
   let help_str = "test" in
   let opts = [
       "-s", Arg.Set_string start, "startdir";
       "-p", Arg.Set_string prompt, "prompt";
       "-m", Arg.Set_string model, "model";
+      "-b", Arg.Set_string binding, "binding";
       "-w", Arg.Set_int window_size, "window_size";
   ] |> Arg.align in
 
   Arg.parse opts anon_fun help_str;
   Printf.printf "DEBUG %s\n" !start;
-  traverse_and_print !start !model !prompt
-  (*
+
+  (* if !binding == "ollama" then *)
+  (*   Printf.printf "SKIP\n"; *)
+  (*   (\* let client = Ollama.create_client ! model in *\) *)
+  (*   (\* traverse_and_print client !start !model !prompt *\) *)
+  if !binding == "openai" then
+    let o = new Openai_client.open_ai_lang_model in
+    let client = Openai_client.create_init in
+    traverse_and_print client !start !model !prompt
+                       (*
     map_lookup_file_snippets fp snippet_size
    *)
