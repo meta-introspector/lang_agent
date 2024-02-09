@@ -76,3 +76,5 @@ or not by agent, can expand the results significantly. filtered by the user agen
 #+begin_src shell
 dune exec bin/scanner.exe -- -x .out2 -c .out  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following possible scenes for a comic book and extract a list of characters and desribe one in deail.:"  --openai -m "mistral" -u "https://dev-hub.agentartificial.com"
 #+end_src
+
+sudo docker push h4ckermike/lang_agent:dev
