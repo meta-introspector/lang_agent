@@ -184,12 +184,14 @@ let () =
   let prompt = ref "" in
   let model = ref "mistral" in
   let binding = ref "ollama" in
+  let url = ref "" in
   let help_str = "test" in
   let opts = [
       "-s", Arg.Set_string start, "startdir";
       "-p", Arg.Set_string prompt, "prompt";
       "-m", Arg.Set_string model, "model";
       "-b", Arg.Set_string binding, "binding";
+      "-u", Arg.Set_string url, "url";
       "-w", Arg.Set_int window_size, "window_size";
   ] |> Arg.align in
 
@@ -206,11 +208,14 @@ let () =
     (*Lang_model.client_t aka record of parameters
      *)
     let client_param_record = (open_ai_client#lang_init())  in
+
+    let client_param_record2 = open_ai_client#lang_open client_param_record ! url in
+    let client_param_record3 = open_ai_client#lang_set_model client_param_record ! model in
     
-    let str_out = (open_ai_client#lang_prompt client_param_record "Hello" ) in
+    let str_out = (open_ai_client#lang_prompt client_param_record3 "Hello" ) in
     (print_endline ("DEBUG OPENAI1 :" ^str_out) );
       
-    traverse_and_print open_ai_client client_param_record !start !model !prompt; 
+    traverse_and_print open_ai_client client_param_record2 !start !model !prompt; 
     (*         map_lookup_file_snippets fp snippet_size       *)
     if !binding == "ollama" then
       let ollama_client = new Openai_client.open_ai_lang_model in 

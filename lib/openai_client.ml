@@ -12,7 +12,6 @@ type (* 't_response *) t_response_string = string
 
 (* type client_t =  { *)
 (*     agt_client :  Client.t option *)
-(*     ; agt_model : t_model_name *)
 (*     ; agt_temp : t_temperature_float *)
 (*     ; agt_tokens : t_max_tokens_int *)
 (*     ; agt_system_prompt : t_system_content_string *)
@@ -23,11 +22,9 @@ type (* 't_response *) t_response_string = string
 (*   let agt_temp = 0.0 in *)
 (*   let agt_tokens = 4000 in *)
 (*   let agt_system_prompt = "" in *)
-(*   let agt_model = "" in *)
 (*   let agt_client = None in *)
 (*   { *)
 (*     agt_client; *)
-(*     agt_model; *)
 (*     agt_temp; *)
 (*     agt_tokens; *)
 (*     agt_system_prompt *)
@@ -68,14 +65,18 @@ let dobind prompt the_client self:string=
 class  open_ai_lang_model  = object (* (self) *)
   inherit [Client.t] openai_like_lang_model
   method  lang_init  () : Client.t Lang_model.client_t  =
-    let client = Client.create "no_api_key_yet" in
+    let client = Client.create_custom "no_url_yet" "no_api_key_yet" "no_model" in
     mk_client_t client
 
   method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self 
-  method  lang_open   (self: 't_connection) (
-             _ (*address*): 't_address) = self
+  method  lang_open   (self: 't_connection) (url (*address*): 't_address) =
+    self.agt_driver.url <- url;
+    self
+  method  lang_set_model (self: 't_connection) (model: 't_model) =
+    self.agt_driver.model <- model;
+    self  
   method  lang_set_temp  (self: 't_connection) (_ (*temp*) :'t_temperature) = self
-  method  lang_set_model (self: 't_connection) (_ (*model*): 't_model) = self
+
   method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self
   method  lang_set_system_content (self: 't_connection) (_ (*prompt*): 't_prompt)=  self
   method  lang_prompt

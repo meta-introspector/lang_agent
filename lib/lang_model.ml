@@ -284,7 +284,6 @@ type 't client_t =  {
     agt_driver : 't
   ; agt_key : t_key_string
   ; agt_url : t_address_string    
-  ; agt_model : t_model_name
   ; agt_temp : t_temperature_float
   ; agt_tokens : t_max_tokens_int
   ; agt_system_prompt : t_system_content_string
@@ -293,10 +292,9 @@ type 't client_t =  {
 
 let mk_client_t f =
   {
-    agt_driver = f
+    agt_driver  = f
   ; agt_key =""
   ; agt_url =""
-  ; agt_model=""
   ; agt_temp =0.0
   ; agt_tokens =128
   ; agt_system_prompt ="You are legion"
@@ -306,11 +304,9 @@ let mk_client_t f =
 (*   let agt_temp = 0.0 in *)
 (*   let agt_tokens = 4000 in *)
 (*   let agt_system_prompt = "" in *)
-(*   let agt_model = "" in *)
 (*   let agt_client = None in *)
 (*   { *)
 (*     agt_client; *)
-(*     agt_model; *)
 (*     agt_temp; *)
 (*     agt_tokens; *)
 (*     agt_system_prompt *)
