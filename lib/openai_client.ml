@@ -29,24 +29,31 @@ type (* 't_response *) t_response_string = string
 (*     agt_tokens; *)
 (*     agt_system_prompt *)
 (*   } *)
+   
+(* let dobind prompt the_client self:string= *)
+(*   let newprompt =  prompt in *)
+(*   let result = ref "" in     *)
+(*   ignore *)
+(*   @@ Lwt_main.run *)
+(*   @@ Lwt.bind *)
+(*        (Lwt_io.printlf "res: %s"); *)
+(*   !result *)
 
-let dobind prompt the_client self:string=
-  let newprompt =  prompt in
-  let result = ref "" in    
-  ignore
-  @@ Lwt_main.run
-  @@ Lwt.bind
-       Chat_completion.(
-    send
-      the_client
-      ~temperature:self.agt_temp
-      ~max_tokens:self.agt_tokens
-      ~messages: [ { role = `System; content = self.agt_system_prompt }
-                 ; { role = `User; content = newprompt }
-      ]
-      ())
-       (Lwt_io.printlf "res: %s");
-  !result
+let dobind1 prompt the_client self =
+  let newprompt = prompt in
+  let%lwt result = Chat_completion.send
+                     the_client
+                     ~max_tokens:self.agt_tokens
+                     ~messages: [ { role = `System; content = self.agt_system_prompt }
+                                ; { role = `User; content = newprompt }
+                     ]
+                     () in
+  Lwt.return result
+
+let dobind prompt the_client self=
+  let result = Lwt_main.run (dobind1 prompt the_client self) in
+  result
+
 
 (* [
           client_t,
@@ -84,7 +91,7 @@ class  open_ai_lang_model  = object (* (self) *)
            (prompt:'t_prompt) :'t_response=
     let connection1 =  connection.agt_driver in
     let res = (dobind prompt connection1 connection ) in  
-    "Response" ^ prompt ^ " Res "^ res
+     " Result: "^ res
 end
 
 
