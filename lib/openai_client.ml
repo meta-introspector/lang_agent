@@ -31,7 +31,7 @@ type (* 't_response *) t_response_string = string
 (*   } *)
 
 let dobind prompt the_client self:string=
-  let newprompt =  "Is it because of your mother you say " ^ prompt in
+  let newprompt =  prompt in
   let result = ref "" in    
   ignore
   @@ Lwt_main.run
@@ -84,5 +84,5 @@ class  open_ai_lang_model  = object (* (self) *)
            (prompt:'t_prompt) :'t_response=
     let connection1 =  connection.agt_driver in
     let res = (dobind prompt connection1 connection ) in  
-    "FIXME" ^ prompt ^res
+    "Response" ^ prompt ^ " Res "^ res
 end

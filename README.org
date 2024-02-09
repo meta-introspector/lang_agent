@@ -57,3 +57,7 @@ dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/ -p
 ** metacoq urls
 ** postprocess responses and insert urls with annotations that can be visited
 or not by agent, can expand the results significantly. filtered by the user agent.
+
+#+begin_src shell
+      dune exec bin/scanner.exe --  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following valid and successful trace of a COQ proof in unimath and interpret it creatively looking for interesting visualizations and metaphors and analogies and describe possible scenes for a comic book.:"  -b openai -m "mistral" -u "https://dev-hub.agentartificial.com"
+ #+end_src

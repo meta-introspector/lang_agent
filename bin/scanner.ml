@@ -160,15 +160,17 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
                  let do_one  (data)=
                    let prompt = prompt1 ^ data in
                    let res = (client1#lang_prompt param_record prompt ) in
+                   print_endline ("DEBUGINLINE@" ^ data ^ res);
                    data ^ res
                  in
                  let ln = List.map do_one ! chunks  in
                  let lr = List.rev ln in
                  match lr  with
                  | [] -> print_endline ("DEBUG@ERROR")
-                 | _ ->
-                   (*
-                     le::_ ->print_endline ("DEBUG20 " ^  String.concat "@" (parse_file_points le)) *)()
+                 | 
+
+                   le::_ ->print_endline ("DEBUG20 " ^  String.concat "@" (parse_file_points le));
+                           ()
                   
         ) entries
     in
@@ -210,16 +212,12 @@ let () =
     let client_param_record = (open_ai_client#lang_init())  in
 
     let client_param_record2 = open_ai_client#lang_open client_param_record ! url in
-    let client_param_record3 = open_ai_client#lang_set_model client_param_record ! model in
-    
-    let str_out = (open_ai_client#lang_prompt client_param_record3 "Hello" ) in
-    (print_endline ("DEBUG OPENAI1 :" ^str_out) );
-      
-    traverse_and_print open_ai_client client_param_record2 !start !model !prompt; 
+    let client_param_record3 = open_ai_client#lang_set_model client_param_record2 ! model in
+    traverse_and_print open_ai_client client_param_record3 !start !model !prompt; 
     (*         map_lookup_file_snippets fp snippet_size       *)
     if !binding == "ollama" then
       let ollama_client = new Openai_client.open_ai_lang_model in 
       (* let client_old = Ollama.create_client ! model in *)
       let client_param_record = (open_ai_client#lang_init())  in
       traverse_and_print ollama_client client_param_record !start !model !prompt;         
-      (print_endline ("DEBUG1 :" ^ str_out) )
+      (print_endline ("DEBUG1 :END") )

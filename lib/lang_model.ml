@@ -265,7 +265,7 @@ class greek_athena_mythos : [
   This is a mythos of Athena, the goddess of wisdom
       and warfare in Greek mythology.
  *)
-  method invoke (prompt:'t_string) = "Is it because of your mother you say " ^ prompt
+  method invoke (prompt:'t_string) = prompt
 end
 
 (*
@@ -296,8 +296,8 @@ let mk_client_t f =
   ; agt_key =""
   ; agt_url =""
   ; agt_temp =0.0
-  ; agt_tokens =128
-  ; agt_system_prompt ="You are legion"
+  ; agt_tokens =4096
+  ; agt_system_prompt =""
   }
 
 (* let create_init = *)
