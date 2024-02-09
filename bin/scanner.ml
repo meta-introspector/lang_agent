@@ -51,7 +51,7 @@ let split_file ic n =
   (* close the input file *)
   chunks
 
-(* (\*fix this ocaml code and complete it based on the comments*\) *)
+
 (* let chunk_file_into_parts ic asize : string list = *)
 (*   let line = ref "" in *)
 (*   let chunks = ref [] in *)
@@ -113,30 +113,16 @@ let parse_file_points (line: string)  =
   let parts1 = String.split_on_char ',' line in
   process_fp parts1
 
-(*
-  in ocaml rewrite the following code to be more generic method
-  that can be used where Ollama is replaced with some variable
-  that can be any subclass of a base language binding class
- *)
-(* let run_model client (model:string)(prompt:string)  = *)
-(*   (print_endline ( *)
-(*       "\n#+begin_src input "^model^"\n" ^ *)
-(*       prompt ^ *)
-(*       "\n#+end_src input\n"));   *)
-(*   let res = (client#lang_prompt client prompt ) in *)
-(*   (\* (print_endline "\n#+begin_src output\n"^res^"\n#+end_src output"); *\) *)
-(*   res *)
-
 
  (* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
-let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string ->unit =
-  fun client1 param_record path model prompt1  ->
+let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -> string -> string ->unit =
+  fun client1 param_record path model prompt1 suffix check_suffix ->
   (print_endline ("Consider:" ^  model ^path));
   let rec aux dir =
     let entries = Sys.readdir dir in
     Array.iter (fun entry ->
         let full_path = Filename.concat dir entry in
-        let full_out_path = full_path ^ ".out" in
+        let full_out_path = full_path ^ suffix in
         if Sys.is_directory full_path then
           (
             (print_endline ("DEBUG1:" ^  full_path));
@@ -155,11 +141,13 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
             | S_REG ->
                if Sys.file_exists  full_path then
 
-                 if Sys.file_exists  full_out_path then
-                   print_endline ("SKIP existing" ^ full_out_path)
-                 else
-                   
-                   (* (print_endline ("DEBUG2 " ^  full_path)); *)
+                 if  Filename.check_suffix full_path check_suffix then
+                
+                   if Sys.file_exists  full_out_path then
+                     print_endline ("SKIP existing" ^ full_out_path)
+                   else
+                     
+                     (* (print_endline ("DEBUG2 " ^  full_path)); *)
                    let ic = open_in full_path in
                    print_endline ("OPEN INPUT:" ^ full_path);
                    
@@ -212,6 +200,8 @@ let () =
   let start = ref "" in
   let prompt = ref "" in
   let model = ref "mistral" in
+  let suffix = ref ".out" in
+  let check_suffix = ref ".out" in  
   let open_ai_client  = new Openai_client.open_ai_lang_model in
   let ollama_client  = new Ollama.ollama_lang_model    in
   (* let open_ai_client_ref  = ref open_ai_client in *)
@@ -222,6 +212,8 @@ let () =
   let opts = [
       "-s", Arg.Set_string start, "startdir";
       "-p", Arg.Set_string prompt, "prompt";
+      "-x", Arg.Set_string suffix, "suffix";
+      "-c", Arg.Set_string check_suffix, "checksuffix";      
       "-m", Arg.Set_string model, "model";
       "--openai", Arg.Unit (fun () -> (print_endline ("DEBUG1 openai MODEL :"  ) );
                                       use_ollama_ref := false; ()
@@ -238,12 +230,12 @@ let () =
     let client_param_record = (ollama_client#lang_init())  in 
     let client_param_record2 = ollama_client#lang_open client_param_record ! url in 
     let client_param_record3 = ollama_client#lang_set_model client_param_record2 ! model in 
-    traverse_and_print ollama_client client_param_record3 !start !model !prompt
+    traverse_and_print ollama_client client_param_record3 !start !model !prompt !suffix !check_suffix 
   else
     let client_param_record = (open_ai_client#lang_init())  in 
     let client_param_record2 = open_ai_client#lang_open client_param_record ! url in 
     let client_param_record3 = open_ai_client#lang_set_model client_param_record2 ! model in 
-    traverse_and_print open_ai_client client_param_record3 !start !model !prompt
+    traverse_and_print open_ai_client client_param_record3 !start !model !prompt !suffix !check_suffix 
 
   (* let open_ai_client = !binding in  *)
   (* (\* new Openai_client.open_ai_lang_model    ()   *\) *)
