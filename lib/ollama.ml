@@ -61,7 +61,7 @@ let send_raw_k
   (prompt : string)  
   ()
   =
-  print_endline ( "DEBUG:" ^ prompt ); 
+  (* print_endline ( "DEBUG:" ^ prompt );  *)
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)
@@ -147,21 +147,30 @@ type (* assistent prompt 't_system_content, *) t_system_content_string = string
 type (* 't_prompt, *) t_prompt_string = string
 type (* 't_response *) t_response_string = string
 
-let dobind prompt the_client model=
-  let newprompt =  prompt in
-  let result = ref "" in    
-  ignore
-  @@ Lwt_main.run
-  @@ Lwt.bind(
-    send
-      the_client
-      model
-      newprompt
-      ()
-       )
-       (Lwt_io.printlf "res: %s");
-  !result
+(* let dobind2 prompt the_client model= *)
+(*   let newprompt =  prompt in *)
+(*   let result = ref "" in     *)
+(*   ignore *)
+(*   @@ Lwt_main.run *)
+(*   @@ Lwt.bind( *)
+(*     send *)
+(*       the_client *)
+(*       model *)
+(*       newprompt *)
+(*       () *)
+(*        ); *)
+(*   (Lwt.return (result) ) *)
+(*   !result *)
 
+let dobind1 prompt the_client model =
+  let newprompt = prompt in
+  let%lwt result = send the_client model newprompt () in
+  Lwt.return result
+
+let dobind prompt the_client model =
+  let result = Lwt_main.run (dobind1 prompt the_client model) in
+  result
+    
     
 class  ollama_lang_model  = object (* (self) *)
   inherit [client_t] openai_like_lang_model
@@ -185,8 +194,8 @@ class  ollama_lang_model  = object (* (self) *)
            (prompt:'t_prompt) :'t_response=
     let connection1 =  connection.agt_driver in
     let model =  connection1.model in    
-    let res = (dobind prompt connection1 model) in  
-    "Response" ^ prompt ^ " Res "^ res
+    let res:string = (dobind prompt connection1 model) in  
+    " Result: " ^ res
 end
 
 

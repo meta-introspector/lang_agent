@@ -131,7 +131,7 @@ let parse_file_points (line: string)  =
  (* A function that traverses a directory and prints the last line matching the pair pattern for each file *)
 let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string ->unit =
   fun client1 param_record path model prompt1  ->
-  (print_endline ("DEBUG0:" ^  model ^path));
+  (print_endline ("Consider:" ^  model ^path));
   let rec aux dir =
     let entries = Sys.readdir dir in
     Array.iter (fun entry ->
@@ -156,12 +156,12 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
                if Sys.file_exists  full_path then
 
                  if Sys.file_exists  full_out_path then
-                   print_endline ("SKIP" ^ full_out_path)
+                   print_endline ("SKIP existing" ^ full_out_path)
                  else
                    
                    (* (print_endline ("DEBUG2 " ^  full_path)); *)
                    let ic = open_in full_path in
-                   print_endline ("OPEN" ^ full_path);
+                   print_endline ("OPEN INPUT:" ^ full_path);
                    
                    let chunks = split_file ic ! window_size in
                    (* let ll =  last_line_matching ic in
@@ -170,16 +170,20 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
                    close_in ic;
                    let do_one  (data)=
                      let prompt = prompt1 ^ data in
-                     print_endline ("send" ^ prompt);
+                     (* print_endline ("send" ^ prompt); *)
                      let res = (client1#lang_prompt param_record prompt ) in
-                     print_endline ("get" ^ res);
-
-                     let oc = open_out full_out_path in
+                     (* print_endline ("get" ^ res); *)
                      
-                     print_endline ("DEBUGINLINE@" ^ data ^ res);
-                     Printf.fprintf oc "%s\n%s\n" data res;
+                     let oc = open_out full_out_path in
+
+                     print_endline ("OUTPUT: " ^ full_out_path);
+                     
+                     (* print_endline ("DEBUGOUTPUT:" ^ res); *)
+                     Printf.fprintf oc
+                       "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output %s\n%s\n#+end_src\n"
+                       data model res;
                      close_out oc;
-                     data ^ res
+                     "FIXME"
                 
                    in
                    let ln = List.map do_one ! chunks  in
