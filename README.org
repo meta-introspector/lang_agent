@@ -65,3 +65,8 @@ or not by agent, can expand the results significantly. filtered by the user agen
 
     
  #+end_src
+
+* docker build
+#+begin_src shell
+ sudo docker  build . -t h4ckermike/lang_agent:dev
+#+end_src
