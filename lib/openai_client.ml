@@ -86,3 +86,19 @@ class  open_ai_lang_model  = object (* (self) *)
     let res = (dobind prompt connection1 connection ) in  
     "Response" ^ prompt ^ " Res "^ res
 end
+
+
+module OpenAIClientModule
+         ( A: LLMClientModule
+           with type t =
+                       open_ai_lang_model
+         )  = struct
+  let init ()  = new open_ai_lang_model   
+end
+
+module OpenAIClientModule2 = struct
+  let init ()  = new open_ai_lang_model   
+end
+
+
+

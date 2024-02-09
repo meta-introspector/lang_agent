@@ -1,5 +1,7 @@
-open Lang_agent    
+(* 
 open Openai_client
+ *)
+open Lang_agent
 let window_size = ref 1024
     
 (* A function that returns the last line of a file that matches a given pattern *)
@@ -198,56 +200,53 @@ let input_files = ref []
 let anon_fun filename =
   input_files := filename::!input_files
 
-module type M = sig
-  val test : unit -> unit
-end
+(*module make_open_id = OpenAIClientModule*)
 
-module M1 : M = struct
-  let init () = open_ai_lang_model.lang_init 
-end
-
-module M2 : M = struct
-  let init () = ollama_lang_model.lang_init 
-end
 
 
 let () =
   let start = ref "" in
   let prompt = ref "" in
   let model = ref "mistral" in
-
-  let binding = ref (module M2 : M) in
-   
+  let open_ai_client  = new Openai_client.open_ai_lang_model in
+  let ollama_client  = new Ollama.ollama_lang_model    in
+  (* let open_ai_client_ref  = ref open_ai_client in *)
+  (* let ollama_client_ref  = ref ollama_client in *)
+  let use_ollama_ref  = ref true in 
   let url = ref "" in
   let help_str = "test" in
   let opts = [
       "-s", Arg.Set_string start, "startdir";
       "-p", Arg.Set_string prompt, "prompt";
       "-m", Arg.Set_string model, "model";
-      "-bopenai", 
-      Arg.Unit (fun () ->
-          binding := (module M1 : M)), 
-      " Use Openai ";
-          
-      "-bollama", 
-      Arg.Unit (fun () ->
-          binding := (module M2 : M)),
-      " Use Ollama (default)"; 
-
+      "--openai", Arg.Unit (fun () -> (print_endline ("DEBUG1 openai MODEL :"  ) );
+                                      use_ollama_ref := false; ()
+                    ),      " Use Openai ";          
+      "--ollama", Arg.Unit (fun () -> (print_endline ("DEBUG1 ollama MODEL :" ))),      " Use Ollama (default)"; 
       "-u", Arg.Set_string url, "url";
       "-w", Arg.Set_int window_size, "window_size";
   ] |> Arg.align in
-
   Arg.parse opts anon_fun help_str;
   Printf.printf "DEBUG3 Starting path %s\n" !start;
   (print_endline ("DEBUG4 MODEL :" ^ ! model) );
- 
-  let open_ai_client = !binding in 
-  (* new Openai_client.open_ai_lang_model    ()   *)
-  (* Lang_model.client_t aka record of parameters *)
-   let client_param_record = (open_ai_client#lang_init())  in
+
+  if ! use_ollama_ref then
+    let client_param_record = (ollama_client#lang_init())  in 
+    let client_param_record2 = ollama_client#lang_open client_param_record ! url in 
+    let client_param_record3 = ollama_client#lang_set_model client_param_record2 ! model in 
+    traverse_and_print ollama_client client_param_record3 !start !model !prompt
+  else
+    let client_param_record = (open_ai_client#lang_init())  in 
+    let client_param_record2 = open_ai_client#lang_open client_param_record ! url in 
+    let client_param_record3 = open_ai_client#lang_set_model client_param_record2 ! model in 
+    traverse_and_print open_ai_client client_param_record3 !start !model !prompt
+
+  (* let open_ai_client = !binding in  *)
+  (* (\* new Openai_client.open_ai_lang_model    ()   *\) *)
+  (* (\* Lang_model.client_t aka record of parameters *\) *)
+  (*  let client_param_record = (open_ai_client#lang_init())  in *)
       
-      let client_param_record2 = open_ai_client#lang_open client_param_record ! url in
-      let client_param_record3 = open_ai_client#lang_set_model client_param_record2 ! model in
-      traverse_and_print open_ai_client client_param_record3 !start !model !prompt
+  (*     let client_param_record2 = open_ai_client#lang_open client_param_record ! url in *)
+  (*     let client_param_record3 = open_ai_client#lang_set_model client_param_record2 ! model in *)
+  (*     traverse_and_print open_ai_client client_param_record3 !start !model !prompt *)
                          (*         map_lookup_file_snippets fp snippet_size       *)

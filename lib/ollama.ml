@@ -188,3 +188,25 @@ class  ollama_lang_model  = object (* (self) *)
     let res = (dobind prompt connection1 model) in  
     "Response" ^ prompt ^ " Res "^ res
 end
+
+
+module OllamaClientModule
+         ( A: LLMClientModule
+           with type t =
+                       ollama_lang_model
+         )  = struct
+  let init ()  = new ollama_lang_model
+end
+
+module OllamaClientModule2 = struct
+  let init ()  = new ollama_lang_model
+end
+
+module type LLMClientModuleOllama2 = sig
+  val init : unit -> ollama_lang_model      
+end
+
+
+
+
+

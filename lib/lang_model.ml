@@ -333,3 +333,9 @@ class virtual ['t] openai_like_lang_model : [
   method virtual lang_prompt :  't_connection -> 't_prompt -> 't_response
 
 end
+
+module type LLMClientModule = sig
+  type t
+  val init : unit -> t openai_like_lang_model
+      
+end
