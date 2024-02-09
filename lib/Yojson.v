@@ -1,0 +1,2 @@
+Inductive Yojson :=
+  | None.

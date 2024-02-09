@@ -2,7 +2,7 @@
 (* open Yojson *)
 (* open Printexc *)
 open Ppx_yojson_conv_lib.Yojson_conv.Primitives
-
+open Lang_model
 include Yojson.Safe
 
 (*
@@ -22,14 +22,14 @@ let json_to_field_opt name f o =
 ;;
 
 type client_t =
-  { model : string
-  ; gen_url : string -> string
+  { mutable model : string
+  ; mutable url : string
   ; c : Curl.t
   }
 
 let create_client model =
   let base_url = "http://localhost:11434" in
-  { model; gen_url = ( ^ ) base_url; c = Ezcurl_lwt.make () }
+  { model; url = base_url; c = Ezcurl_lwt.make () }
 ;;
 
 type role =
@@ -80,7 +80,7 @@ let send_raw_k
       ~client:client.c
       ~headers
       ~content:(`String body)
-      ~url:(client.gen_url endpoint)
+      ~url:(client.url ^ endpoint)
       ~params:[]
       ()
   in
@@ -136,4 +136,55 @@ let send =
   | Error (_code, e) -> Lwt.fail_with e
 
 
+(*open ai compatible api*)
 
+type (* 't_key, *) t_key_string = string
+type (* url 't_address, *) t_address_string = string
+type (* enume of available 't_model, *) t_model_name = string
+type (* 't_temperature, *) t_temperature_float = Float.t
+type (* 't_max_tokens, *) t_max_tokens_int = Int.t
+type (* assistent prompt 't_system_content, *) t_system_content_string = string
+type (* 't_prompt, *) t_prompt_string = string
+type (* 't_response *) t_response_string = string
+
+let dobind prompt the_client model=
+  let newprompt =  prompt in
+  let result = ref "" in    
+  ignore
+  @@ Lwt_main.run
+  @@ Lwt.bind(
+    send
+      the_client
+      model
+      newprompt
+      ()
+       )
+       (Lwt_io.printlf "res: %s");
+  !result
+
+    
+class  ollama_lang_model  = object (* (self) *)
+  inherit [client_t] openai_like_lang_model
+  method  lang_init  () : client_t Lang_model.client_t  =
+    let client = create_client   "no_model" in
+    mk_client_t client
+
+  method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self 
+  method  lang_open   (self: 't_connection) (url (*address*): 't_address) =
+    self.agt_driver.url <- url;
+    self
+  method  lang_set_model (self: 't_connection) (model: 't_model) =
+    self.agt_driver.model <- model;
+    self  
+  method  lang_set_temp  (self: 't_connection) (_ (*temp*) :'t_temperature) = self
+
+  method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self
+  method  lang_set_system_content (self: 't_connection) (_ (*prompt*): 't_prompt)=  self
+  method  lang_prompt
+           (connection : 't_connection)
+           (prompt:'t_prompt) :'t_response=
+    let connection1 =  connection.agt_driver in
+    let model =  connection1.model in    
+    let res = (dobind prompt connection1 model) in  
+    "Response" ^ prompt ^ " Res "^ res
+end
