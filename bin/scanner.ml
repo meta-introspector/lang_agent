@@ -140,7 +140,7 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
             | S_DIR -> (print_endline ("DEBUG2 DIR" ^  full_path));
             | S_REG ->
                if Sys.file_exists  full_path then
-
+                
                  if  Filename.check_suffix full_path check_suffix then
                 
                    if Sys.file_exists  full_out_path then
@@ -149,7 +149,7 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
                      
                      (* (print_endline ("DEBUG2 " ^  full_path)); *)
                    let ic = open_in full_path in
-                   print_endline ("OPEN INPUT:" ^ full_path);
+                   print_endline ("OPEN INPUT: " ^ full_path);
                    
                    let chunks = split_file ic ! window_size in
                    (* let ll =  last_line_matching ic in
@@ -162,15 +162,23 @@ let traverse_and_print: 'client_t1 -> 'client_t2 -> string -> string -> string -
                      let res = (client1#lang_prompt param_record prompt ) in
                      (* print_endline ("get" ^ res); *)
                      
-                     let oc = open_out full_out_path in
+
 
                      print_endline ("OUTPUT: " ^ full_out_path);
                      
                      (* print_endline ("DEBUGOUTPUT:" ^ res); *)
-                     Printf.fprintf oc
-                       "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output %s\n%s\n#+end_src\n"
-                       data model res;
-                     close_out oc;
+                     if res == "ERROR"
+                     then
+                       print_endline ("ERROR: " ^ full_out_path)
+                     else
+                       (
+                         let oc = open_out full_out_path in
+                         Printf.fprintf oc
+                           "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output %s\n%s\n#+end_src\n"
+                           data model res;
+                         close_out oc;
+                       );
+                   
                      "FIXME"
                 
                    in
@@ -201,7 +209,7 @@ let () =
   let prompt = ref "" in
   let model = ref "mistral" in
   let suffix = ref ".out" in
-  let check_suffix = ref ".out" in  
+  let check_suffix = ref "" in  
   let open_ai_client  = new Openai_client.open_ai_lang_model in
   let ollama_client  = new Ollama.ollama_lang_model    in
   (* let open_ai_client_ref  = ref open_ai_client in *)

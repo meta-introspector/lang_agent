@@ -114,7 +114,7 @@ let myproc (body:string):string =
     with
     | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (loc, exn) ->
       Printf.eprintf "Loc at  %s\n" (Printexc.to_string loc);
-      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "error"
+      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "ERROR"
   (* | exn -> *)
   (*   Printf.eprintf "Unexpected error: %s\n" (   to_string exn); "errorr2" *)
 

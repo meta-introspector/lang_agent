@@ -59,7 +59,7 @@ dune exec bin/scanner.exe -- -s ~/experiments/unimath-data-hg/unimath/batch2/ -p
 or not by agent, can expand the results significantly. filtered by the user agent.
 
 #+begin_src shell
-    dune exec bin/scanner.exe --  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following valid and successful trace of a COQ proof in unimath and interpret it creatively looking for interesting visualizations and metaphors and analogies and describe possible scenes for a comic book.:"  --openai -m "mistral" -u "https://dev-hub.agentartificial.com"
+    dune exec bin/scanner.exe --  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following valid and successful trace of a COQ proof in unimath and interpret it creatively looking for interesting visualizations and metaphors and analogies and describe possible scenes for a comic book.:"  --openai -m "mixtral" -u "https://dev-hub.agentartificial.com"
 
     dune exec bin/scanner.exe --  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following valid and successful trace of a COQ proof in unimath and interpret it creatively looking for interesting visualizations and metaphors and analogies and describe possible scenes for a comic book.:"  --ollama -m "mistral" -u "http://localhost:11434"
 
@@ -68,15 +68,21 @@ or not by agent, can expand the results significantly. filtered by the user agen
 
 * docker build
 #+begin_src shell
- sudo docker  build . -t h4ckermike/lang_agent:dev
+  sudo docker  build . -t h4ckermike/lang_agent:dev
+  sudo docker push h4ckermike/lang_agent:dev
 #+end_src
 
-** second process
-
+* second process
+this uses the new feature to filter the input and write new files.
 #+begin_src shell
     dune exec bin/scanner.exe -- -x .out2 -c .out  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following possible scenes for a comic book and extract a list of characters and desribe one in detail.:"  --openai -m "mistral" -u "https://dev-hub.agentartificial.com"
 
     dune exec bin/scanner.exe -- -x .outlocal2 -c .out  -s ./huggingface/unimath/batch2/data_30/       -p "Consider the following possible scenes for a comic book and extract a list of characters and desribe one in detail.:"  --ollama -m "mistral" -u "http://localhost:11434"
 #+end_src
 
-sudo docker push h4ckermike/lang_agent:dev
+
+* connect the proof
+    dune exec bin/scanner.exe -- -x .con -c .outlocal2 \
+    -s ./huggingface/unimath/batch2/data_30/ \
+    -p "Create a list of connection pairs between term in the proof and words in the story.:"  --ollama -m "mistral" \
+    -u "http://localhost:11434"

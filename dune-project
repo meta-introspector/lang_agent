@@ -5,20 +5,20 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github meta-introspector/lang_agent))
 
-(authors "Author Name")
+(authors "James Michael DuPont")
 
-(maintainers "Maintainer Name")
+(maintainers "James Michael DuPont")
 
-(license GPL)
+(license AGPL-3.0-or-later)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/meta-introspector/lang_agent)
 
 (package
  (name lang_agent)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "functional access to llm via ollama and openai")
+ (description "command line tools for processing text with llms")
  (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
    
   (coq-equations (>= 1.3))
@@ -29,6 +29,6 @@
  )
 
  (tags
-  (topics "to describe" your project)))
+  (topics "ollama" "llm" "openai" "llama.cpp")))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
