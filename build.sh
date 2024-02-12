@@ -1,4 +1,7 @@
- opam install --yes --deps-only .
+sudo apt install -y opam
+opam init --shell-setup -y
+eval $(opam env --switch=default)
+opam install --yes --deps-only .
  opam install --yes ppx_yojson_conv_lib
 
  opam repo add coq-released https://coq.inria.fr/opam/released
