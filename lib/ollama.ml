@@ -104,17 +104,18 @@ type ollama_response =
 (* open Ppx_yojson_conv_lib.Yojson_conv.Primitives *)
        
 let myproc (body:string):string =
+  (print_endline ( "DEBUGBODY:" ^ body ) );
+
   if (String.length body ) == 0 then ""
-  else    
+  else
     try
       let json = Yojson.Safe.from_string body in
       let record_opt = (ollama_response_of_yojson json) in
-      (* (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );        *)
       record_opt.response        
     with
     | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (loc, exn) ->
       Printf.eprintf "Loc at  %s\n" (Printexc.to_string loc);
-      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "ERROR"
+      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "ERROR2"
   (* | exn -> *)
   (*   Printf.eprintf "Unexpected error: %s\n" (   to_string exn); "errorr2" *)
 

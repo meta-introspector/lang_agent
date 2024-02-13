@@ -1,5 +1,5 @@
 (lang dune 3.8)
-(using coq 0.8)
+
 (name lang_agent)
 
 (generate_opam_files true)
@@ -21,10 +21,6 @@
  (description "command line tools for processing text with llms")
  (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
    
-  (coq-equations (>= 1.3))
-  (coq-metacoq-template (>= 1.0+8.15))
-  (coq-metacoq-translations (>= 1.0+8.15))
-  (coq-metacoq (>= 1.0+8.15))
    
  )
 
