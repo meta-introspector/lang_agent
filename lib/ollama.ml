@@ -102,9 +102,16 @@ type ollama_response =
 [@@deriving yojson]
 
 (* open Ppx_yojson_conv_lib.Yojson_conv.Primitives *)
-       
+
+let contains s1 s2 =
+  let re = Str.regexp_string s2
+  in
+  try ignore (Str.search_forward re s1 0); true
+  with Not_found -> false
+
 let myproc (body:string):string =
-  (print_endline ( "DEBUGBODY:" ^ body ) );
+  if contains body "error"  then
+    (print_endline ( "DEBUGBODY:" ^ body ) );
 
   if (String.length body ) == 0 then ""
   else
