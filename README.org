@@ -109,7 +109,81 @@ this uses the new feature to filter the input and write new files.
     -p "Create a list of connection pairs between term in the proof and words in the story.:"  --ollama -m "mistral" \
     -u "http://localhost:11434"
 
+    write a ocaml code to call
+#+begin_src ocaml
+    let () =
+  let pipe = Sys.popen "bash" "-c" "echo hello world" in
+  let line = try ignore (input_line pipe) with End_of_file -> None in
+  let _ = Sys.waitpid [] |> ignore in
+  match line with
+  | Some(msg) -> Printf.printf "Output: %s\n" msg
+  | None -> Printf.printf "Error reading output."
+#+end_src
+
 * simple
+try with 'org-babel-eval-in-repl
 #+begin_src shell
   dune exec ./bin/simple.exe -- --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" -p "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" -n 10
 #+end_src
+
+#+begin_src ocaml
+#load "unix.cma";;
+#+end_src
+
+#+RESULTS:
+: Line 1, characters 0-1:
+: 1 | \#load "unix.cma";;;;
+:     ^
+: Error: Illegal character (\\)
+
+#+begin_src ocaml
+
+  let type_terms = [
+  "set";
+  "type";
+  "sort"
+                   ] in
+  let model_name = "mixtral" in
+  let url= "https://dev-hub.agentartificial.com"
+  let prompt type_name = "consider a " ^
+               "consecutive series "^
+               "of " ^ type_name ^
+               "to describe " ^
+               "the universe and universe of universes" ^
+               "what is your ordering?" in
+
+  let count= 10 in
+  let simple = "dune exec ./bin/simple.exe --" in
+  let binding = "--openai"
+
+  let do_apply_list    run_cmd make_args type_terms   =
+    List.iter (fun s ->
+        let args = make_args s in
+        run_cmd args
+      ) type_terms;;
+
+  let make_args type_name = [
+    simple;
+    binding;
+    "-m";    model;
+    "-p";    prompt type_name;
+    "-u";    url;
+  ] in
+  let run_cmd args =
+    let cmd =  String.concat " " args in
+    let inp = Unix.open_process_in cmd in
+    let r = In_channel.input_lines inp in
+    In_channel.close inp;
+    let out = String.concat " " r in
+    Printf.printf "Output: %s\n" out
+
+  let () =
+    do_apply_list run_cmd make_args type_terms  
+    Printf.printf "Args: %s\n" args
+#+end_src
+
+#+RESULTS:
+: Line 4, characters 0-3:
+: 4 | let prompt = "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" in
+:     ^^^
+: Error: Syntax error
