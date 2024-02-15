@@ -20,13 +20,27 @@
  (name worker )
  (modules worker )
  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
 (executable
  (public_name scanner)
  (name scanner )
  (modules scanner )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name simple)
+ (name simple )
+ (modules simple )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
 (executable
  (public_name test1)
  (name test1 )
  (modules test1 )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name execute_self)
+ (name execute_self )
+ (modules execute_self )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

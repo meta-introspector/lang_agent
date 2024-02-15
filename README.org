@@ -1,5 +1,27 @@
 * idea : create an ocaml functional agent for talking to llms.
 
+#+begin_src shell
+  opam install --yes ppx_yojson_conv_lib ppx_yojson_conv
+  opam install --yes ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
+ opam pin add --yes openai https://github.com/meta-introspector/openai-ocaml.git#main
+  opam install --yes --deps-only .
+
+  dune build .
+#+end_src
+
+#+RESULTS:
+| [openai.0.0.1]    | synchronised | (no  | changes) |      |                                                                |          |        |         |       |             |
+| openai            | is           | now  | pinned   | to   | git+https://github.com/meta-introspector/openai-ocaml.git#main | (version | 0.0.1) |         |       |             |
+|                   |              |      |          |      |                                                                |          |        |         |       |             |
+| Already           | up-to-date.  |      |          |      |                                                                |          |        |         |       |             |
+| Nothing           | to           | do.  |          |      |                                                                |          |        |         |       |             |
+| #                 | Run          | eval | $(opam   | env) | to                                                             | update   |    the | current | shell | environment |
+| [lang_agent.~dev] | synchronised | (no  | changes) |      |                                                                |          |        |         |       |             |
+
+Optional coq 
+#+begin_src shell
+ opam install --yes coq
+#+end_src
 
 #+begin_src shell
 dune exec bin/argiope.exe "https://writemycode.com/?goal=snakegame" -- -m mistral
@@ -86,3 +108,8 @@ this uses the new feature to filter the input and write new files.
     -s ./huggingface/unimath/batch2/data_30/ \
     -p "Create a list of connection pairs between term in the proof and words in the story.:"  --ollama -m "mistral" \
     -u "http://localhost:11434"
+
+* simple
+#+begin_src shell
+  dune exec ./bin/simple.exe -- --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" -p "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" -n 10
+#+end_src
