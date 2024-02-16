@@ -69,11 +69,11 @@ let places = [
 let count= 3 
 let simple = "dune exec ./bin/simple.exe --" 
 let binding = "--openai" 
-let test_name = "generic"
+let test_name = "generic_proof_"
 
 let prompt type_name try_n verb place=
   "\"" ^
-  "We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " . What is your response?" ^  " Please generate prompt variant array of size " ^ ( string_of_int try_n) ^    "\"" 
+  "We are building a proof and prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " . We want to generate and test and prove the results. Trace how the requirements are reflected in the prompt, the test and the proof. What is your response?" ^  " Please generate prompt/proof/test variant array of size " ^ ( string_of_int try_n) ^    "\"" 
 
 let make_args type_name i verb place= [
   simple;
