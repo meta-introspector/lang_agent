@@ -73,13 +73,13 @@ let test_name = "generic"
 
 let prompt type_name try_n verb place=
   "\"" ^
-  "We are building a software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " . What is your response?" ^  " Please generate variant array of size " ^ ( string_of_int try_n) ^    "\"" 
+  "We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " . What is your response?" ^  " Please generate prompt variant array of size " ^ ( string_of_int try_n) ^    "\"" 
 
 let make_args type_name i verb place= [
   simple;
   binding;
   "-m";    model_name;
-  "-s";    test_name ^ type_name ^ verb;
+  "-s";    "data/" ^ test_name ^ type_name ^ verb;
   "-x";   (clean ("_" ^ (string_of_int i) ^ verb ^  type_name ^ place ^  ".txt"));
   "-p";    prompt    type_name           i verb place;
   "-u";    url;
@@ -97,27 +97,28 @@ let top_terms =  [
   "Balance"]
                  
 let do_apply_list    run_cmd make_args type_terms =
-  for i = 1 to count do
     List.iter (fun top ->
         List.iter (fun term ->
             List.iter (fun term2 ->
                 List.iter (fun verb ->
                     List.iter (fun place ->
-                        List.iter (fun place2 ->
-                            let term3 = term ^ " with a " ^ term2 in
-                            let verb2 = top ^ " doing " ^ verb in
-                            let place3 = place ^ " connected with " ^ place2 in
-                            let args = make_args
-                                term3 i verb2
-                                place3 in
-                            run_cmd args
+                      List.iter (fun place2 ->
+                            for i = 1 to count do
+                              let term3 = term ^ " with a " ^ term2 in
+                              let verb2 = top ^ " doing " ^ verb in
+                              let place3 = place ^ " connected with " ^ place2 in
+                              let args = make_args
+                                  term3 (i + 3) verb2
+                                  place3 in
+                              run_cmd args
+                            done
                           ) places
                       ) places
                   ) verbs
               ) type_terms
           ) type_terms
       ) top_terms
-  done
+
     
 let run_cmd args =
   let cmd =  String.concat " " args in
