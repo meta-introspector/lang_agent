@@ -49,3 +49,9 @@
  (name generate_dungeon )
  (modules generate_dungeon )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name generate_generic)
+ (name generate_generic )
+ (modules generate_generic )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
