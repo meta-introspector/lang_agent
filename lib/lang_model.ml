@@ -14,9 +14,14 @@ class type  [
   end
 
 class type  [
-          't_state_machine
+  't_state_machine,
+  't_state,
+  't_transition
         ] protocol_type = object
   method state_machine  :  unit -> 't_state_machine
+  method sm_start  :  unit -> 't_state_machine
+  method sm_transition  :  't_state -> 't_state_machine 
+  method sm_terminate  :  unit -> 't_state_machine
 end
 
 class type  [

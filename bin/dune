@@ -55,3 +55,9 @@
  (name generate_generic )
  (modules generate_generic )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name recurse)
+ (name recurse )
+ (modules recurse )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

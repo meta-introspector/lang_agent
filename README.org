@@ -183,7 +183,24 @@ try with 'org-babel-eval-in-repl
 #+end_src
 
 #+RESULTS:
-: Line 4, characters 0-3:
-: 4 | let prompt = "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" in
-:     ^^^
+: Line 17, characters 0-3:
+: 17 | let () =
+:      ^^^
 : Error: Syntax error
+
+
+* recurse
+
+#+begin_src shell
+  dune exec ./bin/recurse.exe -- --openai -m "mixtral" \
+       -u "https://dev-hub.agentartificial.com" \
+       -s "recurse1"  \
+       -x ".txt" \
+       -p "consider a consecutive series of propositions to describe the universe and universe of universes. Consider your previous output and continue the thought if there, otherwise start a new thought chain." \
+       -n 10
+#+end_src
+
+#+RESULTS:
+| DEBUG3                   | path  | recurse1 |
+| DEBUG4                   | MODEL | :mixtral |
+| Consider:mixtralrecurse1 |       |          |
