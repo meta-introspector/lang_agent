@@ -194,13 +194,86 @@ try with 'org-babel-eval-in-repl
 #+begin_src shell
   dune exec ./bin/recurse.exe -- --openai -m "mixtral" \
        -u "https://dev-hub.agentartificial.com" \
-       -s "recurse1"  \
+       -s "recurse2"  \
        -x ".txt" \
        -p "consider a consecutive series of propositions to describe the universe and universe of universes. Consider your previous output and continue the thought if there, otherwise start a new thought chain." \
        -n 10
 #+end_src
 
 #+RESULTS:
-| DEBUG3                   | path  | recurse1 |
-| DEBUG4                   | MODEL | :mixtral |
-| Consider:mixtralrecurse1 |       |          |
+| DEBUG3                   | path         | recurse2 |
+| DEBUG4                   | MODEL        | :mixtral |
+| Consider:mixtralrecurse2 |              |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+| OUTPUT:                  | recurse2.txt |          |
+
+** llama.cpp mode
+
+#+begin_src shell
+  dune exec ./bin/simple.exe -- --llamacpp  -u "http://localhost:8080" -p "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?"
+  
+#+end_src
+
+#+RESULTS:
+
+| DEBUG3           | path   |          |
+| DEBUG4           | MODEL  | :mistral |
+| Consider:mistral |        |          |
+| OUTPUT:          | _1.out |          |
+
+
+Error at  `Assoc ([("content",
+          `String ("\n\nTo provide an answer, let's first define some terms and concepts:\n\n1. Universe: The totality of all existence, including all matter, energy, space, and time. It is the sum total of everything that exists or can be observed.\n2. Multiverse: A collection of multiple universes, each with its own set of fields and interactions. This concept arises in theoretical physics as a solution to certain problems, such as the fine-tuning problem or the cosmological constant problem.\n3. Meta-universe: The universe that contains all universes, including the multiverse."));
+          ("generation_settings",
+           `Assoc ([("dynatemp_exponent", `Float (1.));
+                     ("dynatemp_range", `Float (0.));
+                     ("frequency_penalty", `Float (0.));
+                     ("grammar", `String (""));
+                     ("ignore_eos", `Bool (false));
+                     ("logit_bias", `List ([]));
+                     ("min_p", `Float (0.0500000007451));
+                     ("mirostat", `Int (0));
+                     ("mirostat_eta", `Float (0.10000000149));
+                     ("mirostat_tau", `Float (5.));
+                     ("model",
+                      `String ("/usr/share/ollama/.ollama/models/blobs/sha256:e8a35b5937a5e6d5c35d1f2a15f161e07eefe5e5bb0a3cdd42998ee79b057730"));
+                     ("n_ctx", `Int (512)); ("n_keep", `Int (0));
+                     ("n_predict", `Int (128)); ("n_probs", `Int (0));
+                     ("penalize_nl", `Bool (true));
+                     ("penalty_prompt_tokens", `List ([]));
+                     ("presence_penalty", `Float (0.));
+                     ("repeat_last_n", `Int (64));
+                     ("repeat_penalty", `Float (1.10000002384));
+                     ("seed", `Int (4294967295)); ("stop", `List ([]));
+                     ("stream", `Bool (false));
+                     ("temperature", `Float (0.800000011921));
+                     ("tfs_z", `Float (1.)); ("top_k", `Int (40));
+                     ("top_p", `Float (0.949999988079));
+                     ("typical_p", `Float (1.));
+                     ("use_penalty_prompt_tokens", `Bool (false))]));
+          ("model",
+           `String ("/usr/share/ollama/.ollama/models/blobs/sha256:e8a35b5937a5e6d5c35d1f2a15f161e07eefe5e5bb0a3cdd42998ee79b057730"));
+          ("prompt",
+           `String ("consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?"));
+          ("slot_id", `Int (0)); ("stop", `Bool (true));
+          ("stopped_eos", `Bool (false)); ("stopped_limit", `Bool (true));
+          ("stopped_word", `Bool (false)); ("stopping_word", `String (""));
+          ("timings",
+           `Assoc ([("predicted_ms", `Float (14526.219));
+                     ("predicted_n", `Int (128));
+                     ("predicted_per_second", `Float (8.81165291533));
+                     ("predicted_per_token_ms", `Float (113.486085937));
+                     ("prompt_ms", `Float (2088.743));
+                     ("prompt_n", `Int (44));
+                     ("prompt_per_second", `Float (21.0653009968));
+                     ("prompt_per_token_ms", `Float (47.4714318182))]));
+          ("tokens_cached", `Int (171)); ("tokens_evaluated", `Int (44));
+          ("tokens_predicted", `Int (128)); ("truncated", `Bool (false))])

@@ -1,71 +1,6 @@
-(* open Lwt.Syntax *)
-(* open Yojson *)
-(* open Printexc
-/mnt/data1/2024/01/04/llama-cpp-ocaml/src/llama_cpp.mli
-*)
-
-(* class language_model ~url ~model ~temp  = object(self) *)
-                                                
-(*   vala url :string *)
-(* end *)
-
-
 open Ppx_yojson_conv_lib.Yojson_conv.Primitives
-
-open Bigarray
-
-type pos = int32
-
-type token = int32
-
-type seq_id = int32
-
-type file_type =
-  | ALL_F32
-  | MOSTLY_F16
-  | MOSTLY_Q4_0
-  | MOSTLY_Q4_1
-  | MOSTLY_Q4_1_SOME_F16
-  | MOSTLY_Q8_0
-  | MOSTLY_Q5_0
-  | MOSTLY_Q5_1
-  | MOSTLY_Q2_K
-  | MOSTLY_Q3_K_S
-  | MOSTLY_Q3_K_M
-  | MOSTLY_Q3_K_L
-  | MOSTLY_Q4_K_S
-  | MOSTLY_Q4_K_M
-  | MOSTLY_Q5_K_S
-  | MOSTLY_Q5_K_M
-  | MOSTLY_Q6_K
-  | GUESSED
-
-type vocab_type = Spm (** Sentencepiece *) | Bpe (** Byte Pair Encoding *)
-
-type logits = (float, float32_elt, c_layout) Array2.t
-
-type embeddings = (float, float32_elt, c_layout) Array1.t
-
-type token_type =
-  | Undefined
-  | Normal
-  | Unknown
-  | Control
-  | User_defined
-  | Unused
-  | Byte
-
-
+open Lang_model
 include Yojson.Safe
-
-(*
-   parts from 
-   
-https://github.com/janestreet/ppx_yojson_conv_lib
-   and OpenAI-OCaml
-   https://github.com/meta-introspector/openai-ocaml
-*)
-
 
 let json_to_field_opt name f o =
   ( name
@@ -75,14 +10,14 @@ let json_to_field_opt name f o =
 ;;
 
 type client_t =
-  { model : string
-  ; gen_url : string -> string
+  { 
+   mutable url : string
   ; c : Curl.t
   }
 
-let create_client base_url model =
-  (* let base_url = "http://localhost:8080" in *)
-  { model; gen_url = ( ^ ) base_url; c = Ezcurl_lwt.make () }
+let create_client  =
+  let base_url = "http://localhost:8080" in
+  {  url = base_url; c = Ezcurl_lwt.make () }
 ;;
 
 type role =
@@ -97,27 +32,18 @@ let yojson_of_role = function
   | `Assistant -> `String "assistant"
 ;;
 
-type message =
-  { content : string
-  ; role : role
-  }
-[@@deriving yojson_of]
   
-(** raw API request:
- * @param k for continuation to avoid redefining labeled parameters
-*)
-
 let send_raw_k
   k
   (client : client_t)
-  (model )
   (prompt : string)  
   ()
   =
+  (* print_endline ( "DEBUG:" ^ prompt );  *)
   let body =
     List.filter
       (fun (_, v) -> v <> `Null)
-      [ "model", `String model
+      [ "n_predict", `Int 128
       ; "prompt",`String prompt
       ]
     |> fun l -> Yojson.Safe.to_string (`Assoc l)
@@ -126,47 +52,106 @@ let send_raw_k
     [ "content-type", "application/json"
     ]
   in
-  let endpoint = "/api/generate" in
+  let endpoint = "/completion" in
   let%lwt resp =
     Ezcurl_lwt.post
       ~client:client.c
       ~headers
       ~content:(`String body)
-      ~url:(client.gen_url endpoint)
+      ~url:(client.url ^ endpoint)
       ~params:[]
       ()
   in
   k resp
 
-type ollama_response =
-  { model : string
-  ; created_at : string
-  ; response : string
-  ; isdone : bool [@key "done"]
-  ; context: (int list) option[@yojson.option]
-  ; total_duration:int option[@yojson.option]
-  ; load_duration: int option[@yojson.option]
-  ; prompt_eval_count: int option[@yojson.option]
-  ; prompt_eval_duration : int option[@yojson.option]
-  ; eval_count: int option[@yojson.option]
-  ; eval_duration : int option[@yojson.option]
+type llama_cpp_timings =
+  { 
+    predicted_ms: float
+  ;predicted_n:int
+  ;predicted_per_second:float
+  ;predicted_per_token_ms:float
+  ;prompt_ms:float
+  ;prompt_n:int
+  ;prompt_per_second:float
+  ;prompt_per_token_ms:float
+  } [@@deriving yojson]
+
+type llama_cpp_generation_settings =
+  {
+    dynatemp_exponent:float
+  ; dynatemp_range:float
+  ; frequency_penalty:float
+  ; grammar:string
+  ; ignore_eos:bool
+  ; logit_bias: (int list)
+  ; min_p :float
+  ; mirostat:int
+  ; mirostat_eta:float
+  ; mirostat_tau:float
+  ; model:string     
+  ; n_ctx: int 
+  ; n_keep: int
+  ; n_predict: int
+  ; n_probs: int
+  ; penalize_nl: bool
+  ; penalty_prompt_tokens: (string list)
+  ; presence_penalty: float
+  ; repeat_last_n: int
+  ; repeat_penalty: float
+  ; seed: int
+  ; stop: (string list)
+  ; stream : bool
+  ; temperature: float
+  ; tfs_z: float
+  ; top_k: int
+  ; top_p: float
+  ; typical_p: float
+  ; use_penalty_prompt_tokens: bool
+  }
+[@@deriving yojson]
+  
+type llama_cpp_response =
+  {
+    content: string
+  ; generation_settings: llama_cpp_generation_settings
+  ; model : string
+  ; prompt : string
+  ; slot_id: int
+  ; stop : bool 
+  ; stopped_eos : bool
+  ; stopped_limit : bool
+  ; stopped_word : bool
+  ; stopping_word : string      
+  ;timings : llama_cpp_timings
+  ;tokens_cached:int
+  ;tokens_evaluated:int
+  ;tokens_predicted:int
+  ;truncated:bool
   }
 [@@deriving yojson]
 
-(* open Ppx_yojson_conv_lib.Yojson_conv.Primitives *)
-       
+let contains s1 s2 =
+  let re = Str.regexp_string s2
+  in
+  try ignore (Str.search_forward re s1 0); true
+  with Not_found -> false
+
 let myproc (body:string):string =
+  if contains body "error"  then
+    (print_endline ( "DEBUGBODY:" ^ body ) );
+
   if (String.length body ) == 0 then ""
-  else    
+  else
     try
+      print_endline ( "JSON:" ^ body );  
       let json = Yojson.Safe.from_string body in
-      let record_opt = (ollama_response_of_yojson json) in
-      (* (print_endline ( "DEBUGBODY:" ^ body ^ "DEBUG2"^   record_opt.response) );        *)
-      record_opt.response        
+
+      let record_opt = (llama_cpp_response_of_yojson json) in
+      record_opt.content
     with
     | Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (loc, exn) ->
       Printf.eprintf "Loc at  %s\n" (Printexc.to_string loc);
-      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "error"
+      Printf.eprintf "Error at  %s\n" (Yojson.Safe.show exn); "ERROR2"
   (* | exn -> *)
   (*   Printf.eprintf "Unexpected error: %s\n" (   to_string exn); "errorr2" *)
 
@@ -186,6 +171,68 @@ let send =
   @@ function
   | Ok { body; _ } -> extract_content body
   | Error (_code, e) -> Lwt.fail_with e
+
+type (* 't_key, *) t_key_string = string
+type (* url 't_address, *) t_address_string = string
+
+type (* 't_temperature, *) t_temperature_float = Float.t
+type (* 't_max_tokens, *) t_max_tokens_int = Int.t
+type (* assistent prompt 't_system_content, *) t_system_content_string = string
+type (* 't_prompt, *) t_prompt_string = string
+type (* 't_response *) t_response_string = string
+
+
+let dobind1 prompt the_client  =
+  let newprompt = prompt in
+  let%lwt result = send the_client newprompt () in
+  Lwt.return result
+
+let dobind prompt the_client  =
+  let result = Lwt_main.run (dobind1 prompt the_client ) in
+  result
+    
+    
+class llama_cpp_lang_model  = object (* (self) *)
+  inherit [client_t] openai_like_lang_model
+  method  lang_init  () : client_t Lang_model.client_t  =
+    let client = create_client  in
+    mk_client_t client
+
+  method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self 
+  method  lang_open   (self: 't_connection) (url (*address*): 't_address) =
+    self.agt_driver.url <- url;
+    self
+  method  lang_set_model (self: 't_connection) (_ : 't_model) =
+    self  
+  method  lang_set_temp  (self: 't_connection) (_ (*temp*) :'t_temperature) = self
+
+  method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self
+  method  lang_set_system_content (self: 't_connection) (_ (*prompt*): 't_prompt)=  self
+  method  lang_prompt
+           (connection : 't_connection)
+           (prompt:'t_prompt) :'t_response=
+    let connection1 =  connection.agt_driver in
+    let res:string = (dobind prompt connection1 ) in  
+    " Result: " ^ res
+end
+
+module LlamaCppClientModule
+         ( A: LLMClientModule
+           with type t =
+                       llama_cpp_lang_model
+         )  = struct
+  let init ()  = new llama_cpp_lang_model
+end
+
+module LlamaCppClientModule2 = struct
+  let init ()  = new llama_cpp_lang_model
+end
+
+module type LLMClientModuleLlamaCpp2 = sig
+  val init : unit -> llama_cpp_lang_model      
+end
+
+
 
 
 
