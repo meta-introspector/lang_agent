@@ -44,3 +44,8 @@
  (name execute_self )
  (modules execute_self )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+(executable
+ (public_name generate_dungeon)
+ (name generate_dungeon )
+ (modules generate_dungeon )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
