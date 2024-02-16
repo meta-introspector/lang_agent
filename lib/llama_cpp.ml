@@ -203,7 +203,11 @@ class llama_cpp_lang_model  = object (* (self) *)
     self.agt_driver.url <- url;
     self
   method  lang_set_model (self: 't_connection) (_ : 't_model) =
-    self  
+    self
+  method  lang_set_grammar (self: 't_connection) (grammar: 't_grammar_string) =
+    self.agt_grammar <- grammar;
+    self
+    
   method  lang_set_temp  (self: 't_connection) (_ (*temp*) :'t_temperature) = self
 
   method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self

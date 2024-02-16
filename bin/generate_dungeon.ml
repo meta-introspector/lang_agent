@@ -37,6 +37,12 @@ let verbs = [
   "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-act";
   "meta-quote"
 ]
+let top_terms =  ["Imagine";
+                  "Consider";
+                  "Draw";
+                  "Paint";
+                  "Compose";
+                  "Balance"]
 
 let places = [
   "the country";
@@ -62,7 +68,6 @@ let places = [
   "the river styx";
   "the restaurant at the end of the universe";
 ]
-
                        
 let count= 3 
 let simple = "dune exec ./bin/simple.exe --" 
@@ -71,7 +76,7 @@ let test_name = "dungeon2"
 
 let prompt type_name try_n verb place=
   "\"" ^
-  "We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " What is your response?" ^  " Please generate variant array of size " ^ ( string_of_int try_n) ^    "\"" 
+  "We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creatively use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " What is your response?" ^  " Please generate variant array of size " ^ ( string_of_int try_n) ^    "\"" 
 
 let make_args type_name i verb place= [
   simple;
@@ -83,12 +88,6 @@ let make_args type_name i verb place= [
   "-u";    url;
 ]
 
-let top_terms =  ["Imagine";
-                  "Consider";
-                  "Draw";
-                  "Paint";
-                  "Compose";
-                  "Balance"]
                  
 let do_apply_list    run_cmd make_args type_terms =
   for i = 1 to count do

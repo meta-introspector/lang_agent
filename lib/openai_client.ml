@@ -75,7 +75,8 @@ class  open_ai_lang_model  = object (* (self) *)
     let client = Client.create_custom "no_url_yet" "no_api_key_yet" "no_model" in
     mk_client_t client
 
-  method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self 
+  method  lang_auth  (self: 't_connection) (_ (*key*) :'t_key):'t_connection = self
+  method  lang_set_grammar (self: 't_connection) (_ (*grammar*): 't_grammar_string) = self
   method  lang_open   (self: 't_connection) (url (*address*): 't_address) =
     self.agt_driver.url <- url;
     self

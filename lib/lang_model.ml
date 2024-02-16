@@ -1,5 +1,7 @@
 (* Intuitional language model
    everyone creates different versions of this.
+   then we map them onto other peoples models.
+   "I'm thee map."
  *)
 
 (*
@@ -48,13 +50,15 @@ class type virtual [
           't_max_tokens,
           't_system_content,
           't_prompt,
-          't_response
+          't_response,
+          't_grammar
         ] lang_connection_type = object
   method virtual lang_init  :   unit -> 't_connection
   method virtual lang_auth  :   't_connection ->'t_key -> 't_connection
   method virtual lang_open  :  't_connection -> 't_address -> 't_connection
   method virtual lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
   method virtual lang_set_model  : 't_connection -> 't_model -> 't_connection
+  method virtual lang_set_grammar  : 't_connection -> 't_grammar -> 't_connection
   method virtual lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
   method virtual lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
   method virtual lang_prompt :  't_connection -> 't_prompt -> 't_response
@@ -88,8 +92,6 @@ class type [
         ]
              heros_journey_type = object  
 end
-
-
 
 class type
     [
@@ -284,7 +286,8 @@ type (* 't_max_tokens, *) t_max_tokens_int = Int.t
 type (* assistent prompt 't_system_content, *) t_system_content_string = string
 type (* 't_prompt, *) t_prompt_string = string
 type (* 't_response *) t_response_string = string
-
+type  t_grammar_string = string
+  
 type 't client_t =  {
     agt_driver : 't
   ; agt_key : t_key_string
@@ -292,7 +295,8 @@ type 't client_t =  {
   ; agt_temp : t_temperature_float
   ; agt_tokens : t_max_tokens_int
   ; agt_system_prompt : t_system_content_string
-    (* ; agt_user_prompt : t_prompt_string *)
+(* ; agt_user_prompt : t_prompt_string *)
+  ; mutable agt_grammar : t_grammar_string    
   }
 
 let mk_client_t f =
@@ -303,6 +307,7 @@ let mk_client_t f =
   ; agt_temp =0.0
   ; agt_tokens =4096
   ; agt_system_prompt =""
+  ; agt_grammar = ""
   }
 
 (* let create_init = *)
@@ -326,13 +331,15 @@ class virtual ['t] openai_like_lang_model : [
     (* 't_max_tokens, *) t_max_tokens_int ,
     (* 't_system_content, *) t_system_content_string,
     (* 't_prompt, *) t_prompt_string,
-    (* 't_response *) t_response_string
+    (* 't_response *) t_response_string,
+    t_grammar_string
         ] lang_connection_type  = object
           method virtual lang_init  :   unit -> 't_connection
   method virtual lang_auth  :   't_connection ->'t_key -> 't_connection
   method virtual lang_open  :  't_connection -> 't_address -> 't_connection
   method virtual lang_set_temp  : 't_connection -> 't_temperature -> 't_connection
   method virtual lang_set_model  : 't_connection -> 't_model -> 't_connection
+  method virtual lang_set_grammar  : 't_connection -> 't_grammar_string -> 't_connection
   method virtual lang_set_max_tokens : 't_connection -> 't_max_tokens -> 't_connection
   method virtual lang_set_system_content : 't_connection -> 't_prompt -> 't_connection  
   method virtual lang_prompt :  't_connection -> 't_prompt -> 't_response

@@ -193,6 +193,7 @@ class  ollama_lang_model  = object (* (self) *)
   method  lang_set_model (self: 't_connection) (model: 't_model) =
     self.agt_driver.model <- model;
     self  
+  method  lang_set_grammar (self: 't_connection) ((*grammar*)_: 't_grammar_string) = self
   method  lang_set_temp  (self: 't_connection) (_ (*temp*) :'t_temperature) = self
 
   method  lang_set_max_tokens (self: 't_connection) (_ (*token*): 't_max_tokens) = self
