@@ -61,3 +61,9 @@
  (name recurse )
  (modules recurse )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name simple_grammar)
+ (name simple_grammar )
+ (modules simple_grammar )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))

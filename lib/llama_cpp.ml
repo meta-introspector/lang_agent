@@ -36,7 +36,8 @@ let yojson_of_role = function
 let send_raw_k
   k
   (client : client_t)
-  (prompt : string)  
+  (prompt : string)
+  (grammar : string)  
   ()
   =
   (* print_endline ( "DEBUG:" ^ prompt );  *)
@@ -45,6 +46,7 @@ let send_raw_k
       (fun (_, v) -> v <> `Null)
       [ "n_predict", `Int 128
       ; "prompt",`String prompt
+      ; "grammar",  `String grammar
       ]
     |> fun l -> Yojson.Safe.to_string (`Assoc l)
   in
@@ -182,13 +184,13 @@ type (* 't_prompt, *) t_prompt_string = string
 type (* 't_response *) t_response_string = string
 
 
-let dobind1 prompt the_client  =
+let dobind1 prompt the_client grammar  =
   let newprompt = prompt in
-  let%lwt result = send the_client newprompt () in
+  let%lwt result = send the_client newprompt grammar () in
   Lwt.return result
 
-let dobind prompt the_client  =
-  let result = Lwt_main.run (dobind1 prompt the_client ) in
+let dobind prompt the_client  grammar =
+  let result = Lwt_main.run (dobind1 prompt the_client grammar) in
   result
     
     
@@ -216,7 +218,7 @@ class llama_cpp_lang_model  = object (* (self) *)
            (connection : 't_connection)
            (prompt:'t_prompt) :'t_response=
     let connection1 =  connection.agt_driver in
-    let res:string = (dobind prompt connection1 ) in  
+    let res:string = (dobind prompt connection1 connection.agt_grammar) in  
     " Result: " ^ res
 end
 
