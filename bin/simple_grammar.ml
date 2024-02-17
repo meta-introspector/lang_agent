@@ -1,5 +1,6 @@
 open Lang_agent
 
+
 type backend =
   | BNone
   | BLlamaCpp of Llama_cpp.llama_cpp_lang_model
@@ -15,47 +16,90 @@ let lc_lang_prompt lang_client  param_record prompt =
                                             | _ -> "")
   | _ -> ""
 
+let do_one prompt1 client1 param_record full_out_path=
+  let prompt = prompt1  in
+  (print_endline ("chunk: " ^  prompt));
+  let res = (lc_lang_prompt client1 param_record prompt ) in
+  print_endline ("OUTPUT: " ^ full_out_path);        
+  if res == "ERROR"
+  then
+    (
+      print_endline ("ERROR: " ^ full_out_path);
+      "erro"
+    )
+  else
+    (
+      let oc = open_out full_out_path in
+      (Printf.fprintf oc
+        "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output\n%s\n#+end_src\n"
+        prompt res);
+      close_out oc;
+      res
+    )
+
+
+let window_size = ref 1024
+
+let split_file ic n =
+  let chunks = ref [] in
+  let chunk = ref 0 in
+  let buf = Buffer.create 1024 in
+  let eof = ref false in
+  let line = ref "" in 
+  while not !eof do
+    incr chunk;
+    let lines = ref 0 in
+    while not !eof && !lines < n do
+      try
+        line := input_line ic;
+        Buffer.add_string buf !line;
+        Buffer.add_char buf '\n';
+        incr lines
+      with
+        End_of_file ->        
+          eof := true
+    done;
+
+    chunks := List.append !chunks  [ Buffer.contents buf ];
+    Buffer.clear buf;
+    if not ! eof then     
+      (*append the last line as a chunk*)
+      chunks := List.append !chunks  [ !line ]    
+    (* clear the buffer *)
+    
+  done;
+  (* close the input file *)
+  chunks
+
+
+let do_split_file full_path =
+  let ic = open_in full_path in
+  print_endline ("OPEN INPUT: " ^ full_path);
+  let chunks = split_file ic ! window_size in
+  close_in ic;
+  chunks
+
+let aux dir suffix prompt1 client1 param_record =
+  let full_path = dir  in
+  let full_out_path = full_path ^ suffix in    
+  if Sys.file_exists  full_out_path then
+    (
+      print_endline ("SKIP existing" ^ full_out_path);
+      "error"
+    )
+  else
+    (
+      print_endline ("going to create" ^ full_out_path);
+      do_one prompt1 client1 param_record full_out_path
+    )
+
 let process_prompt: backend -> 'client_t2 -> string -> string -> string -> string -> int ->unit =
   fun client1 param_record path model prompt1 suffix repeat ->
   (print_endline ("Consider model: " ^  model ^ " path: "^ path));
-  let aux dir =
-    let full_path = dir  in
-    let full_out_path = full_path ^ suffix in
-    
-    if Sys.file_exists  full_out_path then
-      print_endline ("SKIP existing" ^ full_out_path)
-    else
-      let do_one  (data)=
-        let prompt = prompt1 ^ data in
-        (* print_endline ("send" ^ prompt); *)
-        let res = (lc_lang_prompt client1 param_record prompt ) in
-        
-        print_endline ("OUTPUT: " ^ full_out_path);
-        
-        if res == "ERROR"
-        then
-          print_endline ("ERROR: " ^ full_out_path)
-        else
-          (
-            let oc = open_out full_out_path in
-            Printf.fprintf oc
-              "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output %s\n%s\n#+end_src\n"
-              data model res;
-            close_out oc;
-          );
-        
-        "FIXME"
-
-      in
-      
-        let _ = do_one prompt1 in
-        ()
-
-in
-for i = 1 to repeat do
-  aux (path ^ "_" ^(string_of_int i))
-done
-
+  for i = 1 to repeat do
+    let _ = aux (path ^ "_" ^(string_of_int i)) suffix prompt1 client1 param_record in
+    ()
+  done
 
 let anon_fun _ = ()
 
@@ -69,6 +113,7 @@ let lc_init lang_client aurl amodel agrammar=
     (print_endline ("DEBUG9 GRAMMAR :" ^ agrammar) );
     let c3 = m#lang_set_grammar c2 agrammar in
     B2LlamaCpp c3
+
 
   
 let read_whole_file filename =
@@ -103,6 +148,8 @@ let () =
   Printf.printf "DEBUG3 path %s\n" !start;
   (print_endline ("DEBUG4 MODEL :" ^ ! model) );
   grammar := read_whole_file  !grammar;
-  prompt := read_whole_file  !prompt;
-    let client_param_record = lc_init !lang_client !url !model !grammar  in 
-    process_prompt !lang_client client_param_record !start !model !prompt !suffix !item_count
+  let chunks = do_split_file !prompt in
+  let client_param_record = lc_init !lang_client !url !model !grammar  in 
+  let do_one p = process_prompt !lang_client client_param_record !start !model p !suffix !item_count in
+  let _ = (List.map do_one ! chunks) in ()
+
