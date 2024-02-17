@@ -279,4 +279,22 @@ Error at  `Assoc ([("content",
           ("tokens_predicted", `Int (128)); ("truncated", `Bool (false))])
 
 
-dune exec ./bin/simple_grammar.exe -- --llamacpp -s test4 -u "http://localhost:8080" -p "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" -n 4 -g "root  ::= (expr \"=\" ws term \"\n\")+\nexpr  ::= term ([-+*/] term)*\nterm  ::= ident | num | \"(\" ws expr \")\" ws\nident ::= [a-z] [a-z0-9_]* ws\nnum   ::= [0-9]+ ws\nws    ::= [ \t\n]*" 	  
+dune exec ./bin/simple_grammar.exe -- --llamacpp -s test4 -u "http://localhost:8080" -p "consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?" -n 4 -g "root  ::= (expr \"=\" ws term \"\n\")+\nexpr  ::= term ([-+*/] term)*\nterm  ::= ident | num | \"(\" ws expr \")\" ws\nident ::= [a-z] [a-z0-9_]* ws\nnum   ::= [0-9]+ ws\nws    ::= [ \t\n]*" s	  
+
+
+* grammar
+We now take the filename for grammar because of quoting issues.
+
+GRAMMAR=~/experiments/gbnf_parser/grammars/ebnf.ebnf
+DS=$(date -Iseconds)
+PROMPT_NAME=prompt_grammar2c.txt
+
+dune exec bin/simple_grammar.exe -- \
+    --llamacpp \
+    -u "http://localhost:8080" \
+    -s "grammar_1_${DS}"   \
+    -g $GRAMMAR \
+    -p $PROMPT_NAME \
+    -x ".txt" \
+    -n 6
+    

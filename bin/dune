@@ -6,64 +6,60 @@
      -dtypedtree -dparsetree -dump-into-file -dlambda -annot -dlocations -dsource  -drawlambda  ))))
 
 (executable
- (public_name lang_agent)
+ (public_name la-chunker)
  (name chunker )
  (modules chunker )
  (libraries lang_agent lwt))
+
 (executable
- (public_name argiope)
+ (public_name la-argiope)
  (name argiope )
  (modules argiope )
  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 (executable
- (public_name worker)
+ (public_name la-worker)
  (name worker )
  (modules worker )
  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name scanner)
+ (public_name la-scanner)
  (name scanner )
  (modules scanner )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name simple)
+ (public_name la-simple)
  (name simple )
  (modules simple )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name test1)
- (name test1 )
- (modules test1 )
- (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
-
-(executable
- (public_name execute_self)
+ (public_name la-execute-self)
  (name execute_self )
  (modules execute_self )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 (executable
- (public_name generate_dungeon)
+ (public_name la-generate-dungeon)
  (name generate_dungeon )
  (modules generate_dungeon )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name generate_generic)
+ (public_name la-generate-generic)
  (name generate_generic )
  (modules generate_generic )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name recurse)
+ (public_name la-recurse)
  (name recurse )
  (modules recurse )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 
 (executable
- (public_name simple_grammar)
+ (public_name la-simple-grammar)
  (name simple_grammar )
  (modules simple_grammar )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+(install (files (glob_files *)) (section bin) (package lang_agent))

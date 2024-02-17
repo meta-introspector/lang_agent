@@ -1,0 +1,70 @@
+Consider the following grammar between BEGINSRC and ENDSRC. BEGINSRC
+%{
+open Syntax
+%}
+%token <int> Tchar
+%token DASH "-"
+%token CARET "^"
+%token
+  BAR              "|"
+  EOF              ""
+  LPAREN           "("
+  RPAREN           ")" 
+  QUESTION         "?"
+  STAR             "*"
+  PLUS             "+"
+NEWLINE
+
+%token <string Positions.located>
+   LID              "lident"
+   REGEX            "regex"
+   QID              "\"alias\""
+
+%token
+   COLONCOLONEQUAL  "::="
+
+%start <Syntax.partial_grammar> grammar
+%type <Syntax.myfactor>  factor
+%type <Syntax.myfactor>  alternation
+%type <Syntax.myfactor>  modifier
+%type <Syntax.myfactor>  complexterms
+%type <Syntax.myfactor>  term
+%type <Syntax.myfactor>  fstar
+%type <Syntax.myfactor>  sterm
+%type <Syntax.myfactor>  char_class
+%type <string Positions.located>  lid
+%type <string Positions.located>  qid
+%type <Syntax.myfactor>  termfactor
+
+TRUNCATEDPART1
+ENDSRC .
+
+Please rewrite it to be more beautiful. We are going to use the following TARGET: BEGINTARGET letter ::= "A" | "B" | "C" | "D" | "E" | "F" | "G"       | "H" | "I" | "J" | "K" | "L" | "M" | "N"       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"       | "c" | "d" | "e" | "f" | "g" | "h" | "i"        | "j" | "k" | "l" | "m" | "n" | "o" | "p"       | "q" | "r" | "s" | "t" | "u" | "v" | "w"       | "x" | "y" | "z" 
+
+digit ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
+# removed "  | "\f" | "\b"
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" | "\n" | "\t" | "\r"  
+
+character ::= letter | digit | symbol | "_" | " " 
+identifier ::= letter ( letter | digit | "_" )
+
+#| "\f" | "\b"
+S ::= ( " " | "\n" | "\t" | "\r"  )
+
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+
+terminator ::= (";" | ".")
+
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier 
+
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S 
+
+concatenation ::= ( S   factor   S   "," ? ) + 
+alternation ::= ( S   concatenation   S   "|" ? ) + 
+
+rhs ::= alternation 
+lhs ::= identifier 
+
+rule ::= lhs   S   "="   S   rhs   S   terminator 
+
+root ::= ( S   rule   S ) *  ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. 
