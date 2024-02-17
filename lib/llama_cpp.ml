@@ -68,67 +68,67 @@ let send_raw_k
 
 type llama_cpp_timings =
   { 
-    predicted_ms: float
-  ;predicted_n:int
-  ;predicted_per_second:float
-  ;predicted_per_token_ms:float
-  ;prompt_ms:float
-  ;prompt_n:int
-  ;prompt_per_second:float
-  ;prompt_per_token_ms:float
+    predicted_ms: float option [@yojson.option]
+  ;predicted_n:int option [@yojson.option]
+  ;predicted_per_second:float option [@yojson.option]
+  ;predicted_per_token_ms:float option [@yojson.option]
+  ;prompt_ms:float option [@yojson.option]
+  ;prompt_n:int option [@yojson.option]
+  ;prompt_per_second:float option [@yojson.option]
+  ;prompt_per_token_ms:float option [@yojson.option]
   } [@@deriving yojson]
 
 type llama_cpp_generation_settings =
   {
-    dynatemp_exponent:float
-  ; dynatemp_range:float
-  ; frequency_penalty:float
+    dynatemp_exponent:float option [@yojson.option]
+  ; dynatemp_range:float option [@yojson.option]
+  ; frequency_penalty:float  option [@yojson.option]
   ; grammar:string
-  ; ignore_eos:bool
-  ; logit_bias: (int list)
-  ; min_p :float
-  ; mirostat:int
-  ; mirostat_eta:float
-  ; mirostat_tau:float
+  ; ignore_eos:bool option [@yojson.option]
+  ; logit_bias: (int list)  option [@yojson.option]
+  ; min_p :float option [@yojson.option]
+  ; mirostat:int option [@yojson.option]
+  ; mirostat_eta:float option [@yojson.option]
+  ; mirostat_tau:float option [@yojson.option]
   ; model:string     
-  ; n_ctx: int 
-  ; n_keep: int
-  ; n_predict: int
-  ; n_probs: int
-  ; penalize_nl: bool
-  ; penalty_prompt_tokens: (string list)
-  ; presence_penalty: float
-  ; repeat_last_n: int
-  ; repeat_penalty: float
-  ; seed: int
-  ; stop: (string list)
-  ; stream : bool
-  ; temperature: float
-  ; tfs_z: float
-  ; top_k: int
-  ; top_p: float
-  ; typical_p: float
-  ; use_penalty_prompt_tokens: bool
+  ; n_ctx: int option [@yojson.option]
+  ; n_keep: int option [@yojson.option]
+  ; n_predict: int option [@yojson.option]
+  ; n_probs: int option [@yojson.option]
+  ; penalize_nl: bool option [@yojson.option]
+  ; penalty_prompt_tokens: (string list) option [@yojson.option]
+  ; presence_penalty: float option [@yojson.option]
+  ; repeat_last_n: int option [@yojson.option]
+  ; repeat_penalty: float option [@yojson.option]
+  ; seed: int option [@yojson.option]
+  ; stop: (string list) option [@yojson.option]
+  ; stream : bool 
+  ; temp: float option [@yojson.option]
+  ; tfs_z: float option [@yojson.option]
+  ; top_k: int option [@yojson.option]
+  ; top_p: float option [@yojson.option]
+  ; typical_p: float option [@yojson.option] 
+  ; use_penalty_prompt_tokens: bool option [@yojson.option]
   }
 [@@deriving yojson]
   
 type llama_cpp_response =
   {
     content: string
-  ; generation_settings: llama_cpp_generation_settings
-  ; model : string
-  ; prompt : string
-  ; slot_id: int
-  ; stop : bool 
-  ; stopped_eos : bool
-  ; stopped_limit : bool
-  ; stopped_word : bool
-  ; stopping_word : string      
-  ;timings : llama_cpp_timings
-  ;tokens_cached:int
-  ;tokens_evaluated:int
-  ;tokens_predicted:int
-  ;truncated:bool
+  ; generation_settings: llama_cpp_generation_settings option [@yojson.option]
+  ; model : string option [@yojson.option]
+  ; prompt : string 
+  ; slot_id: int option [@yojson.option]
+  ; stop : bool option [@yojson.option]
+  ; stopped_eos : bool option [@yojson.option]
+  ; stopped_limit : bool option [@yojson.option]
+  ; stopped_word : bool option [@yojson.option]
+  ; stopping_word : string    option [@yojson.option]  
+  ;timings : llama_cpp_timings option [@yojson.option]
+  ;tokens_cached:int option [@yojson.option]
+  ;tokens_evaluated:int option [@yojson.option]
+  ;tokens_predicted:int option [@yojson.option]
+  ;truncated:bool option [@yojson.option] 
   }
 [@@deriving yojson]
 

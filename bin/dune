@@ -62,4 +62,11 @@
  (name simple_grammar )
  (modules simple_grammar )
  (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
+(executable
+ (public_name la-decode-json)
+ (name la_decode_json )
+ (modules la_decode_json )
+ (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+
 (install (files (glob_files *)) (section bin) (package lang_agent))

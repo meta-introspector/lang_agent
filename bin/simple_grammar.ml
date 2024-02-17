@@ -17,7 +17,7 @@ let lc_lang_prompt lang_client  param_record prompt =
 
 let process_prompt: backend -> 'client_t2 -> string -> string -> string -> string -> int ->unit =
   fun client1 param_record path model prompt1 suffix repeat ->
-  (print_endline ("Consider:" ^  model ^ path));
+  (print_endline ("Consider model: " ^  model ^ " path: "^ path));
   let aux dir =
     let full_path = dir  in
     let full_out_path = full_path ^ suffix in
