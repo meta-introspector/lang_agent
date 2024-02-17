@@ -37,8 +37,7 @@ let do_one prompt1 client1 param_record full_out_path=
       res
     )
 
-
-let window_size = ref 1024
+let window_size = ref 8194
 
 let split_file ic n =
   let chunks = ref [] in
