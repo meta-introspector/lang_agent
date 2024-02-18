@@ -1,19 +1,21 @@
 GRAMMAR=./grammars/ebnf.ebnf
 GRAMMAR_C=$(cat $GRAMMAR)
 
-GRAMMAR2=./grammars/sentenceParser.mly
-GRAMMAR2_C=$( cat $GRAMMAR2 )
-
 DS=$(date -Iseconds)
-PROMPT_NAME="prompt_grammar3.txt"
+PROMPT_NAME=./grammars/sentenceParser.mly
+HPROMPT_NAME="prompt_grammar3h.txt"
+TPROMPT_NAME="prompt_grammar3t.txt"
 
-echo "Consider the following grammar between BEGINSRC and ENDSRC. BEGINSRC ${GRAMMAR2_C} ENDSRC . Please rewrite it to be more beautiful. We are going to use the following TARGET: BEGINTARGET ${GRAMMAR_C} ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. " > $PROMPT_NAME
+echo "We are working on creating a GBNF grammar for Llama.cpp. It follows a standard EBNF notation at the end of this message (see TARGET). We translating an ocaml menhir parser into this EBNF in chunks. Consider the following chunk of the menhir grammar between BEGINSRC and ENDSRC for translation to EBNF. BEGINSRC  " > $HPROMPT_NAME
+echo " ENDSRC . Please rewrite it to be more beautiful and in EBNF form. We are going to use the following TARGET: BEGINTARGET ${GRAMMAR_C} ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. You are to only respond using the target custom GBNF grammar and put  descriptions or comments at the end of the rule with a #, see the grammar for rules. Please start with a comment using '#' to start comments on a new line. " > $TPROMPT_NAME
 
 dune exec bin/simple_grammar.exe -- \
     --llamacpp \
     -u "http://localhost:8080" \
     -s "data/grammar/grammar_1_${DS}"   \
-    -g $GRAMMAR \
-    -p $PROMPT_NAME \
     -x ".txt" \
-    -n 20
+    -n 20 \
+    -g "${GRAMMAR}" \
+    -p "${PROMPT_NAME}" \
+    -t "${TPROMPT_NAME}" \
+    -h "${HPROMPT_NAME}" \    

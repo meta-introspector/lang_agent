@@ -1,17 +1,17 @@
+comment ::= "#" [a-zA-Z0-9 \t]*
 letter ::= [a-zA-Z]
 digit ::= [0-9]
-ws    ::= [ \t\n]*
+S ::= ( " " | "\n" | "\t" | "\r"  )
 symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
 character ::= letter | digit | symbol | "_" | " "
 identifier ::= letter ( letter | digit | "_" )*
-S ::= ( " " | "\n" | "\t" | "\r"  )
 terminal ::= "'" character  "'"  ( character  "'" )  "'"
-terminator ::= (";" | ".")
+terminator ::= (";" | ".") 
 term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier
 factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S
 concatenation ::= ( S   factor   S   "," ? ) +
 alternation ::= ( S   concatenation   S   "|" ? ) +
 rhs ::= alternation
 lhs ::= identifier
-rule ::= lhs   S   "="   S   rhs   S   terminator
-root ::= ( S   rule   S ) *
+rule ::= lhs   S   "="   S   rhs   S   terminator comment*
+root ::= comment* ( S   rule   S ) *

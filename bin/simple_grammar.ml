@@ -18,26 +18,32 @@ let lc_lang_prompt lang_client  param_record prompt =
 
 let do_one prompt1 client1 param_record full_out_path=
   let prompt = prompt1  in
-  (print_endline ("chunk: " ^  prompt));
-  let res = (lc_lang_prompt client1 param_record prompt ) in
-  print_endline ("OUTPUT: " ^ full_out_path);        
-  if res == "ERROR"
-  then
-    (
-      print_endline ("ERROR: " ^ full_out_path);
-      "erro"
-    )
-  else
-    (
-      let oc = open_out full_out_path in
-      (Printf.fprintf oc
-        "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output\n%s\n#+end_src\n"
-        prompt res);
-      close_out oc;
-      res
-    )
-
-let window_size = ref 8194
+  (* (print_endline ("chunk: " ^  prompt)); *)
+  try
+    let res = (lc_lang_prompt client1 param_record prompt ) in
+    print_endline ("OUTPUT: " ^ full_out_path);        
+    if res == "ERROR"
+    then
+      (
+        print_endline ("ERROR: " ^ full_out_path);
+        "erro"
+      )
+    else
+      (
+        let oc = open_out full_out_path in
+        (Printf.fprintf oc
+           "\n#+begin_src input\n%s\n#+end_src\n#+begin_src output\n%s\n#+end_src\n"
+           prompt res);
+        close_out oc;
+        res
+      )
+      with
+        Yojson__Common.Json_error s ->
+        print_endline ("ERROR: " ^ s);
+        "error"
+        
+        
+let window_size = ref 10
 
 let split_file ic n =
   let chunks = ref [] in
@@ -94,9 +100,9 @@ let aux dir suffix prompt1 client1 param_record =
 
 let process_prompt: backend -> 'client_t2 -> string -> string -> string -> string -> int ->unit =
   fun client1 param_record path model prompt1 suffix repeat ->
-  (print_endline ("Consider model: " ^  model ^ " path: "^ path));
+  (print_endline ("Consider model: " ^  model ^ " path: "^ path ^ " prompt" ^ prompt1));
   for i = 1 to repeat do
-    let _ = aux (path ^ "_" ^(string_of_int i)) suffix prompt1 client1 param_record in
+    let _ = aux (path ^ "_" ^(string_of_int i)) (suffix ^ (string_of_int i)) prompt1 client1 param_record in
     ()
   done
 
@@ -109,13 +115,14 @@ let lc_init lang_client aurl amodel agrammar=
     let a = m#lang_init() in
     let c1 = m#lang_open a aurl in 
     let c2 = m#lang_set_model c1 amodel in
-    (print_endline ("DEBUG9 GRAMMAR :" ^ agrammar) );
+    (print_endline ("DEBUG9 GRAMMAR :" ^ (string_of_int (String.length agrammar ))));
     let c3 = m#lang_set_grammar c2 agrammar in
     B2LlamaCpp c3
 
 
   
 let read_whole_file filename =
+  (print_endline ("DEBUG1 read :" ^ filename));
   let ch = open_in_bin filename in
   let s = really_input_string ch (in_channel_length ch) in
   close_in ch;
@@ -125,6 +132,8 @@ let () =
   let start = ref "" in
   let item_count = ref 1 in
   let prompt = ref "" in
+  let header_prompt = ref "" in
+  let trailer_prompt = ref "" in
   let model = ref "mistral" in
   let grammar = ref "" in
   let suffix = ref ".out" in
@@ -135,6 +144,8 @@ let () =
       "-s", Arg.Set_string start, "startdir";
       "-n", Arg.Set_int item_count, "generate count items";
       "-p", Arg.Set_string prompt, "prompt filename";
+      "-h", Arg.Set_string header_prompt, "header prompt filename";
+      "-t", Arg.Set_string trailer_prompt, "trailer prompt filename";
       "-g", Arg.Set_string grammar, "grammar filename";
       "-x", Arg.Set_string suffix, "suffix";
       "-m", Arg.Set_string model, "model";
@@ -147,8 +158,16 @@ let () =
   Printf.printf "DEBUG3 path %s\n" !start;
   (print_endline ("DEBUG4 MODEL :" ^ ! model) );
   grammar := read_whole_file  !grammar;
-  let chunks = do_split_file !prompt in
+  let header = read_whole_file  !header_prompt in
+  let trailer = read_whole_file  !trailer_prompt in
+  let chunks1 = do_split_file !prompt in
   let client_param_record = lc_init !lang_client !url !model !grammar  in 
-  let do_one p = process_prompt !lang_client client_param_record !start !model p !suffix !item_count in
-  let _ = (List.map do_one ! chunks) in ()
+  let do_one (p1:string) =
+    (
+      (print_endline ("DEBUG41 chunk :" ^ (string_of_int (String.length p1 ))) );
+      let pp  = header ^ p1 ^ trailer in 
+      process_prompt !lang_client client_param_record !start !model pp !suffix !item_count
+    )
+  in
+  let _ = (List.map do_one !chunks1) in ()
 
