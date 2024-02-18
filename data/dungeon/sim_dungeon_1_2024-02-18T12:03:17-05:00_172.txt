@@ -1,0 +1,217 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts for a language model that can be used to generate creative and imaginative descriptions of a dungeon in a fantasy role-playing game.
+the game would involve exploring a dungeon generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+Overall, it seems that the code is designed to generate a richly detailed and immersive fantasy RPG experience using a combination of natural language processing and formal methods. By using a large language model and a proof engine, the game could potentially offer a high degree of realism and interactivity, allowing players to explore and interact with the dungeon in flexible and unpredictable ways.
+The script is being used to generate and test various combinations of terms to create content for a fantasy role-playing game. The generated content include descriptions of weapons, spells, artifacts, monsters, quests, and other elements of a typical RPG setting. 
+Here is the code we wrote so far 
+let type_terms = [
+  "weapon";
+  "spell";
+  "artifacts";
+  "magic items";
+  "treasure";
+  "monster";
+  "quest";
+  "challege";
+  "theme";
+  "drama";
+  "music";
+  "art";
+  "secrets";
+  "occult";
+  "reveal";
+  "hero journey"
+] 
+let model_name = "mixtral" 
+let url= "https://dev-hub.agentartificial.com"
+let verbs = [
+  "role-play";
+  "specify";"encode";"code";  "program";"prove";
+  "create";  "design";
+  "create descriptions for an artist";
+  "create descriptions for an artist to design a comic book panel";
+  "analyse";"lift";"shift";"splice";"quote";
+  "quasi-quote";
+  "quasi-quine-quote";
+  "quasi-quine-quote-in-ocaml";
+  "quasi-quine-quote-in-ocaml-coq-metacoq";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-observe";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-orient";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-decide";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-act";
+  "meta-quote"
+]
+let top_terms =  ["Imagine";
+                  "Consider";
+                  "Draw";
+                  "Paint";
+                  "Compose";
+                  "Balance"]
+
+let places = [
+  "the country";
+  "the region";
+  "the city";
+  "the street";
+  "the house";
+  "the building";
+  "the dungeon";
+  "the labyrinth";
+  "the cave";
+  "the swamp";
+  "the room";
+  "the hallway";
+  "the chest";
+  "the bag";
+  "the wallet";
+  "the vault";
+  "the keep";
+  "the hideout";
+  "platos cave";
+  "garden of eden";
+  "the river styx";
+  "the restaurant at the end of the universe";
+]
+                       
+let count= 3 
+let simple = "dune exec ./bin/simple.exe --" 
+let binding = "--openai" 
+let test_name = "dungeon2"
+
+let prompt type_name try_n verb place=
+  "\"" ^
+  "We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creatively use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " What is your response?" ^  " Please generate variant array of size " ^ ( string_of_int try_n) ^    "\"" 
+
+let make_args type_name i verb place= [
+  simple;
+  binding;
+  "-m";    model_name;
+  "-s";    test_name ^ type_name ^ verb;
+  "-x";    ".new_" ^ (string_of_int i) ^ verb ^  type_name ^ place ^  ".txt";
+  "-p";    prompt    type_name           i verb place;
+  "-u";    url;
+]
+
+                 
+let do_apply_list    run_cmd make_args type_terms =
+  for i = 1 to count do
+    List.iter (fun top ->
+        List.iter (fun term ->
+            List.iter (fun term2 ->
+                List.iter (fun verb ->
+                    List.iter (fun place ->
+                        List.iter (fun place2 ->
+                            let term3 = term ^ " with a " ^ term2 in
+                            let verb2 = top ^ " doing " ^ verb in
+                            let place3 = place ^ " connected with " ^ place2 in
+                            let args = make_args
+                                term3 i verb2
+                                place3 in
+                            run_cmd args
+                          ) places
+                      ) places
+                  ) verbs
+              ) type_terms
+          ) type_terms
+      ) top_terms
+  done
+    
+let run_cmd args =
+  let cmd =  String.concat " " args in
+  Printf.printf "Cmd: %s\n" cmd;
+  let inp = Unix.open_process_in cmd in
+  let r = In_channel.input_line inp in
+  In_channel.close inp;
+  match r with
+  |Some out ->
+    Printf.printf "Output: %s\n" out
+  |None ->
+    Printf.printf "Output: None\n"
+    
+let () =do_apply_list run_cmd make_args type_terms 
+    
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate a grammar that we can use to generate prompts for create the dungeon using your knowledge. Write the grammar in EBNF notation. We will start with path through the dungeon starting at the entrance and going all the way to the ends.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar that could be used to generate prompts for creating a dungeon:
+
+dungeon = {path}*
+
+path = "Enter" place ({"Go" verb place} | {"Take" artifact place})* "Exit"
+
+place = identifier
+
+verb = "north" | "south" | "east" | "west" | "up" | "down"
+
+artifact = "key" | "sword" | "shield" | "scroll" | "potion"
+
+identifier = ALPHA {ALPHA | DIGIT}*
+
+This grammar generates a sequence of paths through the dungeon, where each path starts at an entrance and ends at an exit. Each path is made up of one or more steps, where each step involves either going to a new place or taking an artifact from a place. Places are identified by unique names, while verbs describe the direction of movement and artifacts are objects that can be picked up along the way.
+
+To use this grammar to generate prompts, you could write a program that generates random paths through the dungeon by randomly selecting options at each step according to the grammar rules. For example, the program might select a random place for the entrance and then randomly choose whether to go to a new place or take an artifact from the current place. This process would be repeated until an exit is reached, at which point a new path would be started.
+
+Here is some sample code that demonstrates how this could work:
+```
+let generate_path () =
+  let entrance = Random.string_of_char (Random.int 26) in
+  let rec go steps =
+    if List.length steps > 0 then
+      match steps.hd with
+      | "Go" ->
+          let verb = [|"north"; "south"; "east"; "west"; "up"; "down"|] in
+          let place = Random.string_of_char (Random.int 26) in
+          let steps' = steps.tl @ ["Go", verb.(Random.int (Array.length verb)), place] in
+          go steps'
+      | "Take" ->
+          let artifact = [|"key"; "sword"; "shield"; "scroll"; "potion"|] in
+          let place = Random.string_of_char (Random.int 26) in
+          let steps' = steps.tl @ ["Take", artifact.(Random.int (Array.length artifact)), place] in
+          go steps'
+      | _ -> assert false
+    else
+      [["Enter", entrance]; ["Exit"]] in
+  go []
+
+let generate_dungeon count =
+  List.map generate_path (List.init count Random.int)
+
+let () =
+  let dungeons = generate_dungeon 3 in
+  List.iter print_endline dungeons
+```
+This code generates a list of random dungeons, where each dungeon is represented as a sequence of paths through the dungeon. To turn these dungeons into prompts, you could use a template like this:
+
+"Imagine entering the {entrance} and then {path}. When you reach the end, exit and start over at a new entrance."
+
+where `entrance` is the name of the entrance place and `path` is a string representation of the path. The code to generate prompts from the dungeons could look like this:
+```
+let generate_prompt dungeon =
+  let entrance = List.hd (List.hd dungeon) in
+  let path = String.concat " then " (List.map (fun step ->
+      match step with
+      | ["Go", verb, place] -> verb ^ " to the " ^ place
+      | ["Take", artifact, place] -> "take the " ^ artifact ^ " from the " ^ place
+    ) (List.flatten dungeon)) in
+  "Imagine entering the " ^ entrance ^ " and then " ^ path ^ ". When you reach the end, exit and start over at a new entrance."
+
+let () =
+  let dungeons = generate_dungeon 3 in
+  List.iter (fun dungeon ->
+      let prompt = generate_prompt dungeon in
+      Printf.printf "Prompt: %s\n" prompt;
+    ) dungeons
+```
+This code generates a prompt for each dungeon and prints it to the console. The resulting prompts might look like this:
+
+"Imagine entering the A and then go to the B then take the sword from the B then exit and start over at a new entrance."
+"Imagine entering the Z and then take the potion from the Y then go to the X then exit and start over at a new entrance."
+"Imagine entering the Q and then take the scroll from the W then go to the V then take the shield from the V then exit and start over at a new entrance."
+#+end_src
