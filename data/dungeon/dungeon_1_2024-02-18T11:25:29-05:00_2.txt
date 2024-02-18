@@ -1,0 +1,53 @@
+
+#+begin_src input
+ ENDSRC . Please rewrite it to be more beautiful and in EBNF form. We are going to use the following TARGET: BEGINTARGET comment ::= "#" [a-zA-Z0-9 \t]*
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".") 
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S
+concatenation ::= ( S   factor   S   "," ? ) +
+alternation ::= ( S   concatenation   S   "|" ? ) +
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S   terminator comment*
+root ::= comment* ( S   rule   S ) * ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. You are to only respond using the target custom GBNF grammar and put  descriptions or comments at the end of the rule with a #, see the grammar for rules. Please start with a comment using '#' to start comments on a new line. 
+
+#+end_src
+#+begin_src output mixtral
+ Result: BEGINTARGET
+
+# Split the production rule into two lines for readability
+production_rule ::= lhs S "=" S rhs S terminator (comment | empty)
+lhs ::= identifier
+rhs ::= alternation
+
+# Combine multiple consecutive whitespace characters into a single S
+S ::= ( " " | "\n" | "\t" | "\r" )+
+
+# Add rule for empty string
+empty ::=
+
+# Allow optional comments after any grammar symbol
+(comment | empty) ::= comment | empty
+
+# Update the definition of alternation to allow for empty alternatives
+alternation ::= ( S concatenation S "|" ? )* ( S concatenation S | empty )
+concatenation ::= ( S factor S "," ? )+
+factor ::= term S "?" | term S "*" | term S "+" | term S "-" S term | term S
+term ::= "(" S rhs S ")" | "[" S rhs S "]" | "{" S rhs S "}" | terminal | identifier
+terminal ::= "'" character "'" (character "'")*
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter (letter | digit | "_")*
+
+# Add rule for comment leader
+comment_leader ::= "#"
+comment ::= comment\_leader [a-zA-Z0-9 \t]* "\n"
+
+ENDTARGET
+#+end_src

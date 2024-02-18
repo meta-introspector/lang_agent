@@ -100,9 +100,11 @@ type llama_cpp_generation_settings =
   ; presence_penalty: float option [@yojson.option]
   ; repeat_last_n: int option [@yojson.option]
   ; repeat_penalty: float option [@yojson.option]
+  ; samplers: (string list) option [@yojson.option]
   ; seed: int option [@yojson.option]
   ; stop: (string list) option [@yojson.option]
-  ; stream : bool 
+  ; stream : bool
+  ; temperature: float option [@yojson.option]
   ; temp: float option [@yojson.option]
   ; tfs_z: float option [@yojson.option]
   ; top_k: int option [@yojson.option]

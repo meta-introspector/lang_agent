@@ -1,0 +1,73 @@
+
+#+begin_src input
+ ENDSRC . Please rewrite it to be more beautiful and in EBNF form. We are going to use the following TARGET: BEGINTARGET comment ::= "#" [a-zA-Z0-9 \t]*
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".") 
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S
+concatenation ::= ( S   factor   S   "," ? ) +
+alternation ::= ( S   concatenation   S   "|" ? ) +
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S   terminator comment*
+root ::= comment* ( S   rule   S ) * ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. You are to only respond using the target custom GBNF grammar and put  descriptions or comments at the end of the rule with a #, see the grammar for rules. Please start with a comment using '#' to start comments on a new line. 
+
+#+end_src
+#+begin_src output mixtral
+ Result: BEGINTARGET
+
+# Comment should begin with a '#' followed by any number of alphanumeric characters and whitespaces.
+comment ::= "#" [a-zA-Z0-9 \t]*
+
+# Letter, digit, symbol, underscore or space are valid character types.
+character ::= letter | digit | symbol | "_" | " "
+
+# An identifier starts with a letter followed by any number of letters, digits or underscores.
+identifier ::= letter ( letter | digit | "_" )*
+
+# A terminal is enclosed in single quotes, can contain any character, and may have additional characters escaped by single quotes.
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+
+# Semicolon or period are valid terminators for a rule.
+terminator ::= (";" | ".")
+
+# A term can be a parenthesized expression, bracketed expression, braced expression, terminal symbol, or an identifier.
+term ::= "(" S rhs S ")"
+| "[" S rhs S "]"
+| "{" S rhs S "}"
+| terminal
+| identifier
+
+# A factor can be a term followed by an optional '?', '*', '+', or another term.
+factor ::= term S "?"
+| term S "*"
+| term S "+"
+| term S "-" S term
+| term S
+
+# Concatenation is defined as one or more whitespace-separated factors, followed by an optional comma.
+concatenation ::= ( S factor S , ? ) +
+
+# Alternation is defined as one or more whitespace-separated concatenations, followed by a '|'.
+alternation ::= ( S concatenation S "|" ? ) +
+
+# Right-hand side of the production rule is one or more alternations.
+rhs ::= alternation
+
+# Left-hand side of the production rule is an identifier.
+lhs ::= identifier
+
+# A rule consists of a lhs, optional whitespace, '=', optional whitespace, rhs, optional whitespace, terminator, and an optional comment.
+rule ::= lhs S "=" S rhs S terminator comment*
+
+# Grammar starts with zero or more comments, followed by one or more rules, and ends with ENDTARGET.
+root ::= comment* ( S rule S ) * ENDTARGET
+
+ENDTARGET
+#+end_src

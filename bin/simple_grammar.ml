@@ -94,7 +94,7 @@ let aux dir suffix prompt1 client1 param_record =
     )
   else
     (
-      print_endline ("going to create" ^ full_out_path);
+      print_endline ("Calling server. waiting for response.");
       do_one prompt1 client1 param_record full_out_path
     )
 

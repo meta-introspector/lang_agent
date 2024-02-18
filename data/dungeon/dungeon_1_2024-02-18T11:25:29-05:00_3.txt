@@ -1,0 +1,67 @@
+
+#+begin_src input
+ ENDSRC . Please rewrite it to be more beautiful and in EBNF form. We are going to use the following TARGET: BEGINTARGET comment ::= "#" [a-zA-Z0-9 \t]*
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".") 
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S
+concatenation ::= ( S   factor   S   "," ? ) +
+alternation ::= ( S   concatenation   S   "|" ? ) +
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S   terminator comment*
+root ::= comment* ( S   rule   S ) * ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. You are to only respond using the target custom GBNF grammar and put  descriptions or comments at the end of the rule with a #, see the grammar for rules. Please start with a comment using '#' to start comments on a new line. 
+
+#+end_src
+#+begin_src output mixtral
+ Result: # This is a rewritten version of SRC in TARGET format
+
+comment ::= "#" [a-zA-Z0-9 \t]*
+
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".")
+
+term ::= "(" S rhs S ")" 
+        | "[" S rhs S "]" 
+        | "{" S rhs S "}" 
+        | terminal
+        | identifier
+
+factor ::= term S "?"
+        | term S "*"
+        | term S "+"
+        | term S "-" S term
+        | term S
+
+concatenation ::= ( S factor S "," ? ) +
+
+alternation ::= ( S concatenation S "|" ? ) +
+
+rhs ::= alternation
+lhs ::= identifier
+
+rule ::= lhs S "=" S rhs S terminator comment*
+
+root ::= comment* ( S rule S ) * ENDTARGET
+
+; Comments:
+; - indentation is used to visually group elements of a rule
+; - vertical bars are separated by spaces for readability
+; - concatenations and alternations only have a single space after 'S'
+; - no need to repeat 'S' when it appears multiple times in a row (e.g. S rhs S can be shortened to S rhs S)
+; - comments are added at the end of rules, starting with '#'
+#+end_src

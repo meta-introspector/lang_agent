@@ -89,11 +89,18 @@ let lc_init lang_client aurl amodel =
     B2LlamaCpp c2
 
   
-        
+        let read_whole_file filename =
+  (print_endline ("DEBUG1 read :" ^ filename));
+  let ch = open_in_bin filename in
+  let s = really_input_string ch (in_channel_length ch) in
+  close_in ch;
+  s
+
 let () =
   let start = ref "" in
   let item_count = ref 1 in
   let prompt = ref "" in
+  let prompt_file = ref "" in
   let model = ref "mistral" in
   let suffix = ref ".out" in
 
@@ -105,6 +112,7 @@ let () =
       "-s", Arg.Set_string start, "startdir";
       "-n", Arg.Set_int item_count, "generate count items";
       "-p", Arg.Set_string prompt, "prompt";
+      "-f", Arg.Set_string prompt_file, "prompt file";      
       "-x", Arg.Set_string suffix, "suffix";
       "-m", Arg.Set_string model, "model";
       "--openai", Arg.Unit (fun () ->
@@ -119,8 +127,12 @@ let () =
       "-u", Arg.Set_string url, "url";
     ] |> Arg.align in
   Arg.parse opts anon_fun help_str;
+  if !prompt_file != "" then
+    prompt := read_whole_file  !prompt_file;
+  
   Printf.printf "DEBUG3 path %s\n" !start;
   (print_endline ("DEBUG4 MODEL :" ^ ! model) );
+  
     let client_param_record = lc_init !lang_client !url !model   in 
     process_prompt !lang_client client_param_record !start !model !prompt !suffix !item_count
 
