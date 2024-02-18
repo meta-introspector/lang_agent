@@ -1,0 +1,50 @@
+
+#+begin_src input
+Please rewrite the following to be more beautiful.
+please answer only in the following grammar.
+
+BEGIN
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".")
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier 
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S 
+concatenation ::= ( S   factor   S   "," ? ) + 
+alternation ::= ( S   concatenation   S   "|" ? ) + 
+rhs ::= alternation 
+lhs ::= identifier 
+rule ::= lhs   S   "="   S   rhs   S   terminator 
+root ::= ( S   rule   S ) *
+END
+
+#+end_src
+#+begin_src output mistral
+ Result: 
+BEAUTIFUL_BEGIN
+=
+
+ GranularityLevelOneDefinitionSection 
+
+terminalDefinitionSection 
+
+terminalSymbolsDefinitions 
+, terminalDelimiter  
+terminalContent 
+
+terminatorTypesDefinitions 
+, semicolonTerminator 
+, dotTerminator
+
+ termComponentDefinitionSection
+
+ termTypeDefinition
+ , openingParenthesis
+ , rhsDefinition
+ , closingParenthesis
+ , squareBracketDefinition
+ , curlyBraceDefinition
+ , terminalOrIdentifierDefinition
+
+ factorComponentsDefinitionSection
+ , factorTypeDefinition
+ , optionalQuestionMarkFactor
+#+end_src

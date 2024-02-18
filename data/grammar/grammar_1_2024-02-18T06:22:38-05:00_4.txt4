@@ -1,0 +1,40 @@
+
+#+begin_src input
+Consider the following grammar between BEGINSRC and ENDSRC. BEGINSRC  
+%{
+open Syntax
+%}
+
+%token <int> Tchar
+%token DASH "-"
+%token CARET "^"
+%token
+  BAR              "|"
+  EOF              ""
+ ENDSRC . Please rewrite it to be more beautiful. We are going to use the following TARGET: BEGINTARGET comment ::= "#" [a-zA-Z0-9 \t]*
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+symbol ::= "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">"  | "'" |  "=" | "|" | "." | "," | ";" | "-"        | "+" | "*" | "?" 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= "'" character  "'"  ( character  "'" )  "'"
+terminator ::= (";" | ".") 
+term ::= "("   S   rhs   S   ")"      | "["   S   rhs   S   "]"      | "{"   S   rhs   S   "}"      | terminal      | identifier
+factor ::= term  S  "?"         | term   S   "*"        | term   S   "+"        | term   S   "-"   S   term        | term   S
+concatenation ::= ( S   factor   S   "," ? ) +
+alternation ::= ( S   concatenation   S   "|" ? ) +
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S   terminator comment*
+root ::= comment* ( S   rule   S ) * ENDTARGET as our target grammar format. Please rewrite SRC into TARGET. You are to only respond using the target custom GBNF grammar with no descriptions or comments. Please start with a comment using '#' to start comments on a new line. 
+
+#+end_src
+#+begin_src output
+ Result: 
+The = 	 Signifies 	 	 Equality 	 	 in 	 	 Rules 	 	 and 	 	 Definitions 
+	 
+The 	 | 	Signifies 	 	 Alternative 	 	 in 	 	 Rules 	 	 and 	 	 Definitions 
+	 
+The 	 [ 	 and 	  ] 	 	 Define 	 	 Optional 	 	 Sequences 	 	 of 	 	 Characters 	 	 or 	 	 Altern
+#+end_src
