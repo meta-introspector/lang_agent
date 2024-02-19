@@ -101,6 +101,6 @@ productionrule ::= alternation
 
 lhs ::= identifier
 
-rule ::= lhs   S   "="   S   productionrule   S    | comment
+rule ::= lhs   S   assignment   S   productionrule   S    | comment
 
 root ::= ( S   rule   S ) *
