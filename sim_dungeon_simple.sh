@@ -17,12 +17,11 @@ The script is being used to generate and test various combinations of terms to c
 Here is the code we wrote so far " > $PROMPT_NAME2
 #head -500 $PROMPT_NAME > $PROMPT_NAME2
 cat $PROMPT_NAME >> $PROMPT_NAME2
-echo " ENDSRC . Please simulate its execution. Imagine running the code and all the output it would generate. then Imagine running that code. what would the game be like? Please rewrite my question if confusing. " >> $PROMPT_NAME2
+echo " ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate a grammar that we can use to generate prompts for create the dungeon using your knowledge. Write the grammar in EBNF notation. We will start with path through the dungeon starting at the entrance and going all the way to the ends." >> $PROMPT_NAME2
 
 dune exec bin/simple.exe -- \
      --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" \
-     -n 20 \
      -f $PROMPT_NAME2 \
     -s "data/dungeon/sim_dungeon_1_${DS}"   \
     -x ".txt" \
-    -n 20 
+    -n 2000

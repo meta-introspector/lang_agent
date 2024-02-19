@@ -141,16 +141,17 @@ let () =
   let url = ref "" in
   let help_str = "test" in
   let opts = [
-      "-s", Arg.Set_string start, "startdir";
-      "-n", Arg.Set_int item_count, "generate count items";
-      "-p", Arg.Set_string prompt, "prompt filename";
-      "-h", Arg.Set_string header_prompt, "header prompt filename";
-      "-t", Arg.Set_string trailer_prompt, "trailer prompt filename";
-      "-g", Arg.Set_string grammar, "grammar filename";
-      "-x", Arg.Set_string suffix, "suffix";
-      "-m", Arg.Set_string model, "model";
-      "--llamacpp", Arg.Unit (fun () ->
-          lang_client  := BLlamaCpp  new Llama_cpp.llama_cpp_lang_model  ; ()
+    "-s", Arg.Set_string start, "startdir";
+    "-w", Arg.Set_int window_size, "window_size";
+    "-n", Arg.Set_int item_count, "generate count items";
+    "-p", Arg.Set_string prompt, "prompt filename";
+    "-h", Arg.Set_string header_prompt, "header prompt filename";
+    "-t", Arg.Set_string trailer_prompt, "trailer prompt filename";
+    "-g", Arg.Set_string grammar, "grammar filename";
+    "-x", Arg.Set_string suffix, "suffix";
+    "-m", Arg.Set_string model, "model";
+    "--llamacpp", Arg.Unit (fun () ->
+        lang_client  := BLlamaCpp  new Llama_cpp.llama_cpp_lang_model  ; ()
         ),      " Use Ollama (default)";
       "-u", Arg.Set_string url, "url";
     ] |> Arg.align in
