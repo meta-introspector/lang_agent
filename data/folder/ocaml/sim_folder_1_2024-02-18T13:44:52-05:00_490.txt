@@ -1,0 +1,111 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet. Here is an example of how this function can be used to merge different types of data streams in a game like the one described:
+
+```ocaml
+(* A simple data type for representing a prompt *)
+type prompt = {
+  grammar : string;
+  prev_results : string option;
+  new_example : string;
+}
+
+(* The function used to merge two prompts together *)
+let merge_prompts op acc prompt =
+  let { grammar; prev_results; new_example } = prompt in
+  match prev_results with
+  | None -> { acc with grammar; new_example }
+  | Some prev -> { acc with grammar; new_example; prev_results=Some (op prev new_example) }
+
+(* The function used to test a merged prompt and return an optional error message *)
+let test_prompt merged_prompt =
+  let open MergedPrompt in
+  match prev_results with
+  | None -> Some "Error: No previous results provided"
+  | Some prev ->
+    if is_valid_prompt merged_prompt then None
+    else Some ("Error: Prompt failed validation with message: " ^ get_validation_error merged_prompt)
+
+(* The function used to merge a list of prompts together using the functions defined above *)
+let rec fold_left_prompts op acc = function
+  | []   -> acc
+  | h :: t -> fold_left_prompts op (op acc h) t
+
+(* Example usage: Merge a list of prompts together to generate a final prompt for the language model *)
+let merged_prompt =
+  let example_prompt = {
+    grammar = "A";
+    prev_results = None;
+    new_example = "B";
+  } in
+  fold_left_prompts merge_prompts example_prompt [
+    {
+      grammar = "A'";
+      prev_results = Some "D";
+      new_example = "C";
+    };
+    {
+      grammar = "A''";
+      prev_results = Some "E";
+      new_example = "F";
+    }
+  ]
+
+(* Test the merged prompt to see if it is valid. If not, repeat the merging process up to 3 times. *)
+match test_prompt merged_prompt with
+| None -> ()
+| Some err ->
+  let open Option in
+  let rec merge_and_test n =
+    match n with
+    | 0 -> failwith ("Error: Failed to generate a valid prompt after " ^ string_of_int n ^ " attempts. Error message: " ^ err)
+    | _ ->
+      let merged_prompt' = fold_left_prompts merge_prompts example_prompt [merged_prompt] in
+      match test_prompt merged_prompt' with
+      | None -> ()
+      | Some err' -> merge_and_test (pred n)
+  in
+  merge_and_test 3
+```
+
+In this example, we define a data type for representing prompts and functions for merging and testing them. We then use these functions to merge together a list of prompts in a `fold_left`-like operation, using the `fold_left_prompts` function. Finally, we test the merged prompt and repeat the merging process up to 3 times if necessary to generate a valid prompt for the language model. This approach can be customized and extended as needed for different use cases.
+#+end_src

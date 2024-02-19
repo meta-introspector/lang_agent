@@ -1,0 +1,9 @@
+
+#+begin_src input
+We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing role-play; Type Name: monster; Place: the country What is your response? Please generate variant array of size 1
+#+end_src
+#+begin_src output mixtral
+ Result: [
+"As you journey through the rolling hills and dense forests of the country, you suddenly find yourself in a role-play scenario. You come face to face with a fearsome monster, its jagged teeth bared as it snarls at you. With your sword at the ready, you imagine engaging in battle with this formidable foe, dodging its blows and striking back with all your might."
+]
+#+end_src

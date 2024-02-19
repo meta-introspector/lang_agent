@@ -1,0 +1,73 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you specified:
+```
+<prd_folder_tkn_grammar> ::= <prd_sequence_of_productions_tkn_sequence>
+
+<prd_sequence_of_productions_tkn_sequence> ::= <prd_production_tkn_production> { ';' <prd_production_tkn_production> }
+
+<prd_production_tkn_production> ::= <prd_identifier_tkn_identifier> ':' <prd_sequence_of_alternatives_tkn_sequence>
+
+<prd_sequence_of_alternatives_tkn_sequence> ::= <prd_alternative_tkn_alternative> { '|' <prd_alternative_tkn_alternative> }
+
+<prd_alternative_tkn_alternative> ::= <prd_sequence_of_elements_tkn_sequence>
+
+<prd_sequence_of_elements_tkn_sequence> ::= <prd_element_tkn_element> { <prd_element_tkn_element> }
+
+<prd_element_tkn_element> ::= <prd_terminal_tkn_terminal> | <prd_non_terminal_tkn_non_terminal> | <prd_group_tkn_group> | <prd_option_tkn_option> | <prd_repeat_tkn_repeat>
+
+<prd_terminal_tkn_terminal> ::= "'" <prd_character_sequence_tkn_character_sequence> "'"
+                              | '"' <prd_character_sequence_tkn_character_sequence> '"'
+                              | <prd_identifier_tkn_identifier>
+
+<prd_non_terminal_tkn_non_terminal> ::= '<' <prd_identifier_tkn_identifier> '>'
+
+<prd_group_tkn_group> ::= '(' <prd_sequence_of_elements_tkn_sequence> ')'
+
+<prd_option_tkn_option> ::= '[' <prd_sequence_of_elements_tkn_sequence> ']'
+
+<prd_repeat_tkn_repeat> ::= '{' <prd_sequence_of_elements_tkn_sequence> '}'
+
+<prd_character_sequence_tkn_character_sequence> ::= <prd_character_tkn_character> { <prd_character_tkn_character> }
+
+<prd_identifier_tkn_identifier> ::= <letter_tkn_letter> { <letter_tkn_letter> | <digit_tkn_digit> }
+
+<prd_character_tkn_character> ::= /* any character except for ')', ']', or '>' */
+
+<letter_tkn_letter> ::= /* any lowercase letter */
+
+<digit_tkn_digit> ::= /* any digit */
+```
+This EBNF grammar defines a set of productions, which are used to define the syntax of your language. Each production consists of a left-hand side, which is a non-terminal symbol, and a right-hand side, which is a sequence of elements. An element can be a terminal symbol, a non-terminal symbol, a group, an option, or a repeat.
+
+Terminal symbols are represented using single quotes (for characters) or double quotes (for strings), while non-terminal symbols are represented using angle brackets and an identifier. Groups, options, and repeats are defined using parentheses, square brackets, and curly braces, respectively.
+
+This grammar also includes naming conventions for the rules and tokens, as you specified. Each rule starts with `prd_` followed by the name of the rule, and each token starts with `tkn_` followed by the name of the token. For example, a terminal symbol that represents a string would be written as `<prd_tkn_string>`.
+
+I hope this helps! Let me know if you have any questions or need further clarification.
+#+end_src

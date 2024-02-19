@@ -1,0 +1,104 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the initial code snippet. This function allows us to iterate over a list of elements and accumulate a result using an associative operation.
+
+In order to merge large language model prompt workflows, we will need to maintain a more complex state that includes the current grammar, previous results, new examples, and errors encountered during generation. We can use OCaml records and modules to structure our data and functions effectively.
+
+First, let's define record types for the state and individual elements:
+
+```ocaml
+type example = string * string (* Input and output *)
+type error = string (* Error message *)
+
+type 'a workflow = {
+  grammar : 'a;
+  prev_results : 'a list;
+  new_example : example;
+  errors : error list;
+}
+```
+
+Next, we can define a function for the associative operation `op`, which merges two workflows:
+
+```ocaml
+let merge_workflows { grammar = g1; prev_results = r1; new_example = e1; errors = errs1 }
+                    { grammar = g2; prev_results = r2; new_example = e2; errors = errs2 } =
+  let new_grammar = Grammar.merge g1 g2 in
+  let new_prev_results = List.rev_append r1 r2 in
+  let new_new_example = (e1, e2) in
+  let new_errors = errs1 @ errs2 in
+  { grammar = new_grammar; prev_results = new_prev_results; new_example = new_new_example; errors = new_errors }
+```
+
+Now we can define a helper function to fold over a list of workflows and accumulate the final result:
+
+```ocaml
+let rec merge_workflows_list op acc = function
+  | []   -> acc
+  | h :: t -> merge_workflows_list op (op acc h) t
+```
+
+Finally, we can create a function to orchestrate the entire process:
+
+```ocaml
+let rec generate_prompts workflow =
+  let { grammar; prev_results; new_example; errors } = workflow in
+  (* Generate a new description using the current grammar and new example *)
+  let new_description = LanguageModel.generate_description workflow in
+  (* Check if the new description is valid *)
+  match validate_description new_description with
+  | Ok _ ->
+    (* Test the new description, update prev_results, and continue *)
+    let new_workflow = { grammar; prev_results = new_description :: prev_results; new_example; errors } in
+    generate_prompts new_workflow
+  | Error err ->
+    (* If there is an error, add it to the list of errors and repeat up to three times *)
+    let new_workflow = { grammar; prev_results; new_example; errors = err :: errors } in
+    if List.length errors >= 3 then
+      (* Return the final workflow after three failed attempts *)
+      new_workflow
+    else
+      generate_prompts new_workflow
+```
+
+Now you can use the `generate_prompts` function to start your prompt generation process, using an initial workflow. The simulation will run by recursively calling this function and accumulating results until it reaches a conclusion or errors out.
+#+end_src

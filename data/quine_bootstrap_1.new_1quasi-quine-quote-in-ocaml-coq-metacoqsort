@@ -1,0 +1,66 @@
+
+#+begin_src input
+quasi-quine-quote-in-ocaml-coq-metacoq a consecutive series of sortto describe the universe and universe of universeswhat is your ordering?Please use variant number 1
+#+end_src
+#+begin_src output mixtral
+ Result: I am not entirely sure I understand your question, but if you are asking for a "quasi-quine" in OCaml that can be used to describe the universe of universes using Coq's type theory and the MetaCoq framework, then here is one possible solution:
+```ocaml
+let rec print_term = function
+  | Coq_tac t -> Tac (print_term t)
+  | Coq_const c -> Const (Global.lookup_string c)
+  | Coq_sort s -> Sort s
+  | Coq_inductive i -> Inductive (Global.lookup_inductive i)
+  | Coq_projection p -> Projection (Global.get_projname p)
+  | Coq_letin (b, x, t1, t2) -> Let (b, x, print_term t1, print_term t2)
+  | Coq_apps (t, args) -> Apps (print_term t, List.map print_term args)
+  | Coq_fix (x, t) -> Fix (x, print_term t)
+  | Coq_lam (x, t) -> Lambda (x, print_term t)
+  | Coq_match (t, cases) -> Match (print_term t, List.map fst cases, List.map snd cases)
+  | Coq_cast (t, c) -> Cast (print_term t, c)
+  | Coq_coerce (t, s1, s2) -> Coerce (print_term t, s1, s2)
+  | Coq_ascribe (t, u) -> Ascribe (print_term t, print_term u)
+  | Coq_uvar (i, s) -> UVar (Uid.make i, s)
+  | Coq_rel (i, t1, t2) -> Rel (Uid.make i, print_term t1, print_term t2)
+  | Coq_universe u -> Universe u
+  | Coq_constr_eq (t1, t2) -> Constr_eq (print_term t1, print_term t2)
+  | Coq_lazy e -> Lazy e
+  | Coq_delayed (t, f) -> Delayed (print_term t, f)
+  | Coq_constant c -> Constant c
+  | Coq_global (i, args) -> Global (Global.lookup_string i, List.map print_term args)
+  | Coq_local (i, args) -> Local (Local.lookup_string i, List.map print_term args)
+  | Coq_number n -> Number n
+  | Coq_string s -> String s
+
+let quasi_quine () =
+  let open Global in
+  let universe_type = Type ("Type", [Universe.U 0]) in
+  let prop_type = Inductive ("Prop", [], universe_type, false, true) in
+  let sort_kind = Sort (Sortprop universe_type) in
+  print_term (Const "Set") ;
+  print_term (Global "True") ;
+  print_term (Inductive ("option", [("Some", [print_term sort_kind; prop_type]), ("None", [])], prop_type, false, true)) ;
+  print_term (Inductive ("list", [("Nil", []), ("Cons", [print_term sort_kind; Inductive "option"])], prop_type, false, true)) ;
+  print_term (Global "eq") ;
+  print_term (Global " Nat") ;
+  print_term (Inductive ("bool", [("true", []), ("false", [])], prop_type, false, true)) ;
+  print_term (Global " And") ;
+  print_term (Global " Or") ;
+  print_term (Global " Imp") ;
+  print_term (Global " forall") ;
+  print_term (Global " exists") ;
+  print_term (Inductive ("fun", [("Fun", [print_term sort_kind; Inductive "option"; Inductive "option"]), ("Abs", [print_term sort_kind])], universe_type, false, true))
+```
+This code defines a recursive function `print_term` that can print any Coq term as an OCaml value. Then it uses this function to define a quasi-quine function `quasi_quine` that prints the types and terms used in Coq's type theory, including:
+
+* The basic sorts (here called "Set", "Prop")
+* The option type (with constructors "Some" and "None")
+* The list type (with constructors "Nil" and "Cons")
+* The equality type ("eq")
+* The natural number type ("Nat")
+* The boolean type (with constructors "true" and "false")
+* The logical connectives ("And", "Or", "Imp")
+* The quantifiers ("forall", "exists")
+* The function type constructor ("fun" with constructors "Fun" and "Abs")
+
+Note that this is not a proper quine, as it does not print its own code. Instead, it prints the code of Coq's type theory using OCaml syntax and MetaCoq framework.
+#+end_src

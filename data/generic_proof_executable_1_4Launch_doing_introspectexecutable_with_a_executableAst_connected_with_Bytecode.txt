@@ -1,0 +1,22 @@
+
+#+begin_src input
+We are building a proof and prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Launch doing introspect; Type Name: executable with a executable; Place: Ast connected with Bytecode . We want to generate and test and prove the results. Trace how the requirements are reflected in the prompt, the test and the proof. What is your response? Please generate prompt/proof/test variant array of size 4
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I understand that you want me to create four variants of a prompt, test, and proof related to building a proof and prompt software generator for OCaml with Coq proofs, using the given context. Here are four possible variations:
+
+1. Prompt: "Can you launch an introspection on the executable named 'myocamlprogram' that is connected to a bytecode file? We want to generate tests and prove their correctness."
+Test: run the command `opam exec -- dune runtest` in the directory containing the 'myocamlprogram' and its associated files, and check if all tests pass.
+Proof: use Coq to write a proof of the function that performs the introspection on 'myocamlprogram', ensuring that it correctly interprets the bytecode file and generates accurate test cases.
+2. Prompt: "Please launch an introspection on the executable 'mycoqproof' located at the AST level, and generate tests to verify its behavior. We need to prove that the tests are sound."
+Test: write a script that compiles 'mycoqproof' using `coqc` and runs it with sample inputs, checking if the outputs match the expected results.
+Proof: use Coq to write a proof of the script's correctness, showing that it indeed generates valid test cases for 'mycoqproof'.
+3. Prompt: "Can you help us launch an introspection on the OCaml bytecode connected to the executable 'myprogram', and create tests that cover all possible behaviors? We want to prove their correctness using Coq."
+Test: write a test suite using a property-based testing library such as `quickcheck` or `prop Erate`, ensuring that it covers all possible inputs to 'myprogram' and outputs the expected results.
+Proof: use Coq to write a proof of the test suite's correctness, showing that it indeed tests all possible behaviors of 'myprogram'.
+4. Prompt: "We need to launch an introspection on the AST connected to the executable 'mycompiler', and generate tests that verify its behavior. Can you help us prove their soundness using Coq?"
+Test: write a test suite using a unit testing library such as `ounit` or `veserial`, ensuring that it covers all possible inputs to 'mycompiler' and outputs the expected results.
+Proof: use Coq to write a proof of the test suite's correctness, showing that it indeed tests all possible behaviors of 'mycompiler'.
+
+Note that these prompts, tests, and proofs are just examples, and may need to be adapted to your specific use case and implementation details.
+#+end_src

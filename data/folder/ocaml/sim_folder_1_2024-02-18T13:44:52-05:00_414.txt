@@ -1,0 +1,87 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet. Here is an example of how this function could be used to merge streams of input from a high-tech code-based hacking game:
+```ocaml
+(* Define a function to test if a prompt is valid *)
+let is_valid_prompt (prompt : string) =
+  (* Use regular expressions or other methods to check if the prompt meets certain criteria *)
+  true
+
+(* Define a function to generate a new prompt using a grammar and previous results *)
+let rec generate_prompt (grammar : string) (prev_results : string list) : string =
+  (* Use the grammar and prev_results to construct a new prompt *)
+  "New prompt generated from grammar and prev_results"
+
+(* Define a function to generate a response using a language model and a prompt *)
+let generate_response (model : 'a) (prompt : string) : 'b =
+  (* Use the language model to generate a response from the prompt *)
+  "Generated response from model and prompt"
+
+(* Define a function to test if a response is valid *)
+let is_valid_response (response : 'b) : bool =
+  (* Use methods specific to the response type to check if it meets certain criteria *)
+  true
+
+(* Define a function to merge streams of input from the game *)
+let rec merge_streams (grammar : string) (prev_results : string list) (examples : (string * 'a * 'b) list) : 'b =
+  (* Use fold_left to iterate through each example in the stream, generating a new prompt and response for each one *)
+  let rec merge_example (prompt : string) (model : 'a) (response : 'b) : 'b =
+    if is_valid_response response then
+      response
+    else
+      (* If the response is not valid, generate a new prompt and try again up to 3 times *)
+      let rec try_prompt (attempts_left : int) : unit =
+        if attempts_left <= 0 then
+          response
+        else
+          let new_prompt = generate_prompt grammar prev_results in
+          let new_response = generate_response model new_prompt in
+          try_prompt (attempts_left - 1)
+      in
+      try_prompt 3
+  in
+  List.fold_left (fun acc (example : string * 'a * 'b) -> merge_example acc (fst example) (snd example)) response examples
+```
+In this example, the `merge_streams` function takes a grammar, previous results, and a list of examples as input. Each example consists of an initial prompt, language model input, and expected output. The function uses `fold_left` to iterate through each example in the stream, generating a new prompt and response for each one. If the response is not valid, the function generates a new prompt and tries again up to 3 times. Finally, the function returns the final merged response.
+
+This system can be customized further by modifying the `generate_prompt`, `generate_response`, and validation functions to suit specific needs. The resulting prompts and responses can be used to generate creative and imaginative descriptions of code in a high-tech code-based hacking game, where players explore a dungeon of knowledge generated using a large language model and a proof engine.
+#+end_src

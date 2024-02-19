@@ -1,0 +1,80 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet by adding additional functionality to meet our needs. The resulting OCaml code is as follows:
+
+```ocaml
+type input = { grammar : string; prev_results : string; new_example : string }
+
+let validate_output output =
+  (* Implement your validation logic here, e.g., check the length, format, or correctness of the output *)
+  String.length output > 10
+
+let rec generate_output input counter max_retries =
+  let { grammar; prev_results; new_example } = input in
+  let base_prompt = sprintf "Given %s and %s, create a new example that is compatible with the grammar: %s" prev_results new_example grammar in
+  let new_output = LanguageModel.generate_text ~prompt:base_prompt in
+  if validate_output new_output then new_output
+  else if counter < max_retries then generate_output input (counter + 1) max_retries
+  else failwith "Unable to generate a valid output after multiple attempts"
+
+let rec merge_workflows inputs acc =
+  match inputs with
+  | [] -> acc
+  | h :: t ->
+    let new_input = { grammar = h.grammar; prev_results = acc; new_example = h.new_example } in
+    let merged_output = generate_output new_input 0 3 in
+    merge_workflows t (merged_output :: acc)
+
+(* Usage example *)
+let input_examples = [
+  { grammar = "A"; prev_results = ""; new_example = "B" };
+  { grammar = "B"; prev_results = "A"; new_example = "C" };
+  { grammar = "C"; prev_results = "AB"; new_example = "D" }
+]
+
+let merged_output = merge_workflows input_examples []
+```
+
+This code defines the `input` record type to store relevant data for each input, adds a validation function `validate_output`, and extends the original `fold_left` implementation into `merge_workflows`. This new function recursively merges inputs by generating outputs until a valid one is produced. It uses an accumulator to keep track of previous results and combines them with the current input's grammar and new example to create new outputs.
+
+The example provided at the end demonstrates how this code can be used to merge workflows, where `input_examples` represents a series of inputs that will be merged together based on their grammar, previous results, and new examples.
+#+end_src

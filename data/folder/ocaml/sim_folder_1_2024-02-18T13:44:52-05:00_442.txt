@@ -1,0 +1,81 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided:
+```
+type input = Grammar.t * Previous_results.t * New_example.t
+
+type output = Language_model_output.t
+
+type error = Error of string
+
+let rec merge_inputs inputs max_errors acc =
+  match inputs with
+  | [] -> acc
+  | (grammar, previous_results, new_example) :: t ->
+      let open Result.Monad in
+      let* output = Language_model.generate grammar new_example in
+      let output = Postprocessor.process output in
+      let output = Verifier.verify output previous_results in
+      match output with
+      | Ok _ as result -> merge_inputs t max_errors result
+      | Error err ->
+          if max_errors <= 0 then
+            Error (err ^ "\nGiving up after reaching the maximum number of errors.")
+          else merge_inputs t (max_errors - 1) (Error err)
+
+let rec game_loop grammar previous_results =
+  let* new_example = Game.generate_example grammar previous_results in
+  let inputs = (grammar, previous_results, new_example) in
+  let* output = merge_inputs [inputs] 3 None in
+  match output with
+  | Ok output ->
+      let* _ = Game.handle_output grammar previous_results output in
+      game_loop grammar output
+  | Error err ->
+      eprintf "Error: %s\n" (Error.to_string_hum err);
+      Game.cleanup grammar;
+      exit 1
+```
+This code defines three types, `input`, `output`, and `error`, to represent the different kinds of data that flow through the system. The `merge_inputs` function is a recursive function that takes a list of inputs, a maximum number of errors, and an accumulator value, and applies the language model to each input in turn, processing and verifying the output before passing it along. If an error occurs, the function keeps trying up to the maximum number of times before giving up. The `game_loop` function is the main game loop, which generates a new example based on the current grammar and previous results, merges it with the previous inputs, handles the output, and repeats until an error occurs.
+
+The above code is just an example and would need to be adapted to work with your specific data types, functions, and modules. It also assumes the existence of several helper functions and modules (e.g. `Language_model.generate`, `Postprocessor.process`, `Verifier.verify`, etc.) which would need to be defined elsewhere in your codebase.
+#+end_src

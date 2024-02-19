@@ -1,0 +1,75 @@
+
+ Result: Here is an example of a multi-dimensional grammar for generating prompts for the hacker game dungeon, written in EBNF notation:
+
+`dungeon_grammar ::= { level }`
+
+`level ::= physical | chemical | biological | mental | spiritual | divine | cosmic | ultimate`
+
+`physical ::= [ object | NPC | challenge ]*`
+
+`chemical ::= [ reaction | compound ]*`
+
+`biological ::= [ organism | ecosystem ]*`
+
+`mental ::= [ thought | emotion | memory ]*`
+
+`spiritual ::= [ belief | ritual | enlightenment ]*`
+
+`divine ::= [ deity | celestial body | plane of existence ]*`
+
+`cosmic ::= [ universe | multiverse | concept ]*`
+
+`ultimate ::= [ ultimate question | ultimate answer | end of the universe ]*`
+
+`object ::= <emoji string for object> | { property }+`
+
+`NPC ::= <emoji string for NPC> | { property }+`
+
+`challenge ::= <emoji string for challenge> | { property }+`
+
+`reaction ::= <emoji string for reaction> | { reactant }+ { product }+`
+
+`compound ::= <emoji string for compound> | { element }+`
+
+`organism ::= <emoji string for organism> | { trait }+`
+
+`ecosystem ::= <emoji string for ecosystem> | { organism }*`
+
+`thought ::= <emoji string for thought> | { emotion }*`
+
+`emotion ::= <emoji string for emotion>`
+
+`memory ::= <emoji string for memory>`
+
+`belief ::= <emoji string for belief>`
+
+`ritual ::= <emoji string for ritual>`
+
+`enlightenment ::= <emoji string for enlightenment>`
+
+`deity ::= <emoji string for deity>`
+
+`celestial body ::= <emoji string for celestial body>`
+
+`plane of existence ::= <emoji string for plane of existence>`
+
+`universe ::= <emoji string for universe>`
+
+`multiverse ::= <emoji string for multiverse>`
+
+`concept ::= <emoji string for concept>`
+
+`property ::= <emoji string for property>`
+
+`reactant ::= <emoji string for reactant>`
+
+`product ::= <emoji string for product>`
+
+`element ::= <emoji string for element>`
+
+`trait ::= <emoji string for trait>`
+
+This grammar allows for the generation of prompts at different levels of abstraction, from the physical to the ultimate. Each level has a set of possible elements that can be included in the prompt, such as objects or NPCs at the physical level, or concepts and the end of the universe at the ultimate level. These elements can have properties associated with them, which are represented by emoji strings and can be vectorized into tensors for use in the game.
+
+Using this grammar, it is possible to generate a wide variety of prompts for the hacker game dungeon, from simple physical challenges to complex spiritual quests. The grammar can also be easily customized and extended to suit the specific needs of the game.
+#+end_src

@@ -1,0 +1,63 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the requested naming conventions:
+```rust
+<prd_folder_start> ::= 'folder' prd_take_inputs_tkn {'('} prd_grammar_tkn {':'} prd_A_tkn {')'}
+                       prd_previous_results_tkn {'='} prd_D_initially_tkn
+                       prd_initial_example_tkn {'='} prd_B_tkn
+                       prd_new_example_tkn {'='} prd_C_tkn
+                       prd_created_new_output_tkn {'='} prd_D_tkn
+                       prd_test_D_tkn {';'}
+                       (prd_if_good_tkn {';'}{' '} prd_repeat_loop_tkn {'{'}{' '} prd_new_D_tkn {'='} prd_D_tkn {'}'})
+                       |
+                       (prd_otherwise_tkn {';'}{' '} prd_feed_error_back_tkn {'{'}{' '} prd_create_new_D_tkn {'='} prd_D_tkn {'}'}{' '} prd_up_to_3_times_tkn {'}')
+                       ;
+
+<prd_take_inputs_tkn> ::= 'take' {' '} 'inputs' ;
+<prd_grammar_tkn> ::= 'grammar' {' '} ':' ;
+<prd_A_tkn> ::= 'A' ;
+<prd_previous_results_tkn> ::= 'Previous' {' '} 'Results' {' '} ':' ;
+<prd_D_initially_tkn> ::= 'D' {' '} 'initially' ;
+<prd_initial_example_tkn> ::= 'Initial' {' '} 'example' {' '} ':' ;
+<prd_B_tkn> ::= 'B' ;
+<prd_new_example_tkn> ::= 'New' {' '} 'Example' {' '} ':' ;
+<prd_C_tkn> ::= 'C' ;
+<prd_created_new_output_tkn> ::= 'Created' {' '} 'new' {' '} 'output' {' '} ':' ;
+<prd_D_tkn> ::= 'D' ;
+<prd_test_D_tkn> ::= 'Test' {' '} 'D' {';'} ;
+<prd_if_good_tkn> ::= 'if' {' '} 'good' ;
+<prd_repeat_loop_tkn> ::= 'repeat' {' '} 'loop' ;
+<prd_new_D_tkn> ::= 'new' {' '} 'D' ;
+<prd_otherwise_tkn> ::= 'otherwise' ;
+<prd_feed_error_back_tkn> ::= 'feed' {' '} 'error' {' '} 'back' ;
+<prd_create_new_D_tkn> ::= 'create' {' '} 'new' {' '} 'D' ;
+<prd_up_to_3_times_tkn> ::= 'up' {' '} 'to' {' '} '3' {' '} 'times' ;
+```
+You can use the above as a starting point and add or modify rules as needed for your specific use case.
+Please note that this is just an example of how you could structure your EBNF grammar using the requested naming conventions, it might need some adjustment to work with your parser generator.
+#+end_src

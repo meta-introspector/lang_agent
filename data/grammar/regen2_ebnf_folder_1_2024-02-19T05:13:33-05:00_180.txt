@@ -1,0 +1,105 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, here is an example of how you can define your EBNF grammar with the naming conventions you described:
+
+<BNF>
+  : | '(' <BNF> ')'
+  | <prod> '=' <rule> ';'
+  | <COMMENT>
+
+<prod>
+  : 'prd' <IDENTIFIER>
+
+<rule>
+  : <seq>
+  | <seq> <opt>
+  | <seq> <rep>
+  | <seq> <choice>
+
+<seq>
+  : <term> {<term>}
+
+<term>
+  : <prod_name> ':' <symbol>
+  | <symbol>
+
+<opt>
+  : '[' <rule> ']'
+
+<rep>
+  : '{' <rule> '}'
+  | '{' <rule> '}' '?'
+  | '{' <rule> '}' '+'
+
+<choice>
+  : '(' <rule> '|' <rule> ')'
+
+<symbol>
+  : <prod_name> 'tkn' <IDENTIFIER>
+  | <TERMINAL>
+
+<COMMENT>
+  : '/*' {<ANYCHARACTER>} '*/'
+</BNF>
+
+In this EBNF grammar, `PROD` is a production rule that represents the name of a product. It should start with the prefix "prd" followed by an identifier for the product.
+
+`RULE` is a production rule that represents a single rule in the grammar. A rule can be a sequence of symbols (`seq`), followed by optional, repetition or choice constructs.
+
+A `seq` production rule consists of one or more terms separated by whitespace.
+
+The `term` production rule represents a symbol, which is either a non-terminal or a terminal in the grammar. A non-terminal symbol is represented as a `prod_name` token followed by a `tkn` token and an identifier for the non-terminal. A terminal symbol is represented as a `TERMINAL` token with the actual character or string value of the terminal between single quotes.
+
+The `opt`, `rep`, and `choice` production rules represent optional, repetition, and choice constructs respectively. They are used to define complex grammar rules that allow for more expressive syntax definitions.
+
+The `symbol` production rule represents a symbol in the grammar, which can be either a non-terminal or a terminal symbol.
+
+The `COMMENT` production rule allows for multi-line comments in the EBNF grammar.
+
+Here's an example of how you could define a simple grammar using this EBNF:
+
+<BNF>
+  prdExpr = expr ';' ;
+  
+  expr : term { addop term } ;
+  
+  term : factor { mulop factor } ;
+  
+  factor : '(' expr ')' | num | IDENT ;
+  
+  num : INTEGER | FLOAT ;
+  
+  addop : '+' | '-' ;
+  
+  mulop : '\*' | '/' ;
+</BNF>
+
+This grammar defines a simple expression language that supports addition, subtraction, multiplication, and division. The `prdExpr` production rule represents the start symbol of the grammar, which is an expression followed by a semicolon. The `expr`, `term`, and `factor` production rules define the different parts of an expression, while the `addop` and `mulop` production rules represent addition and multiplication operators respectively.
+
+I hope this helps you get started with defining your EBNF grammar! Let me know if you have any questions or need further clarification.
+#+end_src

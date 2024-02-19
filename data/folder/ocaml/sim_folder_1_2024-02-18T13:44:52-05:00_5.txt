@@ -1,0 +1,109 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, adapted from the given `fold_left` function:
+
+```ocaml
+type example = string (* replace with the actual type of examples *)
+type result = string (* replace with the actual type of results *)
+type grammar = string (* replace with the actual type of grammars *)
+
+(* function that tests if a result is good or not *)
+let is_good_result result = String.length result > 10
+
+(* function that combines a grammar, previous results, and new example into a new output *)
+let combine_grammar_results_example grammar prev_results new_example =
+  let combined = grammar ^ "\n\n---\n\n" ^ prev_results ^ "\n\n---\n\n" ^ new_example in
+  combined
+
+(* function that takes a function and an accumulator, applies the function to each element of a list and the accumulator, and returns the final accumulator value *)
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t ->
+      let new_acc = op acc h in
+      if is_good_result new_acc then
+        new_acc
+      else
+        fold_left op new_acc t
+
+(* starting values *)
+let initial_grammar = "A"
+let initial_results = "B"
+let num_retries = 3
+
+(* generate a new example using the current grammar and results, retrying up to num_retries times if the result is not good *)
+let rec generate_new_example () =
+  let new_example = combine_grammar_results_example initial_grammar initial_results initial_results in
+  if is_good_result new_example then
+    new_example
+  else if num_retries > 0 then
+    let num_retries' = num_retries - 1 in
+    generate_new_example ()
+  else
+    failwith "Could not generate a good example after multiple retries"
+
+(* initialize the state of the system *)
+let initial_state = (initial_grammar, initial_results)
+
+(* the main loop that generates new examples and tests them, updating the previous results if they are good *)
+let rec main_loop state =
+  let grammar, prev_results = state in
+  let new_example = generate_new_example () in
+  let next_state = (grammar, new_example) in
+  if is_good_result new_example then
+    main_loop next_state
+  else
+    main_loop state
+
+(* start the main loop *)
+main_loop initial_state
+```
+
+In this code, we define types for examples and results, as well as a function to test if a result is good or not. We also define a `combine_grammar_results_example` function that combines a grammar, previous results, and new example into a new output. The `fold_left` function is adapted from the original code, with an additional check for good results.
+
+We define starting values for the initial grammar, initial results, and number of retries. We then define a `generate_new_example` function that generates a new example using the current grammar and results, retrying up to `num_retries` times if the result is not good.
+
+The main loop is defined as a recursive function that takes a state, generates a new example, tests it, and updates the previous results if it is good. The loop continues until a good result is generated.
+
+Finally, we start the main loop with the initial state.
+
+Note that this code can be further customized to suit the specific needs of the high tech code based hacking game described in the prompt.
+#+end_src

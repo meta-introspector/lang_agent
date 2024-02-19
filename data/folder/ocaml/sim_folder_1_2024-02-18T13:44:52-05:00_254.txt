@@ -1,0 +1,95 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a language model, based on your description:
+```ocaml
+type input = { grammar : string; prev_results : string; new_example : string }
+
+let rec merge inputs acc =
+  let open Input in
+  match inputs with
+  | [] -> acc
+  | { grammar; prev_results; new_example } :: t ->
+      let merged =
+        String.concat "\n" [grammar; prev_results; new_example]
+      in
+      merge t (LanguageModel.generate_description merged)
+
+and generate_description description =
+  (* Implement the logic of generating creative and imaginative descriptions based on the input code *)
+  ...
+
+let rec test_output output max_retries retries =
+  if retries = max_retries then None
+  else
+    match LanguageModel.test_description output with
+    | true -> Some output
+    | false -> test_output output max_retries (retries + 1)
+
+let rec create_new_output prev_output error max_retries retries =
+  if retries = max_retries then None
+  else
+    let new_output = LanguageModel.create_new_description prev_output error in
+    match test_output new_output max_retries 0 with
+    | Some _ -> Some new_output
+    | None -> create_new_output prev_output error max_retries (retries + 1)
+
+let rec game_loop inputs =
+  let open Input in
+  match inputs with
+  | [] -> ()
+  | { grammar; prev_results; new_example } :: t ->
+      let output = merge [inputs] "" in
+      match create_new_output prev_results output "Error: Failed to generate new description" 3 0 with
+      | Some d ->
+          (* Save the new results *)
+          let prev_results' = d in
+          game_loop { grammar; prev_results = prev_results'; new_example }
+      | None -> game_loop inputs
+```
+In this code, we define a type `input` that represents an input to the language model. The `merge` function takes a list of inputs and generates a description based on their grammar, previous results, and new example. The `generate_description` function implements the logic of generating creative and imaginative descriptions based on the input code.
+
+The `test_output` function tests whether an output is good or not by using the `LanguageModel.test_description` function. If it's good, we repeat the loop with the new output. Otherwise, we feed the error back to create a new output up to 3 times. The `create_new_output` function creates a new output based on the previous output and an error message.
+
+The `game_loop` function takes a list of inputs and generates descriptions for each of them, testing and creating new outputs until all inputs are processed or there are no more errors.
+
+Note that this is just an example implementation, and you will need to fill in the details of the `LanguageModel` module, as well as any other functions that you need to generate creative and imaginative descriptions based on your specific requirements.
+#+end_src

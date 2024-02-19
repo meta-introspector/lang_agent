@@ -1,0 +1,85 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example OCaml code that implements a meta magical folder for merging streams of the matrix:
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_valid : bool;
+}
+
+let merge_matrices inputs max_attempts =
+  let rec fold_input input attempts acc =
+    if attempts = 0 then
+      acc
+    else
+      let open Input in
+      let open Output in
+      let new_output = {
+        result = LanguageModel.generate_description ~grammar:grammar ~example:new_example;
+        is_valid = ValidationEngine.validate_output ~input:prev_results ~output:new_output;
+      } in
+      if new_output.is_valid then
+        fold_input { input with prev_results = new_output.result } (attempts - 1) { acc with result = new_output.result }
+      else
+        fold_input input (attempts - 1) acc
+  in
+  let open Input in
+  let initial_input = List.hd inputs in
+  let initial_output = {
+    result = LanguageModel.generate_description ~grammar:initial_input.grammar ~example:initial_input.new_example;
+    is_valid = ValidationEngine.validate_output ~input:initial_input.prev_results ~output:{ result = initial_input.new_example; is_valid = true };
+  } in
+  let final_output = fold_input { input = { prev_results = initial_input.prev_results; grammar = initial_input.grammar; new_example = initial_input.new_example; } } max_attempts initial_output in
+  final_output.result
+```
+The `merge_matrices` function takes a list of `input` records, each containing the grammar, previous results, and new example for a given matrix, as well as the maximum number of attempts to validate an output before giving up. It returns a string representing the merged result of all matrices.
+
+The function uses a helper function `fold_input` that recursively applies the language model and validation engine to each input until it produces a valid output or runs out of attempts. The final result is then returned as the merged output.
+
+Note that this implementation assumes the existence of functions for generating descriptions from a given grammar and example, as well as validating outputs against previous results and examples. These functions can be implemented using any large language model and validation engine of your choice. Additionally, you may want to add error handling and other features to make the code more robust and customizable.
+#+end_src

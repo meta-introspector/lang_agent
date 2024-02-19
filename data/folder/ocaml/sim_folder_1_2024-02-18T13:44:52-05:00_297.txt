@@ -1,0 +1,74 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided:
+```
+type input = { grammar : string; prev_results : string; new_example : string }
+
+let rec generate_prompt input =
+  let { grammar; prev_results; new_example } = input in
+  (* Generate a new prompt using the current grammar, previous results, and new example *)
+  let new_prompt = ... in
+  (* Use the language model to generate a new output based on the prompt *)
+  let new_output = LanguageModel.generate_output new_prompt in
+  (* Test the new output to see if it is valid *)
+  if LanguageModel.test_output new_output then
+    (* If the output is valid, use it as the new prev_results and repeat the process *)
+    generate_prompt { grammar; prev_results = new_output; new_example }
+  else if List.length input.prev_results < 3 then
+    (* If the output is not valid and we have not tried three times yet, add the new example to the list of prev_results and try again *)
+    generate_prompt { grammar; prev_results = new_example :: input.prev_results; new_example }
+  else
+    (* If the output is not valid and we have tried three times, return an error message *)
+    "Error: invalid output after three attempts"
+
+let merge_workflows workflow1 workflow2 =
+  (* Merge two workflows by combining their grammars and examples, and using the first workflow's previous results as the initial prev_results for the merged workflow *)
+  let merged_grammar = workflow1.grammar ^ " " ^ workflow2.grammar in
+  let merged_examples = workflow1.new_example :: workflow2.new_example :: workflow1.prev_results in
+  { grammar = merged_grammar; prev_results = List.rev merged_examples; new_example = "" }
+```
+This code defines a type `input` to represent the inputs to the `generate_prompt` function, which generates a new prompt and tests it using a language model. The `generate_prompt` function is defined recursively, and it keeps generating new prompts and testing them until a valid output is obtained or three attempts have been made.
+
+The `merge_workflows` function takes two workflows as input and merges them by combining their grammars and examples, and using the first workflow's previous results as the initial prev\_results for the merged workflow. This allows for the creation of a "meta magical folder" that can fold streams of the matrix together into one.
+
+This is just one possible implementation of the system you described, and it can be customized and extended in various ways to suit your specific needs.
+#+end_src

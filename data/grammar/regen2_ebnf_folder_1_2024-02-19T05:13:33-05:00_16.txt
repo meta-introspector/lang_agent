@@ -1,0 +1,66 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+<bnf>
+  : | '(' <bnf> ')'
+  | <prd\_ruleName\_tkn\_nonTerminal> <bnfStar>
+  | <prd\_ruleName\_tkn\_terminal>
+
+<prd\_ruleName\_tkn\_nonTerminal>
+  : <bnf>
+
+<prd\_ruleName\_tkn\_terminal>
+  : [a-zA-Z]+
+
+<prd\_folder\_tkn\_grammar>
+  : [A-Z]
+
+<prd\_folder\_tkn\_previousResults>
+  : [A-Z]
+
+<prd\_folder\_tkn\_initialExample>
+  : [A-Z]
+
+<prd\_folder\_tkn\_newExample>
+  : [A-Z]
+
+<prd\_folder\_tkn\_createdOutput>
+  : [A-Z]
+
+<prd\_folder\_tkn\_test>
+  : [A-Z]
+
+<bnfStar>
+  : <bnf> { <bnf> }
+</bnf>
+
+This EBNF grammar uses the naming conventions you described, with each rule starting with "prd" and each token being called "tkn". It also includes non-terminals for the different inputs (grammar, previous results, initial example, new example, created output, and test) and a repetition operator (*) to allow for multiple instances of a rule.
+
+It is important to note that this is just one possible way to define your EBNF grammar, and you may need to adjust it based on the specific requirements of your system.
+#+end_src

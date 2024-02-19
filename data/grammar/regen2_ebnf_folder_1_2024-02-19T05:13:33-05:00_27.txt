@@ -1,0 +1,73 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+
+<BNF> ::= '(' <PRODUCTION> { '|' <PRODUCTION> } ')'
+
+<PRODUCTION> ::= <PRED_NAME> '=' [ <LIST> ]
+
+<PRED_NAME> ::= 'prd' <IDENTIFIER>
+
+<LIST> ::= <ELEMENT> { ',' <ELEMENT> }
+
+<ELEMENT> ::= <TERMINAL> | <PRODUCTION_REF>
+
+<TERMINAL> ::= 'tkn' <IDENTIFIER>
+
+<PRODUCTION_REF> ::= '<' <PRED_NAME> '>'
+
+<IDENTIFIER> ::= [a-zA-Z]+
+
+Explanation:
+
+* A BNF is defined as a list of productions, separated by '|'. Each production has a name (<PRED\_NAME>) and a definition, which can be either a list or a reference to another production.
+* A <PRED\_NAME> consists of the prefix "prd" followed by an identifier, as requested.
+* A <LIST> is a sequence of elements separated by commas. It can represent alternatives in a production definition.
+* An <ELEMENT> can be either a terminal or a reference to another production.
+* A <TERMINAL> consists of the prefix "tkn" followed by an identifier, as requested.
+* A <PRODUCTION\_REF> is a reference to another production, represented by its name in angle brackets.
+* An <IDENTIFIER> is any sequence of letters (a-z or A-Z).
+
+Here's an example of how this EBNF grammar could be used to define the "expression" production:
+
+<expression> = prdExpression_tknExpression ':'
+  ( <prdTerm_tknTerm>
+  | <prdAddition_tknAddition>
+    { <prdMultiplication_tknMultiplication>
+      <prdTerm_tknTerm>
+    }
+  )
+
+<addition> = prdAddition_tknAddition '+'
+  <expression>
+
+<multiplication> = prdMultiplication_tknMultiplication '*'
+  <expression>
+
+<term> = <prdInteger_tknInteger> | '(' <expression> ')'
+#+end_src

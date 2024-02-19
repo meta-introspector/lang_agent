@@ -1,0 +1,52 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define an EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::= 
+  'folder' '{' <prd_take_inputs_rules> '}'
+
+<prd_take_inputs_rules> ::= 
+  <prd_take_input_rule> ( ';' <prd_take_input_rule> )*
+
+<prd_take_input_rule> ::= 
+    'grammar' ':' <tkn_identifier>
+  |   'Previous Results' ':' <tkn_identifier>
+  |   'New Example' ':' <tkn_identifier>
+  |   'Created new output' ':' <tkn_identifier>
+  |   'Test' ':' <tkn_identifier>
+  |   'if good' ',' 'repeat loop' 'with new' <tkn_identifier> '.'
+  |   'otherwise feed error' 'back to create new' <tkn_identifier> 'up to 3 times' '.'
+
+<tkn_identifier> ::= [a-zA-Z][a-zA-Z0-9]*
+```
+This EBNF grammar defines a folder rule, which contains a list of take inputs rules. Each take inputs rule is defined by one of the possible options (e.g. 'grammar : <identifier>'). The token `<tkn_identifier>` is used to match any valid identifier.
+
+You can use this EBNF grammar to parse input that conforms to the specified structure, and then generate output based on the parsed input. For example, you could parse the string "folder { grammar : A ; Previous Results : D ; New Example : C; Created new output D ; Test D . If good, repeat loop with new D . Otherwise feed error back to create new D up to 3 times . }" and then generate output based on the parsed input.
+
+It's important to note that this is just one possible way to define an EBNF grammar for this structure, and there may be other valid ways to do so as well.
+#+end_src

@@ -1,0 +1,116 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can extend the `fold_left` function to include additional inputs and functionality needed for our game. Here's an example OCaml code that incorporates the requirements mentioned in the prompt:
+
+```ocaml
+type input = Grammar of string | Previous of string | NewExample of string
+type output = string
+type error = string
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h::t ->
+      let (new_acc, new_error) =
+        match h with
+        | Grammar a -> op acc (Grammar a)
+        | Previous d -> op acc (Previous d)
+        | NewExample c -> op acc (NewExample c)
+      in
+      if new_error <> "" then
+        (* If there's an error, repeat the loop up to 3 times *)
+        let rec try_fold i acc = function
+          | []   -> acc
+          | h::t ->
+              let (new_acc, new_error) =
+                match h with
+                | Grammar a -> op new_acc (Grammar a)
+                | Previous d -> op new_acc (Previous d)
+                | NewExample c -> op new_acc (NewExample c)
+              in
+              if i > 0 && new_error <> "" then try_fold (i - 1) new_acc t
+              else (new_acc, new_error)
+        in
+        try_fold 3 acc t
+      else fold_left op new_acc t
+
+let create_output grammar previous new_example =
+  let open ErrorMonad in
+  bind (validate_inputs grammar previous new_example)
+       (fun () ->
+         let result = generate_description grammar previous new_example in
+         if is_valid_output result then return result
+         else bind (create_output grammar result new_example)
+                (fun _ -> failwith "Invalid output"))
+
+let rec game_loop acc = function
+  | []   -> acc
+  | h::t ->
+      let (new_acc, new_example) =
+        match h with
+        | Grammar a -> (acc, NewExample (create_grammar_example a))
+        | Previous d -> (acc, NewExample (modify_previous_example acc d))
+        | NewExample c -> (create_output acc d c, NewExample (create_new_example acc c))
+      in
+      game_loop new_acc t
+
+let rec play_game grammar = function
+  | []   -> grammar
+  | h::t ->
+      let (new_grammar, example) =
+        match h with
+        | Grammar a -> (a, Previous grammar)
+        | Previous d -> (d, Previous grammar)
+        | NewExample c -> game_loop grammar (NewExample c)
+      in
+      play_game new_grammar t
+```
+
+In this code, we define three types: `input`, `output`, and `error`. The `input` type includes three constructors for each input type: Grammar, Previous Results, and New Example. We also define a function `fold_left` that takes an operator function `op`, an accumulator value `acc`, and a list of inputs.
+
+The `create_output` function takes the current grammar, previous results, and new example as input, validates them, generates a description using these inputs, and checks if the output is valid. If the output is not valid, it recursively calls itself with the same inputs to create a new output up to 3 times.
+
+The `game_loop` function takes the current accumulator value (which represents the previous results) and a list of inputs, and recursively applies the `create_output` function to generate new outputs and update the accumulator value.
+
+Finally, the `play_game` function takes an initial grammar and a list of inputs, and recursively calls itself with updated grammar and input values until it reaches the end of the input list.
+
+With this system in place, we can generate creative and imaginative descriptions of code using a large language model and incorporate them into our high-tech code-based hacking game. The player can explore the dungeon of knowledge generated by the language model and navigate through various objects and NPCs with their own set of properties and behaviors defined by the terms used in the grammar input.
+#+end_src

@@ -1,0 +1,53 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your detailed EBNF grammar with the naming conventions you described:
+
+```
+(* EBNF grammar for a folder *)
+
+(* A folder contains a list of files or subfolders *)
+prd_folder ::= '{' ( prd_file | prd_subfolder ) '*' '}' .
+
+(* A file has a name and content *)
+prd_file ::= 
+  'file' tkn_file_name ':' tkn_file_content .
+
+(* A subfolder has a name and contains a folder *)
+prd_subfolder ::= 
+  'subfolder' tkn_subfolder_name ':' prd_folder .
+
+(* Tokens used in the grammar *)
+tkn_file_name ::= [a-zA-Z0-9_]+ .
+tkn_file_content ::= [a-zA-Z0-9\s]+ .
+tkn_subfolder_name ::= [a-zA-Z0-9_]+ .
+```
+
+This grammar defines a `folder` as a container for a list of `file` or `subfolder` productions. The `file` production has two tokens, `tkn_file_name` and `tkn_file_content`, which are used to represent the name and content of the file, respectively. The `subfolder` production has one token, `tkn_subfolder_name`, which is used to represent the name of the subfolder, and it contains a `prd_folder` production, which represents the contents of the subfolder.
+
+You can use this EBNF grammar to parse and validate folder structures according to your specific requirements. The `fold_left` function you provided can be used to iterate through the list of productions in the `prd_folder` rule and process them as needed.
+#+end_src

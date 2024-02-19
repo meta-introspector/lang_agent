@@ -1,0 +1,60 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your EBNF grammar with the naming conventions you described:
+
+EBNF Grammar:
+
+<folder> ::= prd\_folder\_tkn\_name = <identifier> ";"
+           | prd\_folder\_tkn\_rules = [ <rule> ]
+
+<rule> ::= prd\_rule\_tkn\_name = <sequence>
+
+<sequence> ::= <element>
+            | <sequence> "|" <element>
+
+<element> ::= <token>
+           | <group>
+           | <option>
+           | <repeat>
+
+<group> ::= "(" <sequence> ")"
+
+<option> ::= "[" <sequence> "]"
+
+<repeat> ::= "{" <sequence> "}"
+
+<token> ::= prd\_tkn\_identifier = <identifier>
+         | prd\_tkn\_integer = <integer>
+         | prd\_tkn\_string = <quoted\_string>
+
+;
+
+In this EBNF grammar, each rule starts with "prd\_" followed by the name of the rule. Each token in a rule is prefixed with "prd\_tkn\_". For example, the token for an identifier is named "prd\_tkn\_identifier". If a token is used in a rule, its name is suffixed with "_<token name>", such as "prd\_folder\_tkn\_name" or "prd\_rule\_tkn\_name". This naming convention makes it easy to understand the structure and components of the grammar.
+
+You can use this EBNF grammar as a starting point for your bootstrapping system, and modify it as needed to suit your specific requirements. The "fold\_left" function you provided can be used to recursively apply operations to the elements of the grammar, making it easy to perform transformations or analysis on the grammar as a whole.
+#+end_src

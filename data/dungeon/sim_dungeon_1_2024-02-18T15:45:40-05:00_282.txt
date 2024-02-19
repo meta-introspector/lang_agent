@@ -1,0 +1,160 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts for a language model that can be used to generate creative and imaginative descriptions of a dungeon in a fantasy role-playing game.
+the game would involve exploring a dungeon generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+Overall, it seems that the code is designed to generate a richly detailed and immersive fantasy RPG experience using a combination of natural language processing and formal methods. By using a large language model and a proof engine, the game could potentially offer a high degree of realism and interactivity, allowing players to explore and interact with the dungeon in flexible and unpredictable ways.
+The script is being used to generate and test various combinations of terms to create content for a fantasy role-playing game. The generated content include descriptions of weapons, spells, artifacts, monsters, quests, and other elements of a typical RPG setting. 
+Here is the code we wrote so far 
+let type_terms = [
+  "weapon";
+  "spell";
+  "artifacts";
+  "magic items";
+  "treasure";
+  "monster";
+  "quest";
+  "challege";
+  "theme";
+  "drama";
+  "music";
+  "art";
+  "secrets";
+  "occult";
+  "reveal";
+  "hero journey"
+] 
+let model_name = "mixtral" 
+let url= "https://dev-hub.agentartificial.com"
+let verbs = [
+  "role-play";
+  "specify";"encode";"code";  "program";"prove";
+  "create";  "design";
+  "create descriptions for an artist";
+  "create descriptions for an artist to design a comic book panel";
+  "analyse";"lift";"shift";"splice";"quote";
+  "quasi-quote";
+  "quasi-quine-quote";
+  "quasi-quine-quote-in-ocaml";
+  "quasi-quine-quote-in-ocaml-coq-metacoq";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-observe";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-orient";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-decide";
+  "quasi-quine-quote-in-ocaml-coq-metacoq-introspector-bootstrap-act";
+  "meta-quote"
+]
+let top_terms =  ["Imagine";
+                  "Consider";
+                  "Draw";
+                  "Paint";
+                  "Compose";
+                  "Balance"]
+
+let places = [
+  "the country";
+  "the region";
+  "the city";
+  "the street";
+  "the house";
+  "the building";
+  "the dungeon";
+  "the labyrinth";
+  "the cave";
+  "the swamp";
+  "the room";
+  "the hallway";
+  "the chest";
+  "the bag";
+  "the wallet";
+  "the vault";
+  "the keep";
+  "the hideout";
+  "platos cave";
+  "garden of eden";
+  "the river styx";
+  "the restaurant at the end of the universe";
+]
+                       
+let count= 3 
+let simple = "dune exec ./bin/simple.exe --" 
+let binding = "--openai" 
+let test_name = "dungeon2"
+
+let prompt type_name try_n verb place=
+  "\"" ^
+  "We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creatively use the following context: Verb : " ^ verb ^ "; Type Name: " ^ type_name ^ "; Place: " ^  place ^   " What is your response?" ^  " Please generate variant array of size " ^ ( string_of_int try_n) ^    "\"" 
+
+let make_args type_name i verb place= [
+  simple;
+  binding;
+  "-m";    model_name;
+  "-s";    test_name ^ type_name ^ verb;
+  "-x";    ".new_" ^ (string_of_int i) ^ verb ^  type_name ^ place ^  ".txt";
+  "-p";    prompt    type_name           i verb place;
+  "-u";    url;
+]
+
+                 
+let do_apply_list    run_cmd make_args type_terms =
+  for i = 1 to count do
+    List.iter (fun top ->
+        List.iter (fun term ->
+            List.iter (fun term2 ->
+                List.iter (fun verb ->
+                    List.iter (fun place ->
+                        List.iter (fun place2 ->
+                            let term3 = term ^ " with a " ^ term2 in
+                            let verb2 = top ^ " doing " ^ verb in
+                            let place3 = place ^ " connected with " ^ place2 in
+                            let args = make_args
+                                term3 i verb2
+                                place3 in
+                            run_cmd args
+                          ) places
+                      ) places
+                  ) verbs
+              ) type_terms
+          ) type_terms
+      ) top_terms
+  done
+    
+let run_cmd args =
+  let cmd =  String.concat " " args in
+  Printf.printf "Cmd: %s\n" cmd;
+  let inp = Unix.open_process_in cmd in
+  let r = In_channel.input_line inp in
+  In_channel.close inp;
+  match r with
+  |Some out ->
+    Printf.printf "Output: %s\n" out
+  |None ->
+    Printf.printf "Output: None\n"
+    
+let () =do_apply_list run_cmd make_args type_terms 
+    
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate a grammar that we can use to generate prompts for create the dungeon using your knowledge. Write the grammar in EBNF notation. We will start with path through the dungeon starting at the entrance and going all the way to the ends.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar that could be used to generate prompts for creating a dungeon:
+```css
+<path> ::= <room> { <direction> <room> }
+
+<room> ::= "the" <description>
+
+<description> ::= <adjective> <noun>
+
+<adjective> ::= "dark" | "dank" | "musty" | "cold" | "wet" | "slippery" | ...
+
+<noun> ::= "corridor" | "room" | "chamber" | "passageway" | "tunnel" | "cavern" | ...
+
+<direction> ::= "north" | "south" | "east" | "west" | "up" | "down" | ...
+```
+This grammar describes a path through the dungeon as a sequence of rooms connected by directions. Each room is described using an adjective and a noun, with a fixed article "the" to begin the description. The set of possible adjectives and nouns can be expanded as desired to create more varied descriptions. The set of possible directions is also open-ended, allowing for the creation of complex dungeon layouts.
+
+Note that this grammar only covers paths through the dungeon, and additional grammars would be needed to describe other aspects of the dungeon such as monsters, treasure, quests, and so on. However, this should give you a good starting point for creating prompts using a grammatical approach.
+#+end_src

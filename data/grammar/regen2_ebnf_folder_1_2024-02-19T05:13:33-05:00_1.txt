@@ -1,0 +1,94 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your EBNF grammar with the naming conventions you specified:
+
+```ebnf
+<folder> ::= prd_folder_tkn_grammar ':' tkn_A
+            | prd_folder_tkn_previousResults ':' tkn_D
+            | prd_folder_tkn_newExample ':' tkn_C
+            | prd_folder_tkn_loop (prd_folder_tkn_test ';' tkn_D)
+                     ('{' prd_folder_tkn_error '}' prd_folder_tkn_feed ';' tkn_D) [0-3]
+            | prd_folder_tkn_start '{' prd_folder_tkn_code '}'
+
+<prd_folder_tkn_loop> ::= 'loop'
+
+<prd_folder_tkn_test> ::= 'test'
+
+<prd_folder_tkn_feed> ::= 'feed'
+
+<prd_folder_tkn_code> ::= {<code_line>}
+
+<code_line> ::= <statement_or_comment>
+
+<statement_or_comment> ::= <statement> | <comment>
+
+<statement> ::= <definition> ';'
+
+<definition> ::= <identifier> ':' tkn_type {prd_definition_tkn_parameters}
+
+<prd_definition_tkn_parameters> ::= '(' tkn_parameter {',' tkn_parameter} ')'
+
+<comment> ::= '{' '[' tkn_text ']' '}'
+
+<identifier> ::= <letter> {<letter_or_digit>}
+
+<type> ::= tkn_int | tkn_string | tkn_bool | tkn_unit
+
+<parameter> ::= tkn_identifier ':' tkn_type
+
+<text> ::= {<any_char_except_'}'}>
+
+<letter> ::= 'a' .. 'z' | 'A' .. 'Z'
+
+<letter_or_digit> ::= <letter> | <digit>
+
+<digit> ::= '0' .. '9'
+
+<any_char_except_'}'> ::= __{<not> '}'}
+
+<not> ::= '^'
+```
+
+This EBNF grammar defines a `folder` production that consists of several other productions, each with a naming convention of starting with `prd_folder_tkn_`. The `token`s used in the productions are also defined with a naming convention of starting with `tkn_`. For example, the `grammar` token is defined as `tkn_A`, and the `previousResults` token is defined as `tkn_D`.
+
+The `folder` production consists of several alternatives, each separated by a `|` symbol. The first alternative matches a `grammar` token followed by a colon (`:`) and then a `type` token. The second alternative matches a `previousResults` token followed by a colon (`:`) and then a `type` token. The third alternative matches a `newExample` token followed by a colon (`:`) and then a `type` token.
+
+The fourth alternative defines the main loop of the system, which consists of several productions. The `loop` production is defined as the literal string "loop" followed by a `test` production, a semicolon (`;`), an error handling block, another semicolon (`;`), and then a number between 0 and 3.
+
+The `test` production is defined as the literal string "test", followed by a semicolon (`;`) and a `type` token. The error handling block consists of curly braces (`{}`), the literal string "error", another set of curly braces (`{}`), the literal string "feed", another semicolon (`;`), and then a number between 0 and 3.
+
+The fifth alternative defines the start of the system, which consists of curly braces (`{}`), the literal string "start", another set of curly braces (`{}`), and then a `code` production. The `code` production consists of several `code_line` productions, each of which can be either a `statement` or a `comment`.
+
+The `statement` production consists of a `definition` followed by a semicolon (`;`). The `definition` production consists of an `identifier`, a colon (`:`), and then a `type`. The `parameters` production is optional and consists of a left parenthesis (`()`), several `parameter` productions separated by commas, and then a right parenthesis (`)`).
+
+The `comment` production consists of curly braces (`{}`), a left square bracket (`[`), some text, a right square bracket (`]`), and then another set of curly braces (`{}`). The `text` production is defined as any character except for the closing curly brace (`}`).
+
+The `identifier`, `type`, `parameter`, and `text` productions are defined in terms of letters, digits, and other symbols. For example, the `identifier` production consists of a letter followed by zero or more letter or digit characters. The `type` production can be one of several literal tokens, such as `tkn_int` for integers or `tkn_string` for strings. The `parameter` production consists of an `identifier` and then a colon (`:`) followed by a `type`. The `text` production consists of any character except for the closing curly brace (`}`).
+
+Note that this is just one example of how you could define your EBNF grammar with the naming conventions you specified. You may need to modify it further to suit your specific needs.
+#+end_src

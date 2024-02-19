@@ -1,0 +1,53 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```
+(* EBNF grammar for a folder *)
+
+%token <filename> tkn_filename
+%token <contents> tkn_contents
+
+%production prd_folder
+prd_folder -> '[' tkn_filename ':' tkn_contents ']'
+                  (';' prd_folder)*
+                  [';' ']']
+
+%production prd_filename
+prd_filename -> <alphanumeric>+
+
+%production prd_contents
+prd_contents -> <any string except ']'>*
+```
+
+In this example, `tkn_filename` and `tkn_contents` are tokens with the indicated attributes. The `prd_folder`, `prd_filename`, and `prd_contents` productions have names that start with "prd" as requested, and use the specified naming convention for any tokens they contain.
+
+Note that this is just an example and may not suit your specific needs. You'll need to modify it accordingly based on the requirements of your system.
+
+It's also worth noting that this EBNF grammar is written in a specific EBNF syntax, which may not be compatible with the `fold_left` function you provided. If you want to use this EBNF grammar with `fold_left`, you'll need to define a function that can parse it and apply the `fold_left` operation to it. This may require using a parser generator or writing your own parser by hand.
+#+end_src

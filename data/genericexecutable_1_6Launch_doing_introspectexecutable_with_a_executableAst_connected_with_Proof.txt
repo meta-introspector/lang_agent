@@ -1,0 +1,14 @@
+
+#+begin_src input
+We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Launch doing introspect; Type Name: executable with a executable; Place: Ast connected with Proof . What is your response? Please generate prompt variant array of size 6
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I understand that you want me to create six prompts for generating code and proofs in OCaml and Coq using a large language model and a proof engine within an adaptive language agent architecture. Here are six prompts that use the given context:
+
+1. "Generate an OCaml executable named `introspect_tool` that performs input validation by checking the type of its arguments. Use Coq to prove that the program correctly handles invalid inputs."
+2. "Create a function `verify_ast` in OCaml that takes an abstract syntax tree as input and checks that it is well-formed. Write a Coq proof that shows the function always terminates with a correct result for valid ASTs."
+3. "Design an executable named `proof_verifier` in OCaml that checks if a given proof is correct. Use Coq to prove that the verifier correctly identifies incorrect proofs and never rejects a valid one."
+4. "Develop an adaptive language agent architecture that combines a large language model with a proof engine for OCaml and Coq. Launch the system with a prompt to generate a simple program that prints `Hello, world!`, along with its formal proof of correctness in Coq."
+5. "Given an executable named `parse_ocaml` that parses OCaml code into an abstract syntax tree, create a function `proof_builder` that constructs a Coq proof of the parse result's validity. Launch the system to generate both functions and their associated proofs."
+6. "Write an OCaml program named `type_checker` that type-checks expressions against a given environment, then use Coq to prove that the program correctly identifies type errors and never accepts invalid expressions as well-typed."
+#+end_src

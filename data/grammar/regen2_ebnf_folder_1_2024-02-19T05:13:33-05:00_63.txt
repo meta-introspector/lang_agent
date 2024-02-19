@@ -1,0 +1,76 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```
+<prd_folder_rules_tkn_grammar> ::= <prd_take_input_rules_tkn_take_inputs>
+                                     <prd_let_rec_rules_tkn_let_rec>
+                                     <prd_fold_left_rules_tkn_fold_left>
+
+<prd_take_input_rules_tkn_take_inputs> ::= 'take' 'inputs' ':' <prd_grammar_rules_tkn_grammar>
+                                             ';' <prd_previous_results_rules_tkn_previous_results>
+                                             ':' <prd_initial_example_rules_tkn_initial_example>
+                                             ';' <prd_new_example_rules_tkn_new_example>
+                                             ';'
+
+<prd_let_rec_rules_tkn_let_rec> ::= 'let' 'rec' <prd_fun_identifier_rules_tkn_fun_identifier> '='
+                                     '<-' <prd_function_definition_rules_tkn_function_definition> 'in'
+
+<prd_fun_identifier_rules_tkn_fun_identifier> ::= 'fold_left'
+
+<prd_function_definition_rules_tkn_function_definition> ::= ( <lambda_expression_rules_tkn_lambda_expression> )
+
+<lambda_expression_rules_tkn_lambda_expression> ::= 'fun' 'acc' '->' <prd_acc_rules_tkn_acc>
+                                                     '->' <prd_function_body_rules_tkn_function_body>
+
+<prd_acc_rules_tkn_acc> ::= 'acc'
+
+<prd_function_body_rules_tkn_function_body> ::= <prd_fold_left_rules_tkn_fold_left>
+                                                 | <prd_op_rules_tkn_op> <prd_acc_rules_tkn_acc> <prd_h_rules_tkn_h>
+                                                 | '[' <prd_elements_rules_tkn_elements> ']'
+
+<prd_elements_rules_tkn_elements> ::= <prd_element_rules_tkn_element> ( ';' <prd_element_rules_tkn_element> )*
+
+<prd_element_rules_tkn_element> ::= <prd_op_rules_tkn_op> <prd_acc_rules_tkn_acc> <prd_h_rules_tkn_h>
+                                      | <prd_previous_results_rules_tkn_previous_results>
+                                      | <prd_initial_example_rules_tkn_initial_example>
+                                      | <prd_new_example_rules_tkn_new_example>
+
+<prd_op_rules_tkn_op> ::= 'op'
+
+<prd_h_rules_tkn_h> ::= 'h'
+
+<prd_previous_results_rules_tkn_previous_results> ::= <prd_D_rules_tkn_D>
+
+<prd_initial_example_rules_tkn_initial_example> ::= <prd_B_rules_tkn_B>
+
+<prd_new_example_rules_tkn_new_example> ::= <prd_C_rules_tkn_C>
+```
+
+This is a more detailed and explicit version of the original code, with all rules and tokens named according to your conventions. Note that this is just one possible way to define the grammar, and you might need to adjust it to fit your specific needs.
+#+end_src

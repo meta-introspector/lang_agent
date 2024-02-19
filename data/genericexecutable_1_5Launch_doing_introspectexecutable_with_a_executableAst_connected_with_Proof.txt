@@ -1,0 +1,13 @@
+
+#+begin_src input
+We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Launch doing introspect; Type Name: executable with a executable; Place: Ast connected with Proof . What is your response? Please generate prompt variant array of size 5
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I understand that you want me to create 5 prompts for generating code and proofs in OCaml and Coq using a large language model and a proof engine within an adaptive language agent architecture. Here are 5 possible prompts:
+
+1. "Generate an OCaml executable named `my_program` that performs integer arithmetic, and produce a Coq proof of its correctness. Use the `launch introspect` verb to guide the code generation process."
+2. "Create an executable `coqide` wrapper in OCaml that allows users to interactively develop Coq proofs. Make sure to validate the syntax and typechecking of the generated proofs using a proof engine integrated with the adaptive language agent architecture."
+3. "Develop an OCaml library for parsing and manipulating abstract syntax trees (ASTs) that are connected with Coq proofs. Use the `launch introspect` verb to explore the possibilities of this integration, and produce a set of examples showcasing its capabilities."
+4. "Define a Coq tactic for automatically generating counterexamples based on a given conjecture. Interface this tactic with the OCaml language model and the proof engine, such that the tactic can be invoked using the `launch introspect` verb in natural language queries."
+5. "Create an OCaml program that generates random mathematical statements and their corresponding Coq proofs. Use the adaptive language agent architecture to connect the generated code with the proof engine, ensuring that the generated proofs are verified and typechecked before being saved to disk."
+#+end_src

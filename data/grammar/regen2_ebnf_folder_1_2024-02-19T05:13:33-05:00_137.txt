@@ -1,0 +1,47 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+```bash
+<folder> ::= prd_folder_tkn_grammar ':' tkn_A
+                     { prd_folder_tkn_previous_results ':' tkn_D
+                     ;  prd_folder_tkn_new_example ':' tkn_C }
+                     prd_folder_tkn_created_new_output '.' tkn_D
+                     prd_folder_tkn_test '.' tkn_D { '.' }
+                     [ prd_folder_tkn_error '.'
+                     ;  prd_folder_tkn_repeat '.' tkn_3 ]
+
+<prd_folder_tkn_grammar> ::= 'folder'
+<prd_folder_tkn_previous_results> ::= 'Previous Results'
+<prd_folder_tkn_new_example> ::= 'New Example'
+<prd_folder_tkn_created_new_output> ::= 'Created new output'
+<prd_folder_tkn_test> ::= 'Test'
+<prd_folder_tkn_error> ::= 'error'
+<prd_folder_tkn_repeat> ::= 'repeat'
+```
+You can continue defining the rest of your grammar in a similar manner, making sure to follow the naming conventions you've established. This will make your grammar more explicit and easier to understand for anyone who might be reading it.
+#+end_src

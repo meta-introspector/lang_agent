@@ -1,0 +1,7 @@
+
+#+begin_src input
+consider a consecutive series of types to describe the universe and universe of universes, what is your ordering? please create .c language declarations. 
+#+end_src
+#+begin_src output mistral
+ Result: int Universe_t_BaseTypeID_UNIVERSE_BASE_TYPE_ID_UNDEFINED_INT_TYPE_ID_UNIVERSE_BASIC_TYPES_0_UNIVERSE_T_BASETYPEID_H_UNIVERSE_T_BASETYPEID_STRUCT_TAG_UNIVERSE_T_BaseTypeID_t_UNIVERSE_T_BASETYPEID_UNDEFINED_INT_TYPE_ID_UNIVERSE_BASIC_TYPES_1_UNIVERSE_Cosmos_t_UNIVERSE
+#+end_src

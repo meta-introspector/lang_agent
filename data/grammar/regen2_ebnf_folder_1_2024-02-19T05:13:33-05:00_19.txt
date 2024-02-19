@@ -1,0 +1,185 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's the updated code with the requested naming conventions:
+
+```ebnf
+(*
+  Folder
+
+  Inputs:
+    - Grammar: A
+    - Previous Results: D initially, Initial Example: B
+    - New Example: C
+
+  Steps:
+    1. Create new output D from inputs A, B, and C.
+    2. Test D. If good, repeat loop with new D. Otherwise feed error back to create new D up to 3 times.
+*)
+
+module type FOLDABLE = sig
+  type t
+  val fold_left : ('a -> t -> 'a) -> 'a -> t list -> 'a
+end
+
+module Folder = struct
+  type t = unit
+
+  let fold_left op acc xs =
+    List.fold_left op acc xs
+end
+
+(* Grammar: A *)
+module type GRAMMAR = sig
+  type t
+  val name : string
+end
+
+(* Previous Results: D initially, New Example: C *)
+module type EXAMPLE = sig
+  type t
+  val name : string
+  (* Add methods to load and save examples here. *)
+end
+
+(*
+  The Folder module uses the above modules (A, B, C) to create a new output D.
+*)
+module Folder (Grammar : GRAMMAR) (PrevResult : EXAMPLE with type t = Grammar.t) (NewExample : EXAMPLE) = struct
+  open PrevResult
+  open NewExample
+  open Grammar
+
+  (* Create new output D from inputs A, B, and C. *)
+
+  (* Define EBNF grammar rules here using the prd_*_tkn_* naming convention. *)
+
+  (* Rule: folder
+     Purpose: The entry point of the EBNF grammar.
+     Example: folder {take inputs}
+  *)
+  let prd_folder_tkn_inputs = [
+      "take"; "inputs"
+    ]
+
+  let prd_folder_rule () =
+    "folder" ^^ {| take inputs : Grammar.t, PrevResult.t, NewExample.t |}
+
+  (* Rule: take_inputs
+     Purpose: Define the input parameters for the folder.
+     Example: take_inputs : grammar : A, Previous Results : D initially, Initial example : B, New Example : C
+  *)
+  let prd_take_inputs_tkn_grammar = [
+      "grammar"
+    ]
+
+  let prd_take_inputs_tkn_previous_results = [
+      "Previous"; "Results"
+    ]
+
+  let prd_take_inputs_tkn_initial_example = [
+      "Initial"; "example"
+    ]
+
+  let prd_take_inputs_tkn_new_example = [
+      "New"; "Example"
+    ]
+
+  let prd_take_inputs_rule () =
+    "take_inputs" ^^ {| : grammar : A, Previous_Results : D initially, Initial_example : B, New_Example : C |}
+
+  (* Rule: create_new_output
+     Purpose: Create a new output from the inputs.
+     Example: create_new_output : D
+  *)
+  let prd_create_new_output_tkn_output = [
+      "output"
+    ]
+
+  let prd_create_new_output_rule () =
+    "create_new_output" ^^ {| : output : D |}
+
+  (* Rule: test
+     Purpose: Test the new output.
+     Example: test : boolean
+  *)
+  let prd_test_tkn_boolean = [
+      "boolean"
+    ]
+
+  let prd_test_rule () =
+    "test" ^^ {| : boolean |}
+
+  (* Rule: loop
+     Purpose: Loop through the process if successful.
+     Example: loop : D, boolean
+  *)
+  let prd_loop_tkn_output = [
+      "output"
+    ]
+
+  let prd_loop_tkn_boolean = [
+      "boolean"
+    ]
+
+  let prd_loop_rule () =
+    "loop" ^^ {| : output : D, boolean |}
+
+  (* Register the rules with Folder. *)
+
+  let rule_folders = [
+    ("folder", prd_folder_rule);
+    ("take_inputs", prd_take_inputs_rule);
+    ("create_new_output", prd_create_new_output_rule);
+    ("test", prd_test_rule);
+    ("loop", prd_loop_rule)
+  ]
+
+  let register_rules () =
+    List.iter (fun (name, rule) -> Folder.fold_left (fun acc r -> r :: acc) [] [rule]) rule_folders
+end
+
+(* Usage: *)
+module MyGrammar : GRAMMAR = struct
+  type t = string
+  let name = "MyGrammar"
+end
+
+module PrevResult : EXAMPLE with type t = string = struct
+  type t = string
+  let name = "PrevResult"
+end
+
+module NewExample : EXAMPLE with type t = string = struct
+  type t = string
+  let name = "NewExample"
+end
+
+(* Instantiate the Folder module with the required modules. *)
+module MyFolder = Folder(MyGrammar)(PrevResult)(NewExample)
+```
+#+end_src

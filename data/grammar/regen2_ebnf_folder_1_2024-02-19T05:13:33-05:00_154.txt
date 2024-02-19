@@ -1,0 +1,69 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+
+<BNF> ::= prd\_grammar\_tkn ':' prd\_rules\_tkn CRLF {prd\_rule\_tkn CRLF}
+
+prd\_rules\_tkn = 'rules'
+
+prd\_rule\_tkn = [prd\_identifier\_tkn (' ' | '\t')] {[prd\_identifier\_tkn (' ' | '\t')] statement}
+
+prd\_identifier\_tkn = prd\_name\_tkn | prd\_token\_tkn
+
+prd\_name\_tkn = 'prd' identifier
+
+prd\_token\_tkn = 'tkn' identifier
+
+statement = 
+    | assignment\_stmt 
+    | repetition\_stmt 
+    | optionality\_stmt 
+    | grouping\_stmt
+
+assignment\_stmt = prd\_identifier\_tkn ':=' expression
+
+expression = 
+    | sequence\_exp
+    | alternative\_exp
+
+sequence\_exp = '(' {expression} ')'
+
+alternative\_exp = '[' {expression} ']'
+
+repetition\_stmt = prd\_identifier\_tkn '\*'
+
+optionality\_stmt = prd\_identifier\_tkn '?'
+
+grouping\_stmt = '{' {statement} '}'
+
+identifier = [A-Za-z_][A-Za-z0-9_\-]*
+
+CRLF = '\r'? '\n'
+
+Note that this is just a sample and should be adjusted according to the specific requirements of your system.
+#+end_src

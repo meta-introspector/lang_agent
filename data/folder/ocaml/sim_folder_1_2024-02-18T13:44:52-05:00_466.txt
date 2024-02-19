@@ -1,0 +1,69 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can extend the `fold_left` function to include additional inputs and functionality. Here's an example of how this could be done in OCaml:
+
+```ocaml
+type input = Grammar of string | PreviousResults of string | NewExample of string
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h::t ->
+    let acc' = op acc h in
+    match h with
+    | Grammar _ -> fold_left op acc' t
+    | PreviousResults _ -> fold_left op acc' t
+    | NewExample _ ->
+      let new_output = generate_description acc' in (* replace this with the actual implementation *)
+      let new_results = test_and_correct new_output 3 in
+      fold_left op (PreviousResults new_results) (NewExample new_results :: t)
+
+and generate_description acc' = ...
+
+and test_and_correct output times_to_try = ...
+```
+
+In this implementation, we define a new `input` type that can represent the different types of inputs to the fold function. We then modify the `fold_left` function to handle these inputs appropriately. If the input is a `Grammar` or `PreviousResults`, we simply continue folding with the accumulator and the rest of the list. However, if the input is a `NewExample`, we generate a new description using the current accumulator (which contains the previous results and example), test and correct it as needed, and then recursively call `fold_left` with the new output and updated inputs.
+
+The `generate_description` function takes the current accumulator and generates a new description based on the grammar and previous results. The `test_and_correct` function tests the generated description and corrects any errors, up to a maximum number of times specified by `times_to_try`.
+
+Note that this is just an example implementation, and the actual implementation will depend on the specific requirements of your game and language model.
+#+end_src

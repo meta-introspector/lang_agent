@@ -1,0 +1,11 @@
+
+#+begin_src input
+We are building a software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing introspect; Type Name: executable with a executable; Place: university connected with string . What is your response? Please generate variant array of size 1
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I'll do my best to creatively interpret the given context!
+
+Here's a variant array of size 1, based on the context provided:
+
+[| "Imagine doing introspect at the university's executable string-connected lab, where we build a language model and proof engine for OCaml and Coq." |]
+#+end_src

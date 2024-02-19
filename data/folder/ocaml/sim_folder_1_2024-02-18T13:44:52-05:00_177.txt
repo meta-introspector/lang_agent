@@ -1,0 +1,69 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can extend the `fold_left` function to include additional inputs and operations. Here's an example of how the OCaml code might look:
+
+```ocaml
+type input = Grammar of string | Previous of string | NewExample of string
+
+let merge_prompts grammar prev_ex new_ex =
+  let op acc input =
+    match input with
+    | Grammar a -> (a, acc)
+    | Previous b -> (b, acc)
+    | NewExample c -> (c, acc)
+  in
+  let merged_inputs = fold_left op ("", grammar, prev_ex, new_ex) [grammar; prev_ex; new_ex] in
+  let merged_grammar, merged_prev_ex, merged_new_ex = fst merged_inputs, snd merged_inputs, thrd merged_inputs in
+  // Use the merged inputs to generate a new prompt and test it
+  // If the new prompt is good, repeat the loop with the new merged inputs
+  // Otherwise feed the error back to create new merged inputs up to 3 times
+end
+```
+
+In this example, we define a new type `input` that can be one of three variants: `Grammar`, `Previous`, or `NewExample`. The `merge_prompts` function takes in these three inputs as arguments and uses the `fold_left` function to combine them into a tuple of merged inputs.
+
+The `op` function takes in an accumulator (which starts as an empty string) and an input, and returns a new tuple with the updated accumulator. The first element of the tuple contains the merged grammar, previous example, and new example, while the second element is the original accumulator (which is not used in this example).
+
+After merging the inputs using `fold_left`, we can then use the merged inputs to generate a new prompt for the language model. We can test this prompt and repeat the loop with new merged inputs if it is good, or feed the error back to create new merged inputs up to 3 times if it is not good.
+
+Overall, this system allows for flexible and customizable generation of prompts for a large language model in a high-tech code-based hacking game, by merging different inputs such as grammar rules, previous examples, and new examples. The resulting merged inputs can then be used to generate new prompts for the language model, allowing for creative and imaginative descriptions of code in the game.
+#+end_src

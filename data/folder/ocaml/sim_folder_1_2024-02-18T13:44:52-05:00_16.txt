@@ -1,0 +1,101 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the OCaml code sample. The `fold_left` function, also known as fold or reduce in other languages, applies an operation recursively to each element of a list while accumulating a result.
+
+In this context, our goal is to create a prompt generation workflow that combines different sources of input: grammar (A), previous results (D), and new examples (C). We will define three functions for processing these inputs and then use `fold_left` to orchestrate the process.
+
+1. Prepend new examples to the result (using emoji string representation)
+2. Encode tensors from the updated list of results
+3. Test the generated tensor, creating a new output if successful or retrying otherwise
+
+Here's an example of OCaml code that implements this system:
+
+```ocaml
+(* Example data types *)
+type emoji_string = string
+type tensor = float array
+
+(* 1. Prepend new examples to the result (using emoji string representation) *)
+let prepend_new_examples acc new_examples =
+  String.concat " " (List.rev_append new_examples acc) :: acc
+
+(* 2. Encode tensors from the updated list of results *)
+let encode_tensors examples =
+  List.map encode_example examples
+
+and encode_example example =
+  (* Implement emoji string to tensor encoding here *)
+  [|0.0; 0.0; 0.0; ...|] (* Placeholder, replace with actual tensor conversion logic *)
+
+(* 3. Test the generated tensor, creating a new output if successful or retrying otherwise *)
+let test_and_create_output tensor =
+  if Tensor.isValid tensor then
+    Some (tensor, "Success!")
+  else
+    (* If the tensor is not valid, retry up to three times *)
+    let retries_left = 3 - Tensor.getRetries tensor in
+    if retries_left > 0 then
+      Some (tensor, ("Error, retrying... (" ^ string_of_int retries_left ^ "/3)"))
+    else
+      None
+
+(* Main fold_left function to orchestrate the prompt generation workflow *)
+let rec fold_workflow op acc = function
+  | []   -> acc
+  | h :: t ->
+      let new_acc = op acc h in
+      if List.length new_acc >= 3 then
+        (* If the accumulator has reached the desired length, test and encode tensors *)
+        (match test_and_create_output (List.hd new_acc) with
+         | Some (tensor, msg) -> fold_workflow op (tensor :: List.tl new_acc) t
+         | None -> acc)
+      else
+        (* If the accumulator has not reached the desired length, continue prepending examples *)
+        fold_workflow op (prepend_new_examples new_acc h) t
+
+(* Usage example *)
+let starting_data = [ "A"; "B"; "C" ] in
+fold_workflow encode_tensors [] starting_data
+```
+
+This code can be further customized and extended to suit specific requirements. The main function `fold_workflow` handles the merging of streams by combining different operations (prepending new examples, encoding tensors, and testing) using `fold_left`. As new data is introduced into the system through the functions `prepend_new_examples`, `encode_tensors`, and `test_and_create_output`, the accumulator will be updated with the latest results, forming a coherent workflow for generating prompts for a large language model.
+#+end_src

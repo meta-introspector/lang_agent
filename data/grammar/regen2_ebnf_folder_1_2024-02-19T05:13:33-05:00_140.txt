@@ -1,0 +1,57 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, here's an example of how you can define an EBNF grammar with your specified naming conventions:
+```sql
+<prd_folder_rules> ::= 
+  'take' 'inputs' ':' <prd_input_specification_tkn_grammar> ';'
+  <prd_input_specification_tkn_previous_results> ':' <prd_input_specification_tkn_D> ';'
+  <prd_input_specification_tkn_new_example> ':' <prd_input_specification_tkn_C> ';'
+  <prd_input_specification_tkn_created_new_output> ':' <prd_input_specification_tkn_D> ';'
+  <prd_input_specification_tkn_test> '.' <prd_input_specification_tkn_if_good> ',' <prd_input_specification_tkn_repeat_loop> '{' <int_tkn_3> '}' <prd_input_specification_tkn_otherwise> <prd_input_specification_tkn_feed_error> '(' <prd_input_specification_tkn_create_new_D> ')';
+
+<prd_input_specification_tkn_grammar> ::= <tkn_A>
+<prd_input_specification_tkn_previous_results> ::= <tkn_D>
+<prd_input_specification_tkn_new_example> ::= <tkn_C>
+<prd_input_specification_tkn_created_new_output> ::= <tkn_D>
+<prd_input_specification_tkn_test> ::= 'Test'
+<prd_input_specification_tkn_if_good> ::= 'If' 'good,'
+<prd_input_specification_tkn_repeat_loop> ::= 'repeat' 'loop' 'with'
+<prd_input_specification_tkn_otherwise> ::= 'Otherwise'
+<prd_input_specification_tkn_feed_error> ::= 'feed' 'error'
+<prd_input_specification_tkn_create_new_D> ::= 'create' 'new' <tkn_D>
+
+<int_tkn_3> ::= '3'
+```
+In this example, we have defined a single production rule `<prd_folder_rules>` that corresponds to the original code snippet you provided. Each token in the rule is prefixed with `prd_folder_rules_tkn_` to make it more explicit and detailed.
+
+We have also added new rules for each of the input specifications, such as `<prd_input_specification_tkn_grammar>`, `<prd_input_specification_tkn_previous_results>`, etc., to further break down the components of the original code.
+
+Finally, we have defined a separate rule for the integer token `<int_tkn_3>` to make it more explicit and detailed as well.
+
+Note that this is just an example, and you can modify it to suit your specific needs and requirements.
+#+end_src

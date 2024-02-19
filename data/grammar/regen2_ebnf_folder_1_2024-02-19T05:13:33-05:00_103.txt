@@ -1,0 +1,65 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+
+<BNF> ::= '(' *[ <prod\_name> '=' <prod\_def> ] ')' .
+
+<prod\_def> ::= <prod\_body> | <seq\_def> .
+
+<prod\_body> ::= [ <opt\_mod> ] [ <rep\_mod> ] <rule> .
+
+<seq\_def> ::= '{' *[ <prod\_name> ( ',' <prod\_name> )* ] '}' .
+
+<opt\_mod> ::= '[' <prod\_body> ']' | '[' '?' <prod\_body> ']' .
+
+<rep\_mod> ::= '{' <prod\_body> '}' | '{' <prod\_body> '*' '}' .
+
+<rule> ::= <term> [ '|' <rule> ]* .
+
+<term> ::= <lit\_tkn> | <alt\_tkn> | <seq\_tkn> | <opt\_tkn> | <rep\_tkn> .
+
+<lit\_tkn> ::= '\'' <char\_set> '\\'' .
+
+<alt\_tkn> ::= '"' <char\_set> '\"' .
+
+<seq\_tkn> ::= '<' <char\_set> '>' .
+
+<opt\_tkn> ::= '[' <term> ']' .
+
+<rep\_tkn> ::= '{' <term> '}' | '{' <term> '*' '}' .
+
+<char\_set> ::= <char> [ <char> ]* .
+
+The above EBNF grammar defines a new EBNF syntax with the following features:
+
+* Each production is enclosed in parentheses and has a name. For example, `<prod_name>` can be replaced with a specific production name such as `<folder>`.
+* The body of each production can have optional or repetition modifiers applied to it using square brackets (`[...]`) or curly braces (`{...}`), respectively.
+* Each terminal symbol is represented by a token, which can be either a literal string (using single quotes), an alternative string (using double quotes), a sequence of characters (using angle brackets), an optional term (using square brackets), or a repetition term (using curly braces).
+
+Note: This EBNF grammar is just an example and may not be suitable for your specific needs. It can be further customized to add more features as necessary.
+#+end_src

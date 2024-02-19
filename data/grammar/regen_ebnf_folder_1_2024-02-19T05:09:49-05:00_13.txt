@@ -1,0 +1,68 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your detailed EBNF grammar with the naming conventions you specified:
+
+```
+(* EBNF Grammar for Folder *)
+
+type tkn =
+  | T_LPAREN    of string
+  | T_RPAREN    of string
+  | T_LBRACE    of string
+  | T_RBRACE    of string
+  | T_EQUALS    of string
+  | T_COMMA     of string
+  | T_SEMICOLON of string
+  | T_IDENT     of string
+  | T_STRING    of string
+  | T_INT       of string
+
+and prd =
+  | Prd_grammar        of tkn
+  | Prd_previous_results of tkn
+  | Prd_new_example    of tkn
+  | Prd_take          of prd list * prd * prd * prd
+  | Prd_loop           of prd * prd * prd * prd * prd
+  | Prd_if             of prd * prd * prd
+  | Prd_repeat         of prd * prd * prd
+  | Prd_start          of prd list
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+
+(* Define the starting non-terminal symbol for the grammar *)
+let start : prd = Prd_start [Prd_take; Prd_grammar; Prd_previous_results; Prd_new_example]
+```
+
+This EBNF defines a `tkn` type for tokens and a `prd` type for production rules. Each production rule has a name that starts with `Prd_`. The `fold_left` function is defined in the same way as before, but using the new `prd` type.
+
+The starting non-terminal symbol for the grammar is `start`, which consists of a list of production rules representing the initial state of the folder system. You can add more production rules to this list to extend the functionality of the system.
+
+I hope this helps! Let me know if you have any questions or need further clarification.
+#+end_src

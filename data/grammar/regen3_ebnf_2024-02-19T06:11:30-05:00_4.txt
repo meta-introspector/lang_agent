@@ -1,0 +1,109 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed and self expressive.
+Here is the code we wrote so far 
+# GBNF (GGML BNF) is a format for defining formal grammars to constrain model outputs in llama.cpp. 
+# Backus-Naur Form (BNF) is a notation for describing the syntax of formal languages like programming languages, file formats, and protocols. GBNF is an extension of BNF that primarily adds a few modern regex-like features.
+# In GBNF, we define production rules that specify how a non-terminal (rule name) can be replaced with sequences of terminals (characters, specifically Unicode code points) and other non-terminals. The basic format of a production rule is nonterminal ::= sequence....
+
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S    | comment
+root ::= ( S   rule   S ) *
+
+# Terminals support the full range of Unicode. Unicode characters can be specified directly in the grammar, for example hiragana ::= [ぁ-ゟ], or with escapes: 8-bit (\xXX), 16-bit (\uXXXX) or 32-bit (\UXXXXXXXX).
+range ::=  "-"
+factor_range ::= term   S   range   S   term
+
+# Character ranges can be negated with ^:
+negate ::=  "^"
+
+#Sequences and Alternatives
+#The order of symbols in a sequence matter. For example, in "1. " move " " move "\n", the "1. " must come before the first move, etc.
+concatenation ::= ( S   factor   S   ? ) +
+
+# Alternatives, denoted by |, give different sequences that are acceptable. 
+alternation ::=  "|"
+alternation ::= ( S   concatenation   S   alternation ? ) +
+
+# Parentheses () can be used to group sequences, which allows for embedding alternatives in a larger rule or applying repetition and optional symbols (below) to a sequence.
+parens_open ::= "("
+parens_close ::=  ")"
+parens ::= parens_open | parens_close
+
+#Repetition and Optional Symbols
+occurance ::= repetition_plus | repetition_star | repetition_optional
+
+#* after a symbol or sequence means that it can be repeated zero or more times.
+repetition_star ::=  "*" 
+
+#+ denotes that the symbol or sequence should appear one or more times.
+repetition_plus ::=  "+" 
+
+#? makes the preceding symbol or sequence optional.
+repetition_optional ::=  "?" 
+
+
+#Comments and newlines
+#Comments can be specified with #:
+comment ::= "#" [a-zA-Z0-9 \t]*
+
+# Newlines are allowed between rules and between symbols or sequences nested inside parentheses. Additionally, a newline after an alternate marker | will continue the current rule, even outside of parentheses.
+
+
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+braces_open ::= "[" 
+braces_close ::= "]"
+braces_symbol ::= braces_open | braces_close
+
+quote ::=  "\""
+assignment ::= "::="
+ 
+symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | occurrence  | negate
+ 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= quote character+  quote 
+group_term ::= parens_open   S   rhs   S   parens_close
+range_term ::=  braces_open   S   rhs   S   braces_close
+term ::= group_term |range_term | terminal      | identifier
+
+factor_occurence ::= term   S   occurence  
+factor_negate ::= negate S factor
+factor ::= factor_occurence |factor_range | term   S
+ ENDSRC . Lets rewrite this  EBNF to be more expressive and explicit in its naming but keep the syntax the same for compatibility with GBNF and llama.cpp. 
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is a revised version of the GBNF code that aims to be more self-expressive and uses more explicit names:
+```css
+symbol_sequence ::= sequence_of_symbols
+alternative_sequence ::= one_or_more(S symbol_sequence S alternation S)
+non_terminal_definition ::= identifier S "::=" S alternative_sequence S
+grammar_rule ::= (S non_terminal_definition S)+
+root ::= grammar_rule+
+
+symbol_range ::= term S range S term
+negated_symbol_range ::= negate S symbol_range
+character_range ::= braces_open S rhs S braces_close
+term_sequence ::= one_or_more(S character_range S)
+terminal ::= quote S term_sequence S quote
+grouped_rhs ::= parens_open S rhs S parens_close
+range_term ::= grouped_rhs | terminal
+term ::= range_term | identifier
+
+factor_repetition ::= repetition_star | repetition_plus | repetition_optional
+factor_negate ::= negate S factor
+factor ::= term S factor_repetition | symbol_range | factor_negate | term
+symbol_sequence ::= one_or_more(S factor S)
+alternative_sequence ::= zero_or_more(S symbol_sequence S alternation S)
+```
+In this version, I have defined new names for some of the constructs in GBNF to make them more self-expressive. For example, `rhs` has been renamed to `alternative_sequence`, and `factor` has been introduced as a new name for the basic building block of sequences, ranges, and terms.
+
+I have also made use of some common functional programming concepts such as sequence operators (`one_or_more`, `zero_or_more`) and function application (using parentheses) to make the code more concise and readable.
+
+Overall, I believe this version is easier to understand and maintain than the original GBNF code.
+#+end_src

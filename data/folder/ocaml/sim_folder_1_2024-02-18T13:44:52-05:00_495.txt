@@ -1,0 +1,81 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the OCaml code snippet. The purpose of this function is to iteratively apply a given operation `op` to an accumulator value `acc` and each element of a list, from left to right, until all elements have been processed.
+
+We can use this concept to create a recursive function that generates prompts based on the previous results, new examples, grammar rules, and other relevant inputs. Here's an example OCaml code that demonstrates how to implement such a system:
+```ocaml
+type prompt_data = {
+  grammar : string;
+  prev_results : string list;
+  initial_example : string;
+  new_example : string;
+}
+
+let generate_prompt { grammar ; prev_results ; initial_example ; new_example } =
+  let rec build_prompt acc = function
+    | [] -> acc
+    | h :: t ->
+      let op acc example = Printf.sprintf "%s\n%s\n" acc (String.concat "\n" [grammar; example]) in
+      build_prompt (op acc new_example) (prev_results @ [initial_example ^ "\n" ^ example])
+  in
+  build_prompt "" [new_example]
+
+let rec generate_descriptions grammar prev_results initial_example =
+  let prompt = generate_prompt { grammar ; prev_results ; initial_example ; new_example = "" } in
+  (* Call the language model API with the generated prompt to get a new description *)
+  let new_description = call_language_model prompt in
+  let new_prev_results = new_description :: prev_results in
+  if is_good_description new_description then
+    generate_descriptions grammar new_prev_results (List.hd new_prev_results)
+  else if List.length new_prev_results < 3 then
+    generate_descriptions grammar new_prev_results (List.hd new_prev_results)
+  else
+    failwith "Failed to generate a good description after 3 attempts"
+```
+The `generate_prompt` function takes in the relevant inputs and constructs a prompt that can be used with a language model API. The `generate_descriptions` function uses recursion to call the language model API with the generated prompts, updating the previous results until it generates a good description or reaches the maximum number of attempts.
+
+We can then use the `generate_descriptions` function in our game loop to generate creative and imaginative descriptions of code based on the player's actions, the current state of the game, and other relevant inputs. The resulting descriptions can be used as part of the game's narrative or for generating new challenges and objectives for the player.
+
+To incorporate the tensor visualization aspect of the game, we could extend the `generate_prompt` function to include a tensor representation of the current state of the game, which could then be decoded into a code representation using the player's chosen programming language. We could then use this code representation to generate new descriptions or to create new objects and NPCs in the game world.
+
+Overall, by building upon the `fold_left` function and incorporating tensor visualization and other relevant features, we can create a flexible and customizable system for generating prompts and functional workflows that can be used to generate creative and imaginative descriptions of code in a high tech code-based hacking game.
+#+end_src

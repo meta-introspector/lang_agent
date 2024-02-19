@@ -1,0 +1,65 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar that follows the naming rules you provided:
+
+<PRODUCTIONS> ::= prd\_folder
+| prd\_take\_inputs
+| prd\_grammar
+| prd\_previous\_results
+| prd\_new\_example
+| prd\_created\_new\_output
+| prd\_test\_output
+<prd\_folder> ::= 'folder' '{' <inner\_productions> '}'
+<inner\_productions> ::= <production>
+| <production> <inner\_productions>
+<production> ::= <PRODUCTION\_NAME> ':' <rule>
+<PRODUCTION\_NAME> ::= 'prd' <IDENTIFIER>
+<rule> ::= <sequence>
+| <sequence> '|' <rule>
+<sequence> ::= <symbol>
+| <sequence> <sequence>
+<symbol> ::= <TOKEN>
+| <PRODUCTION\_NAME>\_tkn\_<IDENTIFIER>
+<TOKEN> ::= '\<tkn\>' <IDENTIFIER>
+<prd\_take\_inputs> ::= 'take' 'inputs' ':' '{' prd\_grammar ',' prd\_previous\_results ',' prd\_new\_example '}'
+<prd\_grammar> ::= 'grammar' ':' '\<tkn\>' <IDENTIFIER>
+<prd\_previous\_results> ::= 'Previous' 'Results' ':' '\<tkn\>' <IDENTIFIER>
+<prd\_new\_example> ::= 'New' 'Example' ':' '\<tkn\>' <IDENTIFIER>
+<prd\_created\_new\_output> ::= 'Created' 'new' 'output' ':' '\<tkn\>' <IDENTIFIER>
+<prd\_test\_output> ::= 'Test' 'Output' ':' if\_good\_D '{' repeat\_loop '|' error\_feedback '}'
+<if\_good\_D> ::= 'if' 'good' 'D' 'then'
+<repeat\_loop> ::= 'repeat' 'loop' 'with' 'new' 'D'
+<error\_feedback> ::= 'otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' 'D' 'up' 'to' '3' 'times'
+<IDENTIFIER> ::= [a-zA-Z][a-zA-Z0-9]*
+
+This EBNF grammar defines a set of productions, each with a name that starts with "prd" followed by an identifier. Each production has a single rule, which is a sequence of symbols. A symbol can be either a token (prefixed with "\<tkn\>") or the name of another production (prefixed with "prd\_" and followed by the production's name and the name of the symbol within the production). The grammar also includes productions for the inputs to the folder function, as well as the different steps that should be taken depending on whether the output is good or not.
+
+Note: I assumed that the function "fold\_left" is not related to the EBNF grammar and it's a separate function in your system, so I didn't include it in the new EBNF.
+
+Please let me know if there's anything else I can help you with.
+#+end_src

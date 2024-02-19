@@ -1,0 +1,93 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a language model, we can extend the `fold_left` function to include additional inputs and functionality needed for our high-tech code-based hacking game. Here's a possible implementation:
+
+```ocaml
+type example = string
+type result = string
+type error = string
+type 'a workflow = 'a -> (example * grammar) list -> (result * error) option
+
+let rec fold_left op acc workflow = function
+  | []   -> acc
+  | (h, g) :: t ->
+    let (new_acc, new_res_opt) = Option.bind acc (fun acc -> workflow acc [(h, g)]) in
+    (match new_res_opt with
+     | Some (res, err) ->
+       if err = "" then fold_left op new_acc workflow t
+       else if String.length err < 3 then  (* allow up to 3 attempts *)
+         let new_err = "Error: " ^ err in
+         fold_left op new_acc workflow (List.map (fun (h, g) -> (h, g)) t)
+       else raise (Failure err)
+     | None -> fold_left op new_acc workflow t)
+
+(* Example workflow that takes at most 3 examples and returns a result or error *)
+let rec merge_examples acc exs = function
+  | []   -> Some (acc, "")
+  | h :: t ->
+    let new_acc = h ^ "\n" ^ acc in
+    if String.length new_acc > 1024 then None
+    else
+      let num_exs = List.length exs + 1 in
+      if num_exs > 3 then Some (acc, "")
+      else merge_examples new_acc (h :: exs) t
+
+let merge_workflow : string workflow =
+  fun acc exgs ->
+    let examples = List.map fst exgs in
+    match merge_examples "" examples exgs with
+    | Some (merged, _) -> Some (merged, "")
+    | None -> None
+
+(* Initialize the system with an initial example and grammar *)
+let init_grammar = "The code of the world is written using the languages and grammars generated.\n"
+let init_example = "Each function or spell of object can be encoded into an emoji string which\nis its quasi quine quotation that can be vectorized into a number of tensors.\n"
+
+let (initial_results, _) = Option.get (fold_left merge_workflow ("Initial example: " ^ init_example) [("Grammar: ", init_grammar)] [])
+```
+
+In this implementation, we define a `workflow` type that represents a function that takes an accumulator, a list of examples and grammars, and returns an optional result and error. We extend the `fold_left` function to include the `workflow` as an additional argument, and modify it to handle errors and retries as specified in the prompt.
+
+We also define a helper function `merge_examples` that merges a list of examples into a single string using a given accumulator, and a workflow function `merge_workflow` that uses `merge_examples` to merge up to 3 examples into a single result or error.
+
+Finally, we initialize the system with an initial example and grammar, and use the `fold_left` function with the `merge_workflow` to generate the initial results.
+#+end_src

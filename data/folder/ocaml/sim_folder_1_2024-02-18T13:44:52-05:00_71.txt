@@ -1,0 +1,76 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example OCaml code that implements a meta magical folder for merging streams of a matrix in a high-tech code-based hacking game:
+```ocaml
+type input = Grammar.t * Previous_results.t * New_example.t
+type output = Previous_results.t
+type error = string
+
+exception Error of error
+
+let rec merge_streams ~max_errors grammar prev_results new_examples =
+  let open Grammar in
+  let open Previous_results in
+  let open New_examples in
+  let merge acc (grammar, prev_result, new_example) =
+    try
+      let merged = Language_model.generate grammar prev_result new_example in
+      let tested_merged = Test.test merged in
+      if Test.is_good tested_merged then
+        { prev_results with result = merged }
+      else
+        raise (Error "Test failed")
+    with
+    | Error "Test failed" when max_errors > 0 ->
+      merge_streams ~max_errors:(max_errors - 1) grammar { prev_results with errors = succ prev_results.errors } new_examples
+    | e -> raise (Error (Printer.to_string e))
+  in
+  fold_left merge prev_results (List.combine [grammar] (prev_results :: new_examples))
+```
+This code defines three types: `input`, `output`, and `error`. The `input` type represents the input to the merging function, which consists of a grammar, previous results, and a new example. The `output` type represents the output of the merging function, which is simply the updated previous results with the merged result included. The `error` type is used to represent any errors that occur during the merging process.
+
+The `merge_streams` function takes three arguments: the maximum number of errors allowed before giving up (`max_errors`), a grammar (`grammar`), previous results (`prev_results`), and a list of new examples (`new_examples`). The function uses the `fold_left` higher-order function to iterate over the input list, applying the `merge` function to each element.
+
+The `merge` function takes an accumulator and an input, and applies the language model to generate a merged result from the grammar, previous results, and new example. It then tests the merged result using the `Test` module, and if the result is good, updates the accumulator with the merged result. If the test fails and the maximum number of errors has not been reached, the function calls itself recursively to try merging again with one fewer error allowed. If an error occurs during merging that is not related to a failed test, it raises an `Error` exception with a string representation of the error.
+
+Note that this code uses several other modules and functions defined elsewhere in the system, such as `Language_model`, `Test`, and various data types like `Grammar`, `Previous_results`, and `New_examples`. These modules and functions would need to be defined and implemented separately as part of the larger system.
+#+end_src

@@ -1,0 +1,65 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define an EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::= 
+ '(' <prd_take_inputs_rule> ')'
+
+<prd_take_inputs_rule> ::= 
+ <tkn_grammar> ':' <tkn_A>
+ <separator> <tkn_Previous_Results> ':' <tkn_D>
+ <separator> <tkn_Initial_example> ':' <tkn_B>
+ <separator> <tkn_New_Example> ':' <tkn_C>
+ <separator> <tkn_Created_new_output> ':' <tkn_D>
+ <prd_test_D_rule>
+
+<prd_test_D_rule> ::= 
+ '{' <prd_if_good_rule> '}'
+
+<prd_if_good_rule> ::= 
+ <tkn_if> ':' <tkn_good> <separator> <prd_repeat_loop_rule>
+
+<prd_repeat_loop_rule> ::= 
+ '{' <prd_create_new_D_rule> '}'
+
+<prd_create_new_D_rule> ::= 
+ <tkn_start_with> '(' <tkn_this_following_code> ')' <separator> <prd_rewrite_it_rule>
+
+<prd_rewrite_it_rule> ::= 
+ '{' <prd_suiting_needs_rule> '}'
+```
+In this example, `<prd_folder_rules>` is the starting point of the grammar. It consists of a single production rule that matches a left parenthesis, followed by the `<prd_take_inputs_rule>` production, and a closing right parenthesis.
+
+The `<prd_take_inputs_rule>` production defines the structure of the input to the folder function. It consists of several tokens separated by the `<separator>` token, which could be defined as follows:
+```
+<tkn_separator> ::= <whitespace>* ',' <whitespace>*
+```
+The other productions in this example define the structure of the various inputs to the folder function, as well as the nested production rules that make up the body of the `<prd_take_inputs_rule>`.
+
+You can continue defining the rest of your grammar in a similar way, using the naming conventions you described.
+#+end_src

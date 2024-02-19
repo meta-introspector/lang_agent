@@ -1,0 +1,85 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an OCaml code that implements a meta magical folder for merging streams of the matrix:
+```ocaml
+type input = Grammar of string | PrevResults of string | NewExample of string
+type output = string
+
+let rec merge_inputs acc = function
+  | [] -> acc
+  | Grammars(g) :: t -> merge_inputs (Grammar(g) :: acc) t
+  | PrevResults(p) :: t -> merge_inputs (PrevResults(p) :: acc) t
+  | NewExamples(n) :: t -> merge_inputs (NewExample(n) :: acc) t
+
+let rec fold_left op acc inputs =
+  match inputs with
+  | [] -> acc
+  | Grammars(g) :: t ->
+    let new_acc = List.fold_left op acc g in
+    fold_left op new_acc t
+  | PrevResults(p) :: t ->
+    let new_acc = op acc p in
+    fold_left op new_acc t
+  | NewExample(n) :: t ->
+    let new_output = op acc n in
+    if is_valid new_output then
+      fold_left op new_output t
+    else if List.length t < 3 then
+      fold_left op new_output (NewExample(n) :: t)
+    else
+      merge_inputs acc inputs
+
+and is_valid output = (* replace with your validation logic *)
+  true
+
+(* example usage *)
+let grammar1 = ["function"; "language"; "model"]
+let prev_results1 = "past outputs"
+let new_example1 = "new output"
+
+let inputs1 = Grammars(grammar1) :: PrevResults(prev_results1) :: NewExample(new_example1) :: []
+let merged_output = fold_left (fun acc x -> x) "" inputs1
+```
+In this code, we have defined a new type `input` to represent the different types of inputs that the folder can take. The `merge_inputs` function is used to combine the inputs in the right order for processing. The `fold_left` function is then used to recursively process the inputs and generate the merged output.
+
+The code also includes an example usage, where a list of inputs (`grammar1`, `prev_results1`, and `new_example1`) is processed using the `fold_left` function to generate the merged output. You can replace the `is_valid` function with your own validation logic to ensure that the generated output meets the desired criteria.
+#+end_src

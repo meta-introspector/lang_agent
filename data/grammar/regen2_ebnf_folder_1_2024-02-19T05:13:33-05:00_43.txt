@@ -1,0 +1,51 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::= <prd_take_inputs_rule> | <prd_fold_left_rule>
+
+<prd_take_inputs_rule> ::= 'take inputs : prd_grammar_tkn_A, prd_previous_results_tkn_D, prd_new_example_tkn_C ;'
+                          <prd_created_new_output_rule>
+
+<prd_fold_left_rule> ::= 'let rec fold_left op acc = case of'
+                           <prd_empty_list_rule> | <prd_cons_list_rule>
+
+<prd_empty_list_rule> ::= '| [] -> acc'
+
+<prd_cons_list_rule> ::= '| h :: t -> fold_left op (op acc h) t'
+
+<prd_created_new_output_rule> ::= '<prd_created_new_output_tkn_D>. <prd_test_d_rule>'
+
+<prd_test_d_rule> ::= 'Test D. <prd_if_good_repeat_loop_rule> | <prd_otherwise_create_new_d_rule>'
+
+<prd_if_good_repeat_loop_rule> ::= 'If good, repeat loop with new D.'
+
+<prd_otherwise_create_new_d_rule> ::= 'Otherwise feed error back to create new D up to 3 times.'
+```
+You can continue defining the rest of your grammar using this naming convention. This way, all of your rules and tokens are easily identifiable and consistent throughout the grammar.
+#+end_src

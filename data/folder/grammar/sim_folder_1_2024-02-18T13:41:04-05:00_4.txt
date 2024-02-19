@@ -1,0 +1,28 @@
+<HackerGameGrammar> ::= { <Path> }
+
+<Path> ::= <Level> "->" <Path> | <Level>
+
+<Level> ::= "Physical" | "Virtual" | "Augmented Reality" | "Simulation" |
+            "Metaspace" | "Quantum" | "Infinity" | "Spiritual"
+
+<Object> ::= "monster" | "treasure" | "challenge" | "weapon" | "spell" | "artifact"
+
+<Property> ::= <Object> "has" { <Attribute> }
+
+<Attribute> ::= <Adjective> "<" <Value> ">"
+
+<Behavior> ::= <Object> "behaves" { <Action> }
+
+<Action> ::= <Verb> "with" { <Parameter> }
+
+<Adjective> ::= "strong" | "weak" | "rare" | "common" | "magical" | "technological"
+
+<Value> ::= <Number> | <Variable>
+
+<Number> ::= [0-9]+
+
+<Variable> ::= [a-zA-Z]+
+
+<Verb> ::= "attacks" | "defends" | "casts" | "equips" | "unlocks" | "decrypts"
+
+<Parameter> ::= <Object> | "<" <Value> ">"

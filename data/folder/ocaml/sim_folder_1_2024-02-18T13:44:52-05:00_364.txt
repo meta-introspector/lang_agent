@@ -1,0 +1,80 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code sample. This function recursively applies a binary operation to each element of a list, accumulating the results.
+
+To adapt this function for our needs, let's define a new type that represents the different inputs required by our system. We will also create a helper function to test and repeat the generation process up to three times, as described in the prompt.
+
+Here is an OCaml code snippet that implements this:
+
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+let rec generate_description_with_feedback input max_attempts acc =
+  let open Input in
+  if max_attempts = 0 then
+    failwith "Maximum attempts reached"
+  else
+    let description = fold_left (fun acc x -> generate_description ~grammar:x.grammar acc) input.new_example in
+    if is_valid_description description then
+      description
+    else
+      generate_description_with_feedback input (max_attempts - 1) (input.prev_results ^ "\n" ^ description)
+
+and generate_description ~grammar acc =
+  (* Generate a creative and imaginative description of code using the given grammar. *)
+  (* Implement this function based on your requirements.                             *)
+  ""
+
+and is_valid_description desc =
+  (* Validate whether the generated description is valid or not. *)
+  (* Implement this function based on your criteria for a valid description.        *)
+  true
+```
+
+In this code, `generate_description_with_feedback` is a helper function that tests the generated description and repeats the generation process up to three times if it's not valid. The core functionality of generating descriptions based on the given grammar and testing their validity should be implemented in the `generate_description` and `is_valid_description` functions, respectively.
+
+This system can be used to generate creative and imaginative descriptions of code for a high-tech code-based hacking game as described in your prompt. The generated descriptions can then be used to create prompts for a large language model like GPT-3 or incorporated into other parts of the game, such as object properties and NPC behaviors.
+#+end_src

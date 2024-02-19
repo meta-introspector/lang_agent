@@ -1,0 +1,69 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+```rust
+<prd_folder_rules> ::=
+    'take' 'inputs:' <prd_input_params_tkn_input_params> ';' <prd_input_params_tkn_grammar> ';'
+    <prd_input_params_tkn_previous_results> ';' <prd_input_params_tkn_new_example> ';'
+    <prd_input_params_tkn_created_output> ';'
+    <prd_start_rule>
+    <prd_rules_repetition>
+
+<prd_input_params_tkn_input_params> ::= <prd_identifier_tkn_input_params>
+<prd_input_params_tkn_grammar> ::= <prd_identifier_tkn_grammar>
+<prd_input_params_tkn_previous_results> ::= <prd_identifier_tkn_previous_results>
+<prd_input_params_tkn_new_example> ::= <prd_identifier_tkn_new_example>
+<prd_input_params_tkn_created_output> ::= <prd_identifier_tkn_created_output>
+
+<prd_identifier_tkn_input_params> = [a-zA-Z_][a-zA-Z0-9_]*
+<prd_identifier_tkn_grammar> = [a-zA-Z_][a-zA-Z0-9_]*
+<prd_identifier_tkn_previous_results> = [a-zA-Z_][a-zA-Z0-9_]*
+<prd_identifier_tkn_new_example> = [a-zA-Z_][a-zA-Z0-9_]*
+<prd_identifier_tkn_created_output> = [a-zA-Z_][a-zA-Z0-9_]*
+
+<prd_start_rule> = <prd_call_production_tkn_fold_left> '(' <prd_operator_tkn_op> ')' <prd_call_production_tkn_acc> '(' <prd_identifier_tkn_acc> ')'
+    (<prd_call_production_tkn_h> '(' <prd_identifier_tkn_h> ')')
+    ('(' <prd_call_production_tkn_op> ')' <prd_call_production_tkn_acc> '(' <prd_identifier_tkn_op> ')' )?
+    <prd_call_production_tkn_t> '(' <prd_identifier_tkn_t> ')'
+
+<prd_rules_repetition> = ('{' <prd_rule> ';' '}' | [ \t\r\n] )*
+
+<prd_rule> = <prd_call_production_tkn_fold_left> '(' <prd_operator_tkn_op> ')' <prd_call_production_tkn_acc> '(' <prd_identifier_tkn_acc> ')'
+    (<prd_call_production_tkn_h> '(' <prd_identifier_tkn_h> ')')
+    ('(' <prd_call_production_tkn_op> ')' <prd_call_production_tkn_acc> '(' <prd_identifier_tkn_op> ')' )?
+    <prd_call_production_tkn_t> '(' <prd_identifier_tkn_t> ')'
+    ';'
+
+<prd_call_production_tkn_fold_left> = 'fold_left'
+<prd_operator_tkn_op> = [a-zA-Z_][a-zA-Z0-9_]*
+<prd_call_production_tkn_acc> = 'acc'
+<prd_call_production_tkn_h> = 'h'
+<prd_call_production_tkn_t> = 't'
+```
+In this example, all the rules start with `prd_`, and tokens used in a rule follow the naming convention of `prd_<prod name>_tkn_<token name>`. The `fold_left` production is expanded to show how each token is named. Note that some of the identifiers are marked as [a-zA-Z\_][a-zA-Z0-9\_*], this means they can be any sequence of letters, digits and underscores that starts with a letter or an underscore.
+#+end_src

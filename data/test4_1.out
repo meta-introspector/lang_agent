@@ -1,0 +1,22 @@
+
+#+begin_src input
+consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?
+#+end_src
+#+begin_src output mistral
+ Result: 1. Ree1 Ne2
+2. Ne1 Na3
+3. Na1 Nb4
+4. Nb1 Nc5
+5. Nc1 Nd6
+6. Nd1 Ne7
+7. Ne1 Nf8
+8. Nf1 Ng8
+9. Ng1 Bf5
+10. Bh1 g6
+11. h3 Bg7
+12. c4 d5
+13. d3 e5
+14. e4 Nc6
+15. Nf3 Qd7
+
+#+end_src

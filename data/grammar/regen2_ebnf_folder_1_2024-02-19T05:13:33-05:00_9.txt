@@ -1,0 +1,63 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your detailed EBNF grammar with the specified naming rules:
+```rust
+%start <prd_grammar_tkn_grammar> production
+
+<prd_production_tkn_production> ::=
+  'let' <prd_identifier_tkn_identifier> '=' 'fn' <prd_identifier_tkn_identifier> '(' <prd_sequence_tkn_sequence> ')' '=' <prd_expression_tkn_expression>
+
+<prd_identifier_tkn_identifier> ::= <prd_character_tkn_character>+
+
+<prd_sequence_tkn_sequence> ::= <prd_expression_tkn_expression> ( ',' <prd_expression_tkn_expression> )*
+
+<prd_expression_tkn_expression> ::=
+  <prd_expression_tkn_expression> '+' <prd_term_tkn_term>
+| <prd_expression_tkn_expression> '-' <prd_term_tkn_term>
+| <prd_term_tkn_term>
+
+<prd_term_tkn_term> ::=
+  <prd_term_tkn_term> '*' <prd_factor_tkn_factor>
+| <prd_term_tkn_term> '/' <prd_factor_tkn_factor>
+| <prd_factor_tkn_factor>
+
+<prd_factor_tkn_factor> ::=
+  '(' <prd_expression_tkn_expression> ')'
+| '-' <prd_factor_tkn_factor>
+| <prd_primary_tkn_primary>
+
+<prd_primary_tkn_primary> ::=
+  <prd_integer_tkn_integer>
+| <prd_identifier_tkn_identifier>
+| 'true'
+| 'false'
+```
+In this example, the naming rules you specified are followed for all non-terminals and terminals. The `%start` directive is used to indicate that the production rule named `<prd_grammar_tkn_grammar>` is the starting point of the grammar. This allows you to test the grammar by specifying a string in the form of this production rule.
+
+You can further customize and extend this example to fit your specific needs.
+#+end_src

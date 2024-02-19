@@ -1,0 +1,89 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided:
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string option;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  test_result : bool;
+}
+
+let fold_left op acc inputs =
+  List.fold_left (fun (acc, i) input ->
+    let (acc', output) = op acc input in
+    (acc', {input with prev_results = Some acc'.result; test_result = output.test_result}))
+    (acc, {inputs with prev_results = None})
+    inputs
+  |> fst
+  |> fun acc -> if acc.test_result then acc else fold_left op acc inputs
+
+let rec generate_prompt grammar prev_results new_example =
+  let open Option in
+  let prev_results = prev_results >>= fun pr -> Some (pr ^ "\n\n---\n\n" ^ new_example) in
+  let prompt =
+    match prev_results with
+    | None -> new_example
+    | Some pr -> grammar ^ "\n\nContext:\n" ^ pr ^ "\n\nExample:\n" ^ new_example
+  in
+  {result = prompt; test_result = LanguageModel.test_prompt prompt}
+
+let rec generate_workflow grammar prev_results examples =
+  let open Option in
+  let example = List.nth examples (Random.int (List.length examples)) in
+  let new_example = LanguageModel.generate_description example in
+  let input = {grammar; prev_results; new_example} in
+  let output = generate_prompt grammar (Some input.prev_results) input.new_example in
+  {input with result = output.result}, output.test_result
+```
+This code defines three types: `input`, which represents the inputs to the fold operation; `output`, which represents the outputs of the fold operation; and a record type that holds the state of the game, including the grammar, previous results, new example, and current result. The `fold_left` function is defined as before, but with an additional argument `inputs` which is a list of input records.
+
+The `generate_prompt` function takes as input a grammar string, an optional previous results string, and a new example string, and returns an output record containing the generated prompt and a boolean indicating whether the test result was successful or not. If there are no previous results, the new example is used as the prompt; otherwise, the prompt is generated using the provided grammar, context (if available), and new example.
+
+The `generate_workflow` function takes as input a grammar string, an optional previous results string, and a list of examples, and returns a tuple containing the next state of the game and a boolean indicating whether the test result was successful or not. It selects a random example from the list, generates a new description for that example using the language model, and then uses the `generate_prompt` function to generate a prompt based on the grammar, previous results (if available), and new description.
+
+Overall, this code provides a flexible and customizable system for generating prompts and functional workflows for a large language model, which can be used to generate creative and imaginative descriptions of code in a high-tech code-based hacking game. The system can be easily extended or modified to suit the specific needs of the game.
+#+end_src

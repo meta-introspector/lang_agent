@@ -1,0 +1,108 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet. The updated OCaml code is given below:
+
+```ocaml
+(* Types *)
+type grammar = string
+type result = string
+type example = string
+type error = string
+type merge_state = {
+  grammar : grammar;
+  prev_results : result list;
+  new_example : example;
+  current_result : result;
+  errors : error list;
+  attempts_left : int;
+}
+
+(* Functions *)
+let rec merge_loop state =
+  if state.attempts_left <= 0 then
+    {state with errors = "Error: Exceeded maximum number of attempts." :: state.errors}
+  else
+    let new_result = generate_description state.grammar state.new_example in
+    {state with
+      current_result = new_result;
+      prev_results = new_result :: state.prev_results;
+      errors = [];
+      attempts_left = state.attempts_left - 1;
+    }
+
+and generate_description grammar example =
+  (* Implement your large language model prompt generation here *)
+  ""
+
+let merge_prompts ~grammar ~initial_example ~new_example ~max_attempts =
+  let initial_result = generate_description grammar initial_example in
+  let state = {
+    grammar;
+    prev_results = [initial_result];
+    new_example;
+    current_result = initial_result;
+    errors = [];
+    attempts_left = max_attempts;
+  }
+  in
+  merge_loop state
+
+let rec fold_left op acc state =
+  let {grammar; prev_results; new_example; current_result; _} = state in
+  let acc' = op acc (current_result, grammar, new_example) in
+  if List.length prev_results >= 3 then
+    let best_result = List.hd @@ List.rev @@ List.sort compare prev_results in
+    fold_left op acc' {state with current_result = best_result}
+  else
+    merge_loop state |> fun new_state ->
+      if List.length new_state.errors > 0 then
+        fold_left op acc' new_state
+      else
+        fold_left op acc' new_state
+```
+
+The updated code defines a `merge_state` type to keep track of the grammar, previous results, new example, current result, errors, and remaining attempts. The `merge_loop` function updates the state by generating new descriptions until it reaches the maximum number of allowed attempts or successfully generates a satisfactory description.
+
+The `generate_description` function implements the prompt generation using your large language model (to be implemented). The `merge_prompts` function initializes the merge loop with initial data and sets up the folding process.
+
+Finally, the provided `fold_left` function is updated to take the new state as input and perform the required operations accordingly. This includes comparing previous results and selecting the best one if available. The fold operation continues until it reaches a stable or acceptable solution or exceeds the maximum number of attempts.
+#+end_src

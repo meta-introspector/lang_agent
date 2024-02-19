@@ -1,0 +1,96 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a meta magical folder for merging streams of prompts and functional workflows for a large language model in a high-tech code-based hacking game:
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  error : string option;
+}
+
+let merge_prompts input =
+  let open Option in
+  let rec fold_left op acc = function
+    | [] -> acc
+    | h :: t -> (
+        match h with
+        | { grammar; prev_results; new_example } ->
+            let new_output = Op.apply ~grammar ~prev:prev_results ~curr:new_example in
+            let acc' = op acc new_output in
+            fold_left op acc' t)
+  in
+  let initial_output = { result = input.new_example; error = None } in
+  let output =
+    List.fold_left
+      (fun acc x ->
+        match acc with
+        | { result = acc_result; error = acc_error } ->
+            let new_output = Op.test ~expected:acc_result ~input:x.new_example in
+            if Op.is_success new_output then
+              { result = x.new_example; error = None }
+            else if Option.is_none acc_error then
+              { result = acc_result; error = Some (Op.get_error new_output) }
+            else
+              acc)
+      initial_output
+      [ { grammar = "G1"; prev_results = input.prev_results; new_example = input.new_example }
+      ; { grammar = "G2"; prev_results = input.prev_results; new_example = input.new_example }
+      ; { grammar = "G3"; prev_results = input.prev_results; new_example = input.new_example }
+      ]
+  in
+  output
+```
+The code defines two types: `input` and `output`. The `input` type represents the inputs to the merge function, which include a grammar, previous results, and a new example. The `output` type represents the result of merging the streams of prompts and functional workflows, which includes the merged output string and an optional error message.
+
+The `merge_prompts` function takes an input as its argument and returns an output. It first defines a helper function `fold_left`, which is a left-to-right fold over a list using an accumulator. The function then initializes the accumulator with an initial output that contains the new example string from the input and no error message.
+
+The function then folds over a list of grammars, applying each grammar to the previous results and the current new example to produce a new output. If the output is successful (i.e., it matches the expected result), then it becomes the new prev\_results for the next iteration. If an error occurs, the error message is accumulated in the `error` field of the output.
+
+Once all grammars have been applied, the function returns the final merged output with any accumulated errors.
+
+Note that this code is just a starting point and can be customized further to suit the specific needs of the high-tech code-based hacking game.
+#+end_src

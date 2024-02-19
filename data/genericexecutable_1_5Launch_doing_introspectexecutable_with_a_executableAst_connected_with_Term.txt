@@ -1,0 +1,13 @@
+
+#+begin_src input
+We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Launch doing introspect; Type Name: executable with a executable; Place: Ast connected with Term . What is your response? Please generate prompt variant array of size 5
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I understand that you want me to create prompts for a software generator that generates OCaml code with Coq proofs. The prompts should use the given context creatively and forgivingly, and there should be 5 variants in total. Here are five possible prompts:
+
+1. "Imagine you're tasked with launching an introspection of an executable's AST in OCaml, connected to a Term object in our proof engine. How would you structure the prompt for our software generator?"
+2. "We need to create an executable that runs an introspection on its own AST and generates Coq proofs. Using our adaptive language agent architecture, how could we design a prompt that achieves this?"
+3. "Suppose we want to generate OCaml code that launches an introspection of a Term object in the proof engine, with the resulting AST saved as an executable file. How would you construct a prompt for this task?"
+4. "Consider a scenario where we need to connect an Ast object in our proof engine to a corresponding Term object, while generating Coq proofs in OCaml. Can you come up with a prompt that could accomplish this?"
+5. "Think about a use case where we want to create an executable file from an introspection of a Term object in the proof engine, while also generating Coq proofs for the AST. How would you formulate a prompt for this complex task?"
+#+end_src

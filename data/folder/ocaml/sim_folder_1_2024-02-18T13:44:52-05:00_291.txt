@@ -1,0 +1,93 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet. This function applies a given operation `op` to an accumulator `acc` and each element of a list, from left to right.
+
+In our case, the accumulator will be the prompt, and the list will consist of different components (e.g., grammar, previous results, new examples) that contribute to building the final prompt. The following OCaml code demonstrates this concept:
+
+```ocaml
+type component =
+  | Grammar of string
+  | PreviousResult of string
+  | NewExample of string
+
+let rec build_prompt acc components =
+  match components with
+  | [] -> acc
+  | Grammar g :: t -> build_prompt (g ^ "\n" ^ acc) t
+  | PreviousResult pr :: t -> build_prompt (pr ^ "\n" ^ acc) t
+  | NewExample ne :: t -> build_prompt (ne ^ "\n" ^ acc) t
+
+let rec generate_prompts num_attempts grammar prev_results new_examples =
+  let initial_prompt = "Generate creative and imaginative descriptions of code in a high tech code based hacking game." in
+  let rec aux attempts acc components =
+    if attempts = 0 then
+      acc
+    else
+      let folded_components = fold_left build_prompt acc (List.rev components) in
+      let result = process_prompt folded_components grammar in (* Assumes a 'process_prompt' function that processes the prompt and returns a string *)
+      if is_acceptable_output result then
+        aux (attempts - 1) result components
+      else
+        aux attempts acc (append_random_component components)
+  and append_random_component components =
+    match List.length components with
+    | n when n >= 5 -> components (* Limit the number of components to avoid overly complex prompts *)
+    | _ ->
+      let random_comp =
+        if Random.bool (0.3) then
+          Grammar (get_random_grammar_rule())
+        else if Random.bool (0.6) then
+          PreviousResult (List.nth_opt prev_results (Random.int (List.length prev_results)))
+        else
+          NewExample (List.nth_opt new_examples (Random.int (List.length new_examples)))
+      in
+      random_comp :: components
+  in
+  aux num_attempts initial_prompt []
+```
+
+This code introduces a `component` type, representing the different types of inputs to the prompt generation system. The `build_prompt` function concatenates these components into a single string while preserving their order and adding line breaks between them.
+
+The `generate_prompts` function recursively builds prompts by starting with an initial prompt, accumulating the desired components using `fold_left`, and processing the generated prompt using a hypothetical `process_prompt` function that returns an acceptable or unacceptable result based on some criteria. If the output is not acceptable, the function adds random components to the prompt until it reaches the maximum number of attempts or produces an acceptable output.
+
+In this example, I added a simple mechanism for limiting the complexity of prompts by limiting the number of components appended in each iteration. You may want to replace this with your specific logic based on your project requirements.
+#+end_src

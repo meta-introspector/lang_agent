@@ -1,0 +1,67 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::= <prd_take_inputs_rule> | <prd_fold_left_rule>
+
+<prd_take_inputs_rule> ::= 'take inputs : tkn_grammar' 'tkn_previous_results' 'tkn_new_example' ';'
+                             <prd_created_new_output_rule>
+                             <prd_test_d_rule>
+                             <prd_if_good_rule>
+                             <prd_repeat_loop_rule>
+                             'start with' 'tkn_following_code' ';'
+
+<prd_fold_left_rule> ::= 'let rec fold_left' 'tkn_op' 'tkn_acc' '=' 'function'
+                           '|' ['['] 'tkn_h' '::' 'tkn_t' [']'] '->'
+                             <prd_fold_left_rule_body>
+
+<prd_fold_left_rule_body> ::= <prd_op_rule> 'tkn_acc' 'tkn_h'
+                               | <prd_op_rule> <prd_fold_left_rule>
+
+<prd_op_rule> ::= <prd_name_of_operation_rule>
+
+<prd_name_of_operation_rule> ::= 'op'
+
+<prd_created_new_output_rule> ::= '<prd_created_new_output>' ':' 'tkn_name_of_variable' <prd_semicolon_rule>
+
+<prd_test_d_rule> ::= '<prd_test_d>' ':' <prd_condition_rule> <prd_semicolon_rule>
+
+<prd_if_good_rule> ::= 'If' 'tkn_good' <prd_semicolon_rule>
+
+<prd_repeat_loop_rule> ::= '<prd_repeat_loop>' <prd_times_rule> 'times' ';'
+
+<prd_name_of_variable_rule> ::= <prd_name_of_operation_rule>
+
+<prd_condition_rule> ::= 'good'
+
+<prd_semicolon_rule> ::= ';'
+
+<prd_times_rule> ::= 'up' 'to' 'tkn_3'
+```
+This is just an example, you can adjust the grammar to fit your specific needs. The idea is to have a consistent naming convention for all the rules and tokens, and to use the `prd_` prefix for all rule names, and the `tkn_` prefix for all token names. This will make it easier to understand and maintain the grammar as it grows in complexity.
+#+end_src

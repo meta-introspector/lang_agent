@@ -1,0 +1,100 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a meta magical folder for merging streams of data in the context of your high-tech code-based hacking game:
+```ocaml
+type input = Grammar.t * Previous_results.t * New_example.t
+type output = Result.t
+type error = Error.t
+
+exception Max_errors of int
+
+let rec merge ~max_errors : input -> (output * input) option = function
+  | grammar, previous_results, new_example as input ->
+    let open Result in
+    let open Error in
+    let merge_functions acc f g =
+      match (f, g) with
+      | Success f, Success g -> Success (fold_left (fun a b -> a (b :> 'a)) f g)
+      | Error e, _ -> Error (Set.add e acc)
+      | _, Error e -> Error (Set.add e acc)
+    in
+    let rec merge_grammars acc grammar = function
+      | [] -> Success acc
+      | h :: t as stream -> (
+          match merge_functions acc grammar.Grammar.f h with
+          | Success merged_grammar -> merge_grammars merged_grammar grammar t
+          | Error err ->
+            if Set.cardinal err >= max_errors then Error err
+            else merge_grammars acc grammar t )
+    in
+    let rec merge_previous_results acc = function
+      | [] -> Success acc
+      | h :: t as stream -> (
+          match merge_functions acc previous_results.Previous_results.r h with
+          | Success merged_pr -> merge_previous_results merged_pr t
+          | Error err ->
+            if Set.cardinal err >= max_errors then Error err
+            else merge_previous_results acc t )
+    in
+    let rec merge_new_examples acc = function
+      | [] -> Success acc
+      | h :: t as stream -> (
+          match merge_functions acc new_example.New_example.e h with
+          | Success merged_ne -> merge_new_examples merged_ne t
+          | Error err ->
+            if Set.cardinal err >= max_errors then Error err
+            else merge_new_examples acc t )
+    in
+    try
+      let open Error in
+      let merged_grammar = merge_grammars Set.empty grammar stream in
+      let merged_pr = merge_previous_results merged_grammar stream in
+      let merged_ne = merge_new_examples merged_pr stream in
+      Some (merged_ne, (grammar, merged_pr, new_example))
+    with Max_errors max_errors -> None
+```
+This code defines a `merge` function that takes an input of type `input` and returns an option of type `(output * input)`. The `input` type is defined as a triple of `grammar`, `previous_results`, and `new_example`. The `output` type is defined as a `Result.t` which can be either `Success` or `Error`. An `error` is defined as a set of errors, with a custom exception `Max_errors` that is raised when the maximum number of errors has been reached.
+
+The `merge` function implements a recursive algorithm for merging streams of data using a combination of `fold_left`, `merge_functions`, and other helper functions to merge the grammar, previous results, and new examples. The merging process involves repeatedly applying the `merge_functions` operation until either a successful merge is achieved or the maximum number of errors has been reached. If the maximum number of errors is reached, the `Max_errors` exception is raised and the function returns `None`.
+
+To use this code in your high-tech code-based hacking game, you can define instances of the `input` type for each stream that needs to be merged, along with a corresponding `output` type and helper functions for merging individual components. The `merge` function can then be called recursively on each stream until a successful merge is achieved or the maximum number of errors has been reached. The resulting merged data can then be used to generate creative and imaginative descriptions of code, weapons, spells, artifacts, and other elements of your game.
+#+end_src

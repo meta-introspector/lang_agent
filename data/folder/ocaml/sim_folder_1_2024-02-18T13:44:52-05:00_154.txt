@@ -1,0 +1,84 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can extend the `fold_left` function provided in the code snippet to include additional inputs and logic for handling errors and testing output. Here's some OCaml code that implements this:
+```ocaml
+(* Extend the fold_left function to handle generating prompts and functional workflows *)
+let rec fold_prompt_workflow op acc = function
+  | []   -> acc (* base case: no more inputs, return accumulator *)
+  | h::t ->
+    let (grammar, prev_results, new_example) = h in
+    let new_output = op grammar prev_results new_example in
+    let tested_output = test_output new_output in (* test the output here *)
+    if is_good_output tested_output then
+      fold_prompt_workflow op acc t (* continue with remaining inputs *)
+    else
+      let rec try_create_new_output num_attempts =
+        if num_attempts = 0 then
+          failwith "Unable to create good output after 3 attempts"
+        else
+          let new_output = op grammar prev_results new_example in
+          let tested_output = test_output new_output in
+          if is_good_output tested_output then
+            tested_output (* return the good output *)
+          else
+            try_create_new_output (num_attempts - 1)
+      in
+      try_create_new_output 3 (* try to create a new output up to 3 times *)
+
+(* Example usage of fold_prompt_workflow function:
+   Assume we have a list of tuples containing grammar, previous results, and new examples.
+   Also assume there's a function `create_new_output` that takes in grammar, prev_results,
+   and new_example and returns a new output as a string.
+*)
+let create_new_output = ... (* define this function *)
+let test_output = ... (* define this function *)
+let is_good_output = ... (* define this function *)
+
+let list_of_inputs = [("grammar1", "prev_results1", "new_example1");
+                      ("grammar2", "prev_results2", "new_example2")]
+
+let final_output = fold_prompt_workflow create_new_output "" list_of_inputs
+```
+The `fold_prompt_workflow` function takes in an operation that creates a new output based on the grammar, previous results, and new example. It applies this operation to each tuple of inputs until there are no more remaining. If the output is good, it continues with the remaining inputs. Otherwise, it attempts to create a new output up to 3 times before giving up.
+
+Note that you'll need to define the functions `create_new_output`, `test_output`, and `is_good_output` for your specific use case. The example usage above assumes these functions are defined elsewhere in your codebase.
+#+end_src

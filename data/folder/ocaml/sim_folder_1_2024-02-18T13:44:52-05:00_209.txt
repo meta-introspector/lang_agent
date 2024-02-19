@@ -1,0 +1,78 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a language model, we can extend the `fold_left` function to include additional inputs and functionality needed for our high-tech code-based hacking game. Here's a possible OCaml code implementation:
+
+```ocaml
+type input = Grammar of string | Previous of string | NewExample of string
+
+let rec merge_inputs acc = function
+  | [] -> acc
+  | Grammar a :: t -> merge_inputs (a :: acc) t
+  | Previous d :: t -> merge_inputs (d :: acc) t
+  | NewExample c :: t ->
+      let merged = String.concat " " (List.rev acc) in
+      let new_output = run_language_model merged c in
+      if is_good new_output then
+        merge_inputs [new_output] t
+      else if List.length t > 2 then
+        merge_inputs [feedback_error new_output] (List.tl (List.tl t))
+      else raise Error
+
+and run_language_model prev_results new_example =
+  (* Run the large language model with previous results and new example as input *)
+  ...
+
+and is_good output =
+  (* Check if the generated output is good or not *)
+  ...
+
+and feedback_error output =
+  (* Generate error feedback based on the failed output *)
+  ...
+```
+
+In this implementation, we define a new `input` type that can be one of three variants: `Grammar`, `Previous`, or `NewExample`. We then extend the `fold_left` function to become `merge_inputs`, which takes an accumulator and a list of inputs. It processes each input in order, adding it to the accumulator if it's a grammar or previous result, or running the language model with the accumulator as previous results and the new example as input.
+
+If the generated output is good, we continue processing the remaining inputs. If not, and there are at least three more inputs left in the list, we feed the error back to create a new output up to three times before raising an error. The `run_language_model`, `is_good`, and `feedback_error` functions can be implemented as needed for your specific language model and game requirements.
+
+With this system, you can generate creative and imaginative descriptions of code in your high-tech code-based hacking game by merging different streams of inputs, including grammar rules, previous results, and new examples. You can also customize the system further by adding more input variants or modifying the `merge_inputs` function to suit your specific needs.
+#+end_src

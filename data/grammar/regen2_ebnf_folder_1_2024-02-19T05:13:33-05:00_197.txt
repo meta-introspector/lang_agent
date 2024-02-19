@@ -1,0 +1,47 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your EBNF grammar with the desired naming conventions:
+```bash
+<prd_folder_rules> ::= 
+  'folder' '{' <prd_take_inputs_tkn_grammar> ':' <prd_take_inputs_tkn_previous_results> [ ',' <prd_take_inputs_tkn_initial_example> ':' <prd_take_inputs_tkn_new_example> ]* '}'
+
+<prd_take_inputs_tkn_grammar> ::= <tnk_identifier>
+<prd_take_inputs_tkn_previous_results> ::= <tnk_identifier> 'initially,' <tnk_identifier>
+<prd_take_inputs_tkn_initial_example> ::= <tnk_identifier>
+<prd_take_inputs_tkn_new_example> ::= <tnk_identifier>
+
+<prd_created_new_output_tkn_D> ::= 'Created' <tnk_keyword> 'new' <tnk_identifier> '.'
+<prd_test_D_if_good_tkn_if_good> ::= 'Test' <tnk_identifier> '.'
+<prd_test_D_tkn_otherwise> ::= 'Otherwise'
+<prd_test_D_tkn_feed_error_back> ::= 'feed' <tnk_keyword> 'error' <tnk_keyword> 'back' <tnk_keyword> 'to' <tnk_keyword> 'create' <tnk_keyword> 'new' <tnk_identifier>
+<prd_test_D_tkn_up_to_3_times> ::= 'up' <tnk_keyword> 'to' <tnk_number> 'times' '.'
+
+<prd_start_with_this_following_code_and_rewrite_it_to_suit_our_needs_tkn_start_with_this_following_code> ::= 'start' <tnk_keyword> 'with' <tnk_keyword> 'this' <tnk_keyword> 'following' <tnk_identifier> 'and' <tnk_keyword> 'rewrite' <tnk_keyword> 'it' <tnk_keyword> 'to' <tnk_keyword> 'suit' <tnk_keyword> 'our' <tnk_keyword> 'needs' '.'
+```
+Note that I have used `<tnk_*>` to represent the tokens as per your naming convention of prefixing them with `tkn`. You can replace them with the actual token names. Also, I assumed that the keywords like `start`, `with`, `this`, etc are also part of the grammar and represented them as such. If they are not part of the grammar, you can remove the angle brackets from around them.
+#+end_src

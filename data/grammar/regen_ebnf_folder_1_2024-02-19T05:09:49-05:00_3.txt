@@ -1,0 +1,65 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the specified naming conventions:
+```
+prod_folder -> '[' ( prd_grammar | prd_previous_results | prd_new_example ) ']' ;
+
+prd_grammar -> tkn_identifier ':' tkn_EBNF_definition ;
+
+tkn_EBNF_definition -> '{' [ prd_rule { ';' prd_rule } ] '}' ;
+
+prd_rule -> tkn_rule_name '->' ( tkn_sequence | tkn_alternative | tkn_option | tkn_repeat ) ;
+
+tkn_sequence -> tkn_element { tkn_element } ;
+
+tkn_alternative -> tkn_element '|' tkn_alternative | tkn_element ;
+
+tkn_option -> '[' tkn_element ']' ;
+
+tkn_repeat -> '*' tkn_element | '+' tkn_element | tkn_element ;
+
+prd_previous_results -> tkn_identifier ':' tkn_file_path ;
+
+prd_new_example -> tkn_identifier ':' tkn_file_path ;
+
+tkn_identifier -> <any letter or digit followed by zero or more letters or digits> ;
+
+tkn_file_path -> <a string in double quotes> ;
+```
+In this example, `prd_folder` is the start symbol of the grammar. It consists of a list of elements enclosed in square brackets. Each element can be a grammar definition, previous results, or new example. A grammar definition is represented by `prd_grammar`, which consists of an identifier followed by a colon and an EBNF definition. The EBNF definition is represented by `tkn_EBNF_definition`, which consists of a list of rules enclosed in curly braces. Each rule is represented by `prd_rule`, which consists of a rule name, an arrow, and a sequence, alternative, option, or repeat. A sequence is represented by `tkn_sequence`, which consists of one or more elements enclosed in parentheses. An alternative is represented by `tkn_alternative`, which consists of one or more elements separated by vertical bars. An option is represented by `tkn_option`, which consists of an element enclosed in square brackets. A repeat is represented by `tkn_repeat`, which consists of an asterisk, plus sign, or nothing followed by an element. Previous results and new example are represented by `prd_previous_results` and `prd_new_example`, respectively, both of which consist of an identifier followed by a file path in double quotes.
+
+This grammar should be able to parse the following input:
+```
+[
+  grammar : { rule1 -> 'a' ; rule2 -> 'b' | 'c' ; },
+  previous_results : "previous_results.ebnf",
+  new_example : "new_example.ebnf"
+]
+```
+You can use a parser generator tool such as ANTLR, Ragel, or Happy to generate a parser from this EBNF grammar.
+#+end_src

@@ -1,0 +1,60 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your detailed EBNF grammar with the naming conventions you provided:
+```ebnf
+<folder> ::= prd_folder_tkn_grammar ':' tkn_A
+                  <previous_results_initial>
+                  <new_example>
+                  <created_output>
+                  <test_output>
+                  <loop_with_new_output> ';'
+
+<previous_results_initial> ::= prd_previous_results_tkn_name ':' tkn_D ','
+                      prd_initial_example_tkn_name ':' tkn_B '.'
+
+<new_example> ::= prd_new_example_tkn_name ':' tkn_C '.'
+
+<created_output> ::= prd_created_output_tkn_name ':' tkn_D '.'
+
+<test_output> ::= prd_test_output_tkn_name ':' tkn_D ','
+                      prd_if_good_tkn_name ':' tkn_if ','
+                      prd_repeat_loop_tkn_name ':' tkn_repeat ','
+                      prd_loop_with_new_output_tkn_name ':' tkn_loop_with_new_output '.'
+
+<loop_with_new_output> ::= prd_start_tkn_name ':' tkn_start ','
+                     prd_rewrite_tkn_name ':' tkn_rewrite ','
+                     <fold_left> '.'
+
+<fold_left> ::= prd_fold_left_tkn_name '(' tkn_op ',' tkn_acc ','
+                       '[' tkn_empty_list '|' tkn_h '::' tkn_t ']' ')' ':'
+                      (prd_op_tkn_name '(' tkn_acc tkn_h ')'
+                        | prd_op_tkn_name '(' tkn_acc '[' tkn_empty_list '|' tkn_h '::' tkn_t ']' ')'
+                      )
+```
+Note that this is just an example and you might need to adjust it based on the specific requirements of your system. Also, I assumed that `fold_left` takes 3 arguments (op, acc, list) based on the function signature provided at the beginning of the code snippet, but in real-world usage, fold\_left may have a different implementation or signature, so please adjust accordingly.
+#+end_src

@@ -1,0 +1,60 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you specified:
+
+```
+(* EBNF grammar for a folder *)
+
+%start <prd_folder_start_tkn_START> start
+
+<prd_folder_takeinputs_tkn_TAKE_INPUTS> = 'take' 'inputs' ':' {linebreak} '{' {linebreak} <prd_grammar_tkn_GRAMMAR> ':' <prd_token_tkn_TOKEN> {linebreak} {linebreak}
+                                            <prd_previousResults_tkn_PREVIOUS_RESULTS> ':' <prd_token_tkn_TOKEN> {linebreak} {linebreak}
+                                            <prd_newExample_tkn_NEW_EXAMPLE> ':' <prd_token_tkn_TOKEN> {linebreak} {linebreak}
+                                            '}' {linebreak} {linebreak}
+                                            [<prd_test_tkn_TEST>]
+                                            [<prd_loop_tkn_LOOP>];
+
+<prd_grammar_tkn_GRAMMAR> = 'grammar' ':' <prd_token_tkn_TOKEN>;
+<prd_previousResults_tkn_PREVIOUS_RESULTS> = 'Previous' 'Results' ':' <prd_token_tkn_TOKEN>;
+<prd_newExample_tkn_NEW_EXAMPLE> = 'New' 'Example' ':' <prd_token_tkn_TOKEN>;
+<prd_test_tkn_TEST> = 'Test' {linebreak};
+<prd_loop_tkn_LOOP> = 'loop' 'with' <prd_newD_tkn_NEW_D> '{' {linebreak} {rules for processing the new D} '}' {linebreak};
+
+<prd_newD_tkn_NEW_D> = 'New' 'D' ':' <prd_token_tkn_TOKEN>;
+<prd_rule_tkn_RULE> = {ident}';' {linebreak};
+
+%token <prd_token_tkn_TOKEN> TOKEN;
+%token <prd_linebreak_tkn_LINEBREAK> LINEBREAK;
+
+%eof <prd_eof_tkn_EOF>
+```
+
+This EBNF grammar defines a folder, which takes inputs including a grammar (specified by a token), previous results (also specified by a token), and a new example (also specified by a token). It also has optional `test` and `loop` rules. The `loop` rule creates a new D (specified by a token) and processes it using the rules defined in the grammar.
+
+I added some additional tokens for line breaks and the end of file, as well as some rules for defining other rules and tokens. You can customize this grammar further to suit your needs.
+#+end_src

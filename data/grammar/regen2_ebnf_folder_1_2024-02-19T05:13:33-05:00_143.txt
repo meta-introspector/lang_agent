@@ -1,0 +1,113 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your detailed EBNF grammar with the naming conventions you specified:
+
+```
+(* EBNF grammar for folder program *)
+
+program = prd_program_body_tkn_body (prd_folder_contents_tkn_contents definition)*
+
+definition = prd_definition_name_tkn_name equals expression
+
+expression = logical_or
+
+logical_or = logical_and ('or' logical_and)*
+
+logical_and = bitwise_or ('and' bitwise_or)*
+
+bitwise_or = bitwise_xor ('or' bitwise_xor)*
+
+bitwise_xor = bitwise_and ('xor' bitwise_and)*
+
+bitwise_and = equality ('and' equality)*
+
+equality = comparison (('==' | '!=') comparison)*
+
+comparison = addition (('>' | '<' | '>=' | '<=') addition)*
+
+addition = multiplication (('+' | '-') multiplication)*
+
+multiplication = unary ('*' | '/' | '%') unary
+
+unary = ('+' | '-' | '!') unary | primary
+
+primary = prd_primary_identifier_tkn_identifier |
+          prd_primary_literal_tkn_literal |
+          prd_primary_grouped_expression_tkn_grouped_expression |
+          prd_primary_function_call_tkn_function_call
+
+function_call = identifier '(' expression* ')'
+
+identifier = [a-zA-Z_] [a-zA-Z0-9_]*
+
+literal = string_literal | numeric_literal
+
+string_literal = '"' [^"]* '"'
+
+numeric_literal = decimal_literal | hexadecimal_literal
+
+decimal_literal = [0-9]+ ('.' [0-9]+)?
+
+hexadecimal_literal = '0x' [0-9A-Fa-f]+
+
+body = '{' declaration* '}'
+
+declaration = prd_declaration_type_tkn_type identifier ('=' expression)? ';'
+
+contents = body | function_definition
+
+function_definition = prd_function_definition_tkn_function_definition type identifier '(' parameters? ')' colon_semicolon block
+
+parameters = parameter (',' parameter)*
+
+parameter = [a-zA-Z_] [a-zA-Z0-9_]* ':' type
+
+type = prd_type_identifier_tkn_identifier |
+      prd_type_function_tkn_function '(' type ')'
+
+colon_semicolon = ':' ';'
+
+block = '{' declaration* '}'
+
+(* helper rules *)
+
+equals = '='
+
+op = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '>' | '<' | '>=' | '<='
+```
+
+This EBNF grammar defines a `program` as a series of `definition`s, where each definition consists of a name and an `expression`. Expressions are made up of various logical and comparison operators, which in turn are composed of arithmetic operations. The `primary` rule covers the basic building blocks of expressions, such as identifiers, literals, grouped expressions (parenthesized subexpressions), and function calls.
+
+The `body` rule defines a block of code that contains a series of `declaration`s. A declaration consists of a type, an identifier, and optionally an initial value expressed as an `expression`. The `contents` rule allows for either a body or a `function_definition`.
+
+A `function_definition` includes a return type, a name, a list of parameters (each with its own type), and a block of code (the `block`) that defines the function's behavior.
+
+The grammar also includes some helper rules for common elements like identifiers, literals, and operators.
+
+Each rule name follows the convention you specified, starting with "prd\_" followed by a more descriptive name, and each token is named using the convention "prd\_<rule\_name>\_tkn\_<token\_name>".
+#+end_src

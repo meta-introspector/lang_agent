@@ -1,0 +1,57 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+
+<BNF> ::= '(' <PRODUCTION> { '|' <PRODUCTION> } ')'
+
+<PRODUCTION> ::= <PROD_NAME> '::=' <RULE>
+
+<PROD_NAME> ::= 'prd'_ <IDENTIFIER>
+
+<RULE> ::= [ '<' <PRECEDENCE> '>' ] <RHS>
+
+<RHS> ::= <TERMINAL> { <TERMINAL> | <PROD_REF> }
+
+<PROD_REF> ::= 'prd'_ <PROD_NAME> '_tkn'_ <IDENTIFIER>
+
+<PRECEDENCE> ::= <INTEGER>
+
+<TERMINAL> ::= 'tkn'_ <IDENTIFIER>
+
+<IDENTIFIER> ::= [a-zA-Z]+ [a-zA-Z0-9]*
+
+In this EBNF grammar, the names of all productions start with "prd\_", and the names of all terminals start with "tkn\_". Additionally, whenever a production is used as a reference in another rule, it is referred to by its full name including both "prd\_" and "\_tkn\_".
+
+Note that this EBNF grammar also includes optional precedence levels for each alternative in the production. This allows for more expressive grammars where different alternatives have different precedences. The precedence level is specified using the "<" and ">" symbols around an integer value, e.g.:
+```ruby
+prd_expr ::= <3> '(' prd_expr ')' | <2> prd_expr '+' prd_expr | <1> tkn_NUMBER
+```
+In this example, the first alternative has a precedence of 3, the second alternative has a precedence of 2, and the third alternative has a precedence of 1. This means that if there are multiple alternatives in a production with different precedences, the alternative with the highest precedence will be chosen when parsing an input string.
+
+Finally, the EBNF grammar includes a simple definition for identifiers, which can consist of any combination of letters and numbers starting with a letter.
+#+end_src

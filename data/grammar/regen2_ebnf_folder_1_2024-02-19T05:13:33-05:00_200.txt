@@ -1,0 +1,63 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rule> ::= 'folder' '{' <prd_take_inputs_rule> '}'
+
+<prd_take_inputs_rule> ::= 
+    'take' 'inputs' ':' <prd_grammar_tkn_token> ';' <prd_previous_results_tkn_token> ':' <prd_result_tkn_token> ';' 
+    <prd_new_example_tkn_token> ':' <prd_example_tkn_token> ';'
+
+<prd_grammar_tkn_token> ::= "'" <prd_grammar_name_token> "'"
+<prd_previous_results_tkn_token> ::= "'" <prd_previous_results_name_token> "'"
+<prd_result_tkn_token> ::= "'" <prd_result_name_token> "'"
+<prd_new_example_tkn_token> ::= "'" <prd_new_example_name_token> "'"
+<prd_example_tkn_token> ::= "'" <prd_example_name_token> "'"
+
+<prd_grammar_name_token> ::= "grammar"
+<prd_previous_results_name_token> ::= "PreviousResults"
+<prd_result_name_token> ::= "CreatedNewOutput"
+<prd_new_example_name_token> ::= "NewExample"
+<prd_example_name_token> ::= "Example"
+
+<prd_repeate_loop_rule> ::= 'IF' <prd_test_result_tkn_token> 'THEN' <prd_recursive_call_rule> 'ELSE' <prd_feedback_error_rule> 'END-IF'
+
+<prd_test_result_tkn_token> ::= "'" <prd_test_result_name_token> "'"
+<prd_recursive_call_rule> ::= <prd_folder_rule>
+<prd_feedback_error_rule> ::= 'FEEDBACK' <prd_error_tkn_token> 'TO' <prd_create_new_output_rule> 'UP' <prd_loop_counter_tkn_token> 'TIMES'
+<prd_error_tkn_token> ::= "'" <prd_error_name_token> "'"
+<prd_create_new_output_rule> ::= '<-' <prd_new_output_tkn_token>
+<prd_new_output_tkn_token> ::= "'" <prd_new_output_name_token> "'"
+<prd_loop_counter_tkn_token> ::= "'" <prd_loop_counter_name_token> "'"
+<prd_loop_counter_name_token> ::= "LoopCounter"
+<prd_test_result_name_token> ::= "TestResult"
+
+<prd_start_rule> ::= <prd_folder_rule>
+```
+This is just an example and you can adjust it to fit your needs. The idea is to have a clear and consistent naming convention for all the rules and tokens in your EBNF grammar, making it more readable and maintainable.
+#+end_src

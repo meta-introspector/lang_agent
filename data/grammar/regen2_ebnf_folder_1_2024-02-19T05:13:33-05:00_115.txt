@@ -1,0 +1,53 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you specified:
+
+EBNF Grammar:
+
+prod\_folder ::= 'folder' tkn\_name ':=' tkn\_open\_brace seq\_item *\ tkn\_close\_brace
+
+tkn\_name ::= [a-zA-Z\_][a-zA-Z0-9_\*]*
+
+tkn\_open\_brace ::= '{'
+
+tkn\_close\_brace ::= '}'
+
+seq\_item ::= prod\_grammar | prod\_previous\_results | prod\_new\_example | prod\_created\_output
+
+prod\_grammar ::= 'grammar' tkn\_name
+
+prod\_previous\_results ::= 'Previous Results' tkn\_name
+
+prod\_new\_example ::= 'New Example' tkn\_name
+
+prod\_created\_output ::= 'Created new output' tkn\_name
+
+This EBNF grammar defines a folder production rule, which consists of a name followed by a sequence of items. Each item can be a grammar, previous results, new example, or created output production rule. Each of these rules follows the naming convention you specified, with the "prd\_" prefix and the underscore separating the different parts of the name.
+
+You can further extend this EBNF grammar by adding more production rules as per your requirements, but make sure to follow the naming conventions you've defined for consistency.
+#+end_src

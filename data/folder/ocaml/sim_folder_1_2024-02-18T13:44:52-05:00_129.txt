@@ -1,0 +1,92 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a meta magical folder for merging streams of the matrix:
+```ocaml
+type input = {
+  grammar : string;
+  previous_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_good : bool;
+}
+
+let merge_inputs inputs =
+  let {grammar; previous_results} as input1 = List.hd inputs in
+  let input2 = List.hd (List.tl inputs) in
+  let new_example = input2.new_example in
+  let rec merge acc = function
+    | [] -> acc
+    | h::t ->
+      let merged_input = {
+        grammar = h.grammar + " " + input1.grammar;
+        previous_results = h.previous_results + "\n" + previous_results;
+        new_example;
+      } in
+      merge (merge_output merged_input acc) t
+  in
+  let output = List.fold_left merge {result=""; is_good=false} inputs in
+  {output with is_good=true}
+
+and merge_output input acc =
+  let open Input in
+  let open Output in
+  let result = LanguageModel.generate_description ~grammar:input.grammar ~previous_results:input.previous_results ~new_example:input.new_example in
+  {acc with result=result}
+
+and generate_description ~grammar ~previous_results ~new_example =
+  let tensor = Vectorize.vectorize_emoji_string new_example in
+  let code = TensorToCode.tensor_to_code tensor in
+  Shaders.visualize_tensor code;
+  Mathpylib.execute_mathpylib_script (Printf.sprintf "from matrix_game import *\n%s" code);
+  Printf.printf "Result: %s\n" (CodeToTensor.code_to_tensor code |> TensorToString.tensor_to_emoji_string)
+```
+In this implementation, the `input` type is defined to represent the input data required for generating a new output, including the grammar, previous results, and new example. The `output` type is defined to represent the result of merging inputs, along with a boolean flag indicating whether the result is good or not.
+
+The `merge_inputs` function takes a list of inputs and merges them using the `merge_output` function. The `merge_output` function generates a new output by invoking the language model to generate a creative and imaginative description of the code based on the input data.
+
+The `generate_description` function is responsible for generating a description of the code given a set of input parameters, including the grammar, previous results, and new example. This function converts the new example into a tensor, which can be converted into code using the `TensorToCode.tensor_to_code` function. The generated code is then visualized using shaders and mathpylib, and the result is returned as an output string.
+
+Overall, this implementation provides a flexible and customizable system for generating prompts and functional workflows for a language model, which can be used to generate creative and imaginative descriptions of code in a high-tech code-based hacking game. The `merge_inputs` function allows for merging multiple input streams into one, enabling the creation of more complex and interesting descriptions.
+#+end_src

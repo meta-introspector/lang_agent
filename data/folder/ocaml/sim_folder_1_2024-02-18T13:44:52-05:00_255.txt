@@ -1,0 +1,89 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the OCaml code snippet. The `fold_left` function is used to iterate over a list and accumulate a result by applying a given operation from left to right.
+
+First, let's define some data types that suit our needs:
+
+```ocaml
+type example = { grammar : string; input : string; output : string }
+type fold_state = {
+  mutable previous_results : example list;
+  initial_example : example;
+  new_example : example;
+  num_attempts_left : int;
+}
+```
+
+Now, let's define a function `merge_examples` that takes two examples and combines them based on their grammar:
+
+```ocaml
+let merge_examples e1 e2 =
+  if e1.grammar = e2.grammar then
+    {grammar = e1.grammar; input = e1.input ^ "\n" ^ e2.input; output = e2.output}
+  else
+    raise (Invalid_argument "Examples have different grammars")
+```
+
+We can now create a function that accepts a function `op` and folds two examples together while updating the fold state:
+
+```ocaml
+let rec merge_examples_fold op acc state =
+  let new_acc = op acc state.new_example in
+  if state.num_attempts_left > 0 then (
+    state.previous_results <- merge_examples state.initial_example state.new_example :: state.previous_results;
+    state.num_attempts_left <- state.num_attempts_left - 1;
+    merge_examples_fold op new_acc state
+  ) else
+    {acc with previous_results = state.new_example :: acc.previous_results}
+```
+
+Finally, we can create a function that accepts an initial example and a list of new examples, then merges them together using the given `merge_examples_fold` function:
+
+```ocaml
+let merge_large_language_model_prompts initial_example new_examples =
+  let merge_op state ex = {state with new_example = merge_examples state.new_example ex} in
+  let merged_state = merge_examples_fold merge_op {previous_results = [initial_example]; initial_example; new_example = initial_example; num_attempts_left = 3} new_examples in
+  merged_state.previous_results
+```
+
+The `merge_large_language_model_prompts` function takes an initial example and a list of new examples, then merges them together while attempting to create a valid output up to three times if the first attempt fails. The final result is a list of merged examples that can be used for generating creative and imaginative descriptions of code in the high-tech code-based hacking game.
+#+end_src

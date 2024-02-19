@@ -1,0 +1,69 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you might define your detailed EBNF grammar with the requested naming conventions:
+```
+prod_grammar -> ( 'A', tkn_identifier ) [ prd_rules ] ;
+
+prd_rules    -> prd_rule { ';', tkn_semicolon, prd_rule } ;
+
+prd_rule     -> ( 'prods' | 'prec' | 'follows' ), tkn_identifier, '=' , [prd_expr] ;
+
+prd_expr     -> prd_seq
+             |   prd_alt
+             |   prd_opt
+             |   prd_rep
+             |   prd_group
+             |   prd_token
+             |   prd_name
+             |   prd_action ;
+
+prd_seq      -> '(', tkn_open_paren, [prd_expr], ')' , tkn_close_paren ;
+
+prd_alt      -> [prd_expr], '|', [prd_expr] ;
+
+prd_opt      -> '[' , [prd_expr] , ']' ;
+
+prd_rep      -> { prd_expr } ;
+
+prd_group    -> '{', tkn_open_brace, [prd_expr], '}' , tkn_close_brace ;
+
+prd_token    -> tkn_character
+             |   tkn_string
+             |   tkn_identifier
+             |   ... (other token types) ;
+
+prd_name     -> <identifier> ;
+
+prd_action   -> '{' , <action code> , '}' ;
+```
+In this example, the `prod_*` rules define the structure of your EBNF grammar. Each production starts with the prefix `prd_`, and tokens are named using the format `tkn_*`. The `prd_expr` rule allows for different types of expressions in a rule, such as sequences (`prd_seq`) or alternatives (`prd_alt`).
+
+The `prd_token` and `prd_name` rules allow you to specify tokens and non-terminals in your grammar. The `prd_action` rule allows you to include actions within the grammar, which can be useful for generating code or performing other tasks while parsing.
+
+You may adjust this example to fit your specific needs. This is just one way to structure an EBNF grammar using the naming conventions you specified.
+#+end_src

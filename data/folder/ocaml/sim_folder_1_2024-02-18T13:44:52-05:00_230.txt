@@ -1,0 +1,103 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can extend the `fold_left` function to include the required inputs and functionality. Here's a possible OCaml implementation:
+
+1. Define a new data type to represent the input context.
+```ocaml
+type context = {
+  grammar : string;
+  prev_results : string;
+  initial_example : string;
+  new_example : string;
+}
+```
+2. Extend the `fold_left` function to take a `context` and an optional `error_count` as arguments, and add the necessary operations to generate a new output based on the given context. The updated function will return both the accumulated value and the new output.
+```ocaml
+let rec fold_and_generate_output op acc ctx ~error_count =
+  let { grammar; prev_results; initial_example; new_example } = ctx in
+  match error_count with
+  | None ->
+    (* Generate a new output based on the current context. *)
+    let new_output = generate_output ~grammar ~prev_results ~new_example in
+    
+    (* Test the new output and update the accumulator accordingly. *)
+    let updated_acc = op acc new_output in
+    
+    (* Check if the new output is valid. If not, increment the error count. *)
+    if is_valid_output new_output then (updated_acc, new_output, None)
+    else (updated_acc, new_output, Some 1)
+  | Some ec ->
+    (* If the error count is not None, decrement it and return the accumulator. *)
+    if ec > 1 then (acc, prev_results, Some (ec - 1))
+    else raise (Failure "Maximum number of errors reached")
+```
+3. Implement a helper function to generate an output based on the given context.
+```ocaml
+let generate_output ~grammar ~prev_results ~new_example =
+  (* Encapsulate the logic for generating an output from the input context,
+     such as creating a new example using the provided grammar and previous results,
+     vectorizing it into tensors, and optionally visualizing the tensors in the game. *)
+  ...
+```
+4. Implement a helper function to test if an output is valid based on certain criteria.
+```ocaml
+let is_valid_output output =
+  (* Encapsulate the logic for testing if an output is valid, such as checking
+     if it meets specific requirements or passes certain checks. *)
+  ...
+```
+5. Use the `fold_and_generate_output` function to generate new prompts and functional workflows by recursively applying the fold operation with a suitable accumulation function, input context, and optional error count. For example:
+```ocaml
+let rec generate_prompt_workflows ~initial_context ~max_attempts =
+  let { accumulator; output; error_count } =
+    fold_and_generate_output (@) [] initial_context ~error_count in
+    
+  (* If the output is valid, return it as a new prompt workflow. Otherwise,
+     try again up to max_attempts times. *)
+  match (output, error_count) with
+  | _, None -> accumulator, output
+  | _, Some ec ->
+    if ec < max_attempts then generate_prompt_workflows ~initial_context ~max_attempts
+    else accumulator, output
+```
+Note that the `generate_output`, `is_valid_output`, and other helper functions should be implemented according to your specific requirements for generating prompts and functional workflows. The above code provides a framework for creating a customizable system for generating prompts and functional workflows using a large language model in a high-tech code-based hacking game.
+#+end_src

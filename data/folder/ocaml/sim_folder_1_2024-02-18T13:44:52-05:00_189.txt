@@ -1,0 +1,133 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code example. This function recursively applies a given operator to an accumulator and a list of elements from left to right.
+
+To adapt this function for our needs, let's first define the data structures required by our system. We will represent the different types of inputs as records:
+
+1. Grammar (A)
+2. Previous Results (D initially)
+3. New Example (C)
+4. Output (D')
+5. Error (E)
+
+We will use the following OCaml modules to define these records and associated functions:
+
+```ocaml
+module LanguageModel = struct
+  type grammar = string
+
+  type result = string
+
+  type error = string
+end
+
+module PreviousResults = struct
+  type t = LanguageModel.result
+
+  let initial = ""
+end
+
+module NewExample = struct
+  type t = LanguageModel.result
+
+  let create () = ""
+end
+
+module Output = struct
+  type t = LanguageModel.result
+
+  let create (input : LanguageModel.result) = input
+end
+
+module Error = struct
+  type t = LanguageModel.error
+
+  let create (input : LanguageModel.error) = input
+end
+```
+
+Next, we will define the operator that combines a grammar, previous results, and new examples to generate new outputs and errors:
+
+```ocaml
+module Operator = struct
+  type t = LanguageModel.grammar -> PreviousResults.t -> NewExample.t -> (Output.t * Error.t)
+end
+
+let create_operator () : Operator.t =
+  let language_model = ... in (* Initialize the large language model here *)
+  fun grammar previous_results new_example ->
+    match language_model with
+    | Some lm ->
+        let output, error = lm#generate ~grammar ~previous_results ~new_example in
+        (Output.create output, Error.create error)
+    | None -> failwith "Language model not initialized"
+```
+
+Finally, we can adapt the `fold_left` function to create a loop that iterates through different combinations of grammars and examples until an acceptable output is generated:
+
+```ocaml
+let rec generate_prompt_workflow
+    (operator : Operator.t)
+    (grammars : LanguageModel.grammar list)
+    (previous_results : PreviousResults.t)
+    (new_examples : NewExample.t list)
+  =
+  match new_examples with
+  | [] -> (previous_results, [])
+  | h :: t ->
+      let output, error = operator grammar previous_results h in
+      if LanguageModel.Result.is_acceptable output then
+        generate_prompt_workflow operator grammars output t
+      else (
+        (* Try up to three times *)
+        match t with
+        | [] -> (previous_results, [error])
+        | _ :: rest ->
+            let output, error =
+              generate_prompt_workflow operator grammars previous_results rest
+            in
+            (fst output, error :: snd output)
+      )
+```
+
+The `generate_prompt_workflow` function takes a list of possible grammars and iterates through different combinations of grammars and new examples to generate an acceptable result. The system can be further customized by modifying the initial values for grammars, previous results, and new examples.
+#+end_src

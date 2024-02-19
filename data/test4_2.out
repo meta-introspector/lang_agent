@@ -1,0 +1,19 @@
+
+#+begin_src input
+consider a consecutive series of types to describe the universe and universe of universes, what is your ordering?
+#+end_src
+#+begin_src output mistral
+ Result: 1. Rea2 Rea1
+1. Rea3 Rea2
+1. Rea4 Rea3
+1. Rea5 Rea4
+1. Rea6 Rea5
+1. Rea7 Rea6
+1. Rea8 Rea7
+1. Rea8+ Rea8
+1. O-O Rea8+
+1. O-O-O Rea8+
+1. O-O-O+ Rea8+
+1. O-O-O+ O-O+
+1. O-O-O
+#+end_src

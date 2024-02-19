@@ -1,0 +1,74 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your detailed EBNF grammar with the requested naming conventions:
+
+EBNF Grammar:
+```python
+<prd_grammar_tkn_A> ::= <prd_rule1_tkn_R1> ":" <prd_example_tkn_Example>
+                          | <prd_rule2_tkn_R2> ":" <prd_example_tkn_Example>
+                          ;
+
+<prd_rule1_tkn_R1> ::= <prd_symbols_tkn_Symbols> <prd_productions_tkn_Productions>
+                      ;
+
+<prd_symbols_tkn_Symbols> ::= "symbols" ":" (<prd_token_tkn_Token> | <prd_nonTerminal_tkn_NonTerminal>)
+                              {"," (<prd_token_tkn_Token> | <prd_nonTerminal_tkn_NonTerminal})} ";"
+                              ;
+
+<prd_productions_tkn_Productions> ::= "productions" ":" <prd_production_tkn_Production> {<prd_lineBreak_tkn_LineBreak> <prd_production_tkn_Production>} ";"
+                                      ;
+
+<prd_production_tkn_Production> ::= <prd_nonTerminal_tkn_NonTerminal> "->" (<prd_sequence_tkn_Sequence> | <prd_epsilon_tkn_Epsilon>) ";"
+                                    ;
+
+<prd_sequence_tkn_Sequence> ::= <prd_symbol_tkn_Symbol> {<prd_sequence_tkn_Concatenation> <prd_symbol_tkn_Symbol>}
+                               ;
+
+<prd_sequence_tkn_Concatenation> ::= <prd_lineBreak_tkn_LineBreak> | <prd_or_tkn_Or>
+                                     ;
+
+<prd_symbol_tkn_Symbol> ::= <prd_token_tkn_Token> | <prd_nonTerminal_tkn_NonTerminal>
+                           ;
+
+<prd_epsilon_tkn_Epsilon> ::= epsilon
+                             ;
+
+<prd_or_tkn_Or> ::= "|"
+                   ;
+
+<prd_lineBreak_tkn_LineBreak> ::= "\r\n" | "\n"
+                                 ;
+
+<prd_token_tkn_Token> ::= <IDENTIFIER> | <STRING> | <INTEGER>
+                         ;
+
+<prd_nonTerminal_tkn_NonTerminal> ::= <IDENTIFIER>
+                                     ;
+```
+This EBNF grammar follows the naming conventions you requested and adds more explicit definitions for each production rule, making it easier to understand and maintain.
+#+end_src

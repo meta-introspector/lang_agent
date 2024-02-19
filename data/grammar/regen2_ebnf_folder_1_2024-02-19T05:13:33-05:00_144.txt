@@ -1,0 +1,59 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your detailed EBNF grammar with the naming conventions you described:
+
+EBNF Grammar:
+
+<folder> ::= prd\_folder\_tkn\_name separator prd\_folder\_tkn\_pathlist
+
+<pathlist> ::= <path> {"," <path>}
+
+<path> ::= prd\_path\_tkn\_filename pathsep prd\_path\_tkn\_path
+
+<filename> ::= prd\_filename\_tkn\_identifier
+
+<path> ::= prd\_path\_tkn\_rootpath
+
+<rootpath> ::= "/"
+
+<separator> ::= prd\_separator\_tkn\_comma
+
+<pathsep> ::= prd\_pathsep\_tkn\_forwardslash
+
+<identifier> ::= <letter> {<letter> | <digit>}
+
+<letter> ::= "a" | "b" | "c" | ... | "z" | "A" | "B" | "C" | ... | "Z"
+
+<digit> ::= "0" | "1" | "2" | ... | "9"
+
+This EBNF grammar defines a folder as having a name and a list of paths, where each path consists of a filename followed by a path (which can be a root path). The separator between the name and the list of paths is a comma, and the separator between the components of the pathlist is also a comma. The separator between the filename and the path within a path is a forward slash.
+
+Each non-terminal in this grammar starts with "prd\_" followed by the name of the production, and each token starts with "tkn\_". Each terminal symbol that represents an identifier (such as <identifier>, <letter>, or <digit>) consists of a sequence of characters drawn from a specific set.
+
+I hope this helps! Let me know if you have any further questions.
+#+end_src

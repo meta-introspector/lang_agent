@@ -1,0 +1,56 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, using a fold operation to combine inputs and previous results:
+
+let rec merge\_workflows grammar prev\_results new\_example =
+match prev\_results with
+| [] -> new\_example (* If no previous results, use the new example as is *)
+| h::t ->
+let merged\_example = fold\_left (fun acc x -> apply\_grammar\_to\_examples grammar acc x) new\_example h in
+merge\_workflows grammar t merged\_example
+
+This code defines a recursive function `merge_workflows` that takes as input a `grammar`, a list of `prev_results`, and a `new_example`. If there are no previous results, the function simply returns the new example. Otherwise, it applies the grammar to each pair of previous result and new example, using a left fold operation (`fold_left`) to combine them. The resulting merged example is then used as input for the next iteration of the function, until all previous results have been processed.
+
+The `apply_grammar_to_examples` function, which is called inside `merge_workflows`, takes a `grammar` and two examples, and applies the grammar to the first example, using the second example as context. This allows the language model to generate more accurate and creative descriptions of code based on the given examples and grammar.
+
+Overall, this system provides a flexible and customizable way to generate prompts and functional workflows for a large language model, allowing developers to create imaginative and interactive experiences for players in a high tech code-based hacking game.
+#+end_src

@@ -1,0 +1,87 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can build upon the `fold_left` function provided in the code snippet. The purpose of this function is to iteratively apply a given operation `op` on an accumulator value `acc` and each element `h` in a list `t`. Here's the revised OCaml code that suits our needs:
+
+```ocaml
+type example = {grammar: string; content: string}
+type result = {example: example; output: string}
+
+let rec merge_examples op acc ex_list =
+  match ex_list with
+  | [] -> acc
+  | h :: t ->
+      let merged_output = op acc h in
+      merge_examples op merged_output t
+
+let test_result result =
+  (* Implement your custom testing logic here *)
+  true
+
+let rec generate_and_test_output grammar prev_res new_example limit =
+  if limit = 0 then prev_res
+  else
+    let new_output = LanguageModel.generate_description grammar new_example in
+    let new_result = {example = new_example; output = new_output} in
+    if test_result new_result then
+      generate_and_test_output grammar new_result new_example (limit - 1)
+    else
+      generate_and_test_output grammar prev_res new_example limit
+
+let rec process_examples grammar initial_example examples max_attempts =
+  let merged_results = merge_examples generate_and_test_output {grammar; content = ""} initial_example examples in
+  if max_attempts > 0 then
+    process_examples grammar merged_results (List.map (fun ex -> {ex with output = ""}) examples) (max_attempts - 1)
+  else
+    merged_results
+```
+
+In this code:
+
+- `example` is a record containing the original grammar and corresponding example content.
+- `result` is a record that holds an `example` and its generated `output`.
+- The `merge_examples` function applies the provided operation (in our case, generating a description using the large language model) to each element in the list of examples and accumulates the results.
+- `test_result` checks whether the result is valid or not, which can be customized as needed.
+- The `generate_and_test_output` function generates a new output based on the provided grammar, example, and attempts limit if the previous generated result fails the test.
+- Finally, `process_examples` iterates over the examples list and repeatedly tests and merges their outputs until it reaches the specified number of attempts or gets valid results.
+
+This code provides a solid foundation for generating creative and imaginative descriptions using a large language model while enabling custom testing and retries for better robustness in generating prompts and functional workflows for your high-tech code-based hacking game.
+#+end_src

@@ -1,0 +1,52 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```
+(* EBNF grammar for a simple arithmetic expression language *)
+
+%start <prd_expr_tkn_expression> expression
+
+<prd_expr_tkn_expression> ::= <prd_expr_tkn_term> { ("+" | "-") <prd_expr_tkn_term> } .
+
+<prd_expr_tkn_term> ::= <prd_expr_tkn_factor> { ("*" | "/") <prd_expr_tkn_factor> } .
+
+<prd_expr_tkn_factor> ::= "(" <prd_expr_tkn_expression> ")"
+                     | <prd_number_tkn_number> .
+
+<prd_number_tkn_number> ::= <digit> { <digit> } .
+
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .
+```
+
+In this example, each rule has a name that starts with `prd_`, and each token has a name that starts with `tkn_`. For instance, the `expression` rule is named `<prd_expr_tkn_expression>`, and the `number` token is named `<prd_number_tkn_number>`.
+
+This grammar defines a simple arithmetic expression language with addition, subtraction, multiplication, and division. It also allows for parenthesized expressions and integer literals.
+
+You can use this grammar as a starting point and modify it to suit your specific needs. For example, you might want to add rules for other types of tokens, such as variables or functions. You can also adjust the naming conventions to fit your preferences.
+#+end_src

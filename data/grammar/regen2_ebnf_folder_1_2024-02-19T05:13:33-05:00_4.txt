@@ -1,0 +1,94 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you specified:
+
+<BNF> ::= 'grammar' tkn ':' prd\_GRAMMAR\_tkn ';' <lines> ';'
+
+<lines> ::= <line> | <line> <lines>
+
+<line> ::= prd\_RULE\_tkn '=' <expr> ';'
+
+<expr> ::= <alt> | <alt> '|' <expr>
+
+<alt> ::= <seq> | <seq> '?' | <seq> '*' | <seq> '+' | <seq>
+
+<seq> ::= <term> | <term> <seq>
+
+<term> ::= prd\_TOKEN\_tkn | '<' prd\_RULE\_tkn '>' | '(' <expr> ')'
+
+In this grammar, each rule is prefixed with "prd" and each token is prefixed with "tkn". If a token is used in a rule, it is named "prd\_RULE\_tkn\_TOKEN". For example, the rule for a sequence of expressions would be "prd\_seq\_tkn = prd\_expr\_tkn <prd\_seq\_tkn | prd\_expr\_tkn '?' | prd\_expr\_tkn '*' | prd\_expr\_tkn '+'> ;".
+
+You can then use this EBNF grammar to parse and manipulate your grammars in a more explicit and expressive way. For example, you could define a function that takes a grammar as input and applies the fold\_left operator to it, allowing you to perform arbitrary transformations on the grammar.
+
+Here is an example of how you might use this EBNF grammar to parse a simple grammar:
+
+let parse\_grammar (input : string) : GRAMMAR =
+parse {
+let start rule =
+parse {
+let! name = parse.string "grammar"
+let! _colon = parse.char ':'
+let! grammar = parse.ident
+let! semi = parse.char ';'
+let! lines = many (parse.space >>. rule)
+let! eof = parse.eof
+return GRAMMAR(grammar, lines)
+}
+rule ::=
+parse {
+let! name = prd\_RULE\_tkn
+let! equals = parse.char '='
+let! expr = expression
+let! semi = parse.char ';'
+return RULE(name, expr)
+}
+expression ::=
+parse {
+let! alt1 = sequence
+let! rest = many (parse.char '|' >>. sequence)
+return ALT(alt1, rest)
+}
+sequence ::=
+parse {
+let! term1 = term
+let! rest = many (parse.char '.' >>. term)
+return SEQUENCE(term1, rest)
+}
+term ::=
+parse {
+let! tkn = prd\_TOKEN\_tkn | ('<' > prd\_RULE\_tkn >') | '(' > expression <')'
+return TERM(tkn)
+}
+} input
+
+This function uses the Parse library to define a parser for the EBNF grammar, and then applies it to an input string to produce a GRAMMAR value. The GRAMMAR value contains the name of the grammar and a list of RULE values, each of which contains a name and an ALT value representing the alternative productions for that rule.
+
+You can then use this parsed grammar to perform transformations using the fold\_left operator or any other function you define. For example, you might define a function that applies a transformation to all of the rules in the grammar, or a function that searches for a specific pattern and replaces it with a new production.
+
+By using an explicit and expressive EBNF grammar, you can easily parse, manipulate, and generate grammars in your system. This can help you to build more powerful and flexible tools for working with grammars, and enable you to tackle a wider range of problems in your projects.
+#+end_src

@@ -1,0 +1,90 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can build upon the `fold_left` function provided in the code snippet. Here's a possible OCaml implementation that takes into account the requirements specified in the description:
+
+```ocaml
+type example = string (* Replace this with the actual type of examples *)
+type result = string (* Replace this with the actual type of results *)
+type config = {
+  grammar : string;
+  initial_examples : example list;
+  max_attempts : int;
+}
+
+let rec generate_next config current_results new_example =
+  let open Option.Monad_inlet in
+  (* Generate a new result based on the given grammar, examples and current results *)
+  let* new_result = LanguageModel.generate ~grammar:config.grammar ~examples:(current_results @ [new_example]) in
+  (* Test the new result *)
+  if is_valid new_result then return (new_result :: current_results) else
+    (* If the new result is not valid, try up to 'max_attempts' times *)
+    let attempts_left = config.max_attempts - (List.length current_results) in
+    if attempts_left <= 0 then failwith "Maximum attempts reached" else
+      generate_next {config with max_attempts = attempts_left} current_results new_example
+    
+let rec fold_streams config streams accumulated_results =
+  match streams with
+  | [] -> accumulated_results
+  | h :: t ->
+    let (current, rest) = split_at_n h (List.length config.initial_examples) in
+    let new_results = List.map (generate_next config accumulated_results) current in
+    fold_streams config (rest @ t) (accumulate_results config new_results)
+    
+(* Initialization *)
+let config = {
+  grammar = "... Grammar definition ...";
+  initial_examples = ["example1"; "example2"; ...];
+  max_attempts = 3;
+}
+
+let streams = [stream1; stream2; ...] (* List of input streams *)
+
+let final_results = fold_streams config streams []
+```
+
+In this code:
+
+* The `generate_next` function takes a configuration, current results, and new examples. It recursively generates new results based on the given inputs until it reaches a valid one or exceeds the maximum number of attempts.
+* The `fold_streams` function takes a configuration and list of streams (each stream is represented as a sequence of examples) and accumulates the results using the provided configuration. This function can be seen as the "meta magical folder" that combines multiple streams into one result.
+
+You will need to define or replace the types `example`, `result`, and the functions `is_valid`, `split_at_n`, `accumulate_results`, and any other utility functions you might need for your specific use case.
+#+end_src

@@ -1,0 +1,56 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, here is an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```
+<prd_folder_rule> ::= 'folder' '{' <prd_take_inputs_rule> '}'
+
+<prd_take_inputs_rule> ::= 
+    'take' 'inputs' ':' <prd_grammar_tkn_token> ';' <prd_previous_results_tkn_token> ':' <prd_initial_example_tkn_token> ';' <prd_new_example_tkn_token> ';'
+
+<prd_grammar_tkn_token> ::= 'A'
+<prd_previous_results_tkn_token> ::= 'D'
+<prd_initial_example_tkn_token> ::= 'B'
+<prd_new_example_tkn_token> ::= 'C'
+
+<prd_created_new_output_rule> ::= 'Created' <prd_new_output_tkn_token> '.'
+<prd_new_output_tkn_token> ::= 'D'
+
+<prd_test_rule> ::= 'Test' <prd_new_output_tkn_token> '.'
+
+<prd_if_good_rule> ::= 'If' 'good' ',' 'repeat' 'loop' 'with' <prd_new_output_tkn_token> '.'
+
+<prd_otherwise_rule> ::= 'Otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' <prd_new_output_tkn_token> 'up' 'to' '3' 'times' '.'
+
+<prd_start_rule> ::= 'start' 'with' <prd_folder_rule> 'and' <prd_recursive_call_rule> '.'
+
+<prd_recursive_call_rule> ::= 'rewrite' 'it' 'to' 'suit' 'our' 'needs' '.'
+```
+
+This is a very detailed and explicit version of your original code, with each rule and token named according to the conventions you described. The `fold_left` function remains unchanged.
+#+end_src

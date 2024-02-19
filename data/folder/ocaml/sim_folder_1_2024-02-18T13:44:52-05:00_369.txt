@@ -1,0 +1,87 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can build upon the `fold_left` function provided in the OCaml code. This function applies a given operation recursively to the head of a list and the accumulator, until it processes all elements in the list.
+
+First, let's define types for our inputs:
+
+```ocaml
+type grammar = string
+type result = string
+type example = string
+type error = string
+
+type folder_input = {
+  grammar : grammar;
+  prev_results : result list;
+  initial_example : example;
+  new_example : example;
+}
+```
+
+Next, we'll define our merging function `merge_examples` that takes two examples and returns a merged example:
+
+```ocaml
+let merge_examples e1 e2 =
+  "(" ^ e1 ^ ", " ^ e2 ^ ")"
+```
+
+Now, let's create the main `fold_examples` function that uses `merge_examples` and `fold_left` to combine examples:
+
+```ocaml
+let rec fold_examples op acc = function
+  | []   -> acc
+  | h :: t -> fold_examples op (op acc h) t
+
+let merge_folder input =
+  let { grammar; prev_results; initial_example; new_example } = input in
+  let init_merged = List.map (fun r -> merge_examples initial_example r) prev_results in
+  fold_examples merge_examples init_merged [new_example]
+```
+
+The `merge_folder` function takes a `folder_input` record, initializes the accumulator with the previously generated results, and then merges the new example into it. The result is a list of merged examples using the provided `initial_example` for each previous result and the current `new_example`.
+
+As for generating creative and imaginative descriptions of code, you can use a language model like GPT-3 or another large language model to generate text based on specific prompts. You would need to create prompts that describe a particular scene, object, or NPC in your game, and then feed these prompts into the language model to get descriptions.
+
+For example, if you want a description for a magical sword, you can provide a prompt like: "Generate a creative and imaginative description of a magical sword with glowing runes on its blade that emits a faint humming sound when held."
+
+The language model would then generate text based on this prompt, which could be used as the description in your game.
+#+end_src

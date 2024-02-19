@@ -1,0 +1,104 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a meta magical folder for merging streams of the matrix:
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_good : bool;
+}
+
+let merge_inputs inputs =
+  List.map (fun input -> (input, ref false)) inputs
+
+let rec merge_streams streams acc =
+  match streams with
+  | [] -> List.iter (fun (input, error) -> if not !error then print_endline input.new_example) acc; acc
+  | h::t ->
+    let merged_input = h.input.grammar ^ " " ^ String.concat " " (List.map (fun i -> i.input.new_example) t) in
+    let new_output = LanguageModel.generate_description merged_input in
+    let is_good = LanguageModel.test_description new_output in
+    h.error := not is_good;
+    if is_good then (
+      h.input.prev_results <- h.input.new_example;
+      h.input.new_example <- new_output;
+      merge_streams t ((h, new_output) :: acc)
+    ) else if !h.error && List.for_all (fun (i, _) -> not i.error) t then (
+      let example = h.input.new_example in
+      h.input.new_example <- h.input.prev_results;
+      h.input.prev_results <- example;
+      merge_streams t ((h, new_output) :: acc)
+    ) else (
+      let _ = print_endline ("Error in input " ^ h.input.grammar) in
+      merge_streams t acc
+    )
+
+let rec merge_inputs_stream stream inputs =
+  match inputs with
+  | [] -> [(stream, [])]
+  | h::t -> (
+    let streams = merge_inputs [h] in
+    merge_streams streams []
+    @ merge_inputs_stream stream t
+  )
+
+let meta_magical_folder inputs =
+  match inputs with
+  | grammar :: prev_results :: new_example :: _ ->
+    let input = {grammar; prev_results; new_example} in
+    let outputs = LanguageModel.generate_descriptions [input] in
+    merge_inputs_stream (List.hd outputs) [input]
+  | _ -> failwith "Invalid inputs"
+```
+The code defines three types: `input`, which represents an input to the folder, including a grammar, previous results, and new example; `output`, which contains the generated output and a boolean indicating whether it is good or not; and `stream`, which combines an input and its corresponding output.
+
+The `merge_inputs` function takes a list of inputs and returns a list of streams with references to error flags. The `merge_streams` function merges the streams, generating new outputs based on the merged grammar and previous examples from each stream. It keeps trying to generate a good output up to three times if the first one is not good. If none of the attempts succeed, it moves on to the next stream.
+
+The `merge_inputs_stream` function takes a list of inputs and returns a list of streams with their corresponding outputs. The `meta_magical_folder` function takes the same input as the original code and generates an output by merging the streams using the merged grammar, previous examples, and new example from each input.
+
+The code can be customized further to suit specific needs, such as changing the language model used or adding more functionality to the folder.
+#+end_src

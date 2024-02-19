@@ -1,0 +1,55 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your EBNF grammar with the desired naming conventions:
+```bash
+prod_folder = prd_grammar_tkn_A,
+              prd_previousResults_tkn_D,
+              prd_initialExample_tkn_B,
+              prd_newExample_tkn_C,
+              prd_output_tkn_D,
+              [prd_test_tkn_D, '.'],
+              {[prd_ifGood_tkn_D, '.', prd_repeatLoop_tkn_D, '.', prd_newD_tkn_D],
+               [prd_otherwise_tkn_D, '.', prd_feedError_tkn_D, '.', prd_createNewD_tkn_D, '^3']} ;
+
+prod_createNewD = prd_startWith_tkn_thisFollowingCode,
+                  prd_rewriteIt_tkn_toSuitNeeds ;
+
+prod_test = '.' ;
+
+prod_feedError = '^' ;
+
+prod_repeatLoop = '{' , prod\_folder , '}' ;
+```
+Here, I have defined the `prod_folder` production rule which represents the overall structure of your folder. It includes all the inputs such as grammar (A), previous results (D), initial example (B), new example (C) and output (D). The test D is represented by a single dot '.' . If the test is good, then the loop repeats with new D, otherwise an error is fed back to create new D up to 3 times.
+
+The `prod_createNewD` production rule represents starting with this following code and rewriting it to suit your needs.
+
+The `prod_test`, `prod_feedError` and `prod_repeatLoop` are self-explanatory.
+
+You can further extend the grammar by adding more production rules as per your requirement, all following the same naming convention.
+#+end_src

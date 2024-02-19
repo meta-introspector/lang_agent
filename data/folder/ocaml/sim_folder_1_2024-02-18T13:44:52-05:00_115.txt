@@ -1,0 +1,114 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model in a high-tech code-based hacking game, we can build upon the `fold_left` function provided in the initial code snippet. This function applies a binary operation to an accumulator and each element of a list from left to right, making it suitable for combining different inputs in a flexible manner.
+
+First, let's define data types representing the game components:
+
+```ocaml
+type grammar = string
+type result = string
+type example = string
+
+type folder_input = {
+  grammar : grammar;
+  prev_results : result list;
+  new_example : example;
+}
+
+type folder_output = {
+  output : result;
+  is_good : bool;
+}
+```
+
+Next, let's define a function to test the quality of the generated output:
+
+```ocaml
+let rec test_output output =
+  (* Define your custom testing logic here *)
+  String.length output > 10
+
+let test folder_input =
+  { output = folder_input.new_example; is_good = test_output folder_input.new_example }
+```
+
+Now, let's redefine the `fold_left` function as a higher-order function called `folder`, which takes a testing function and applies it in each iteration:
+
+```ocaml
+let rec folder f max_attempts input =
+  let { grammar; prev_results; new_example } = input in
+  let acc = { output = new_example; is_good = false } in
+  
+  let rec aux attempt acc =
+    if attempt > max_attempts then acc
+    else
+      let result = f acc grammar prev_results new_example in
+      if result.is_good then result
+      else aux (attempt + 1) result
+  in
+  
+  aux 1 acc
+```
+
+Finally, let's define the main function that combines different game components:
+
+```ocaml
+let rec generate_prompt { grammar; prev_results; new_example } =
+  (* Define your custom logic for generating a prompt based on the input parameters *)
+  { output = "Generated Prompt: " ^ String.concat "" (List.map (String.make 1) grammar); is_good = true }
+
+let rec process_results results =
+  (* Define your custom logic for processing a list of results *)
+  { output = String.concat "\n" results; is_good = true }
+
+let game_folder input =
+  let folder_input = {
+    grammar = "emojis";
+    prev_results = [process_results (List.map generate_prompt input.prev_results)];
+    new_example = input.new_example;
+  } in
+  
+  folder test folder_input
+```
+
+This `game_folder` function takes a list of previous results, tests them, and generates a new prompt based on the given grammar and new example. The process repeats until a satisfactory result is achieved or the maximum number of attempts is reached.
+#+end_src

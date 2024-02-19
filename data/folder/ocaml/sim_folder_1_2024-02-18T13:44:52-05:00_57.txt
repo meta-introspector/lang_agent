@@ -1,0 +1,93 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a fold\_left function for merging large language model prompt workflows:
+```ocaml
+type 'a stream = { mutable h : 'a; tail : 'a stream option }
+
+let rec fold_left op acc stream =
+  match stream.tail with
+  | None -> acc
+  | Some stream' ->
+    let acc' = op acc stream.h in
+    stream.h <- stream'.h;
+    stream.tail <- stream'.tail;
+    fold_left op acc' stream
+
+let merge_workflows grammar prev\_examples new\_example =
+  let rec merge\_step acc stream =
+    match stream.tail with
+    | None -> acc
+    | Some stream' ->
+      let input = { A = grammar; B = fst acc; C = snd acc; D = stream'.h } in
+      let output = generate\_description input in
+      let acc' = (stream'.h, output) in
+      if is\_good\_description output then
+        merge\_step acc' stream'
+      else if stream'.tail <> None && stream' <> stream''.tail then
+        merge\_step acc stream'
+      else
+        let _ =
+          if stream'.tail <> Some stream' then
+            stream'.tail <- Some stream''
+          else if stream' <> stream'.tail then
+            stream'.tail.tail <- Some stream''
+        in
+        merge\_step acc stream''
+  in
+  let rec create\_stream examples =
+    match examples with
+    | [] -> None
+    | h :: t ->
+      let stream = { h = fst h; tail = if t = [] then None else Some (create\_stream t) } in
+      stream.tail <- Some stream;
+      Some stream
+  in
+  match create\_stream prev\_examples with
+  | None -> failwith "No previous examples provided"
+  | Some stream -> merge\_step (stream.h, generate\_description { A = grammar; B = fst stream.h; C = new\_example; D = snd stream.h }) stream
+```
+This code defines a type `'a stream` to represent a stream of examples, where each example is a pair of an input and an output. The function `fold_left` takes an operator `op`, an accumulator `acc`, and a stream `stream`, and applies the operator to the accumulator and the head of the stream until the end of the stream is reached.
+
+The function `merge_workflows` takes as input a grammar `grammar`, a list of previous examples `prev_examples`, and a new example `new_example`. It creates a stream from the previous examples using the helper function `create_stream`. The function `merge_step` is then called recursively to merge the new example with the stream, generating a new description at each step until a good description is found or all possible streams have been exhausted.
+
+Note that this code assumes the existence of functions `generate_description`, `is_good_description`, and helper functions for working with streams such as `create_stream`. These functions would need to be implemented based on the specific requirements of your language model and game.
+#+end_src

@@ -1,0 +1,45 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you specified:
+
+EBNF Grammar:
+```python
+<prd_grammar_tkn_A> ::= <prd_previous_results_tkn_D> | <prd_new_example_tkn_C>
+<prd_previous_results_tkn_D> ::= <prd_folder_tkn_file>
+<prd_new_example_tkn_C> ::= <prd_folder_tkn_file>
+<prd_folder_tkn_file> ::= 'folder' ('/' <identifier>) *
+<prd_test_tkn_D> ::= <prd_grammar_tkn_A>
+<prd_input_tkn_example> ::= <prd_initial_example_tkn_B> | <prd_new_example_tkn_C>
+<prd_create_new_output_tkn_D> ::= <prd_grammar_tkn_A> <prd_input_tkn_example>
+<prd_repeat_loop_tkn> ::= <prd_test_tkn_D> <prd_create_new_output_tkn_D>
+<prd_if_good_tkn> ::= <prd_repeat_loop_tkn> | <prd_end_of_process_tkn>
+<prd_error_feedback_tkn> ::= <prd_if_good_tkn> <prd_create_new_output_tkn_D>
+<prd_up_to_three_times_tkn> ::= <prd_error_feedback_tkn> <prd_error_feedback_tkn> <prd_error_feedback_tkn>
+```
+This EBNF grammar covers all the steps in your process, with each step starting with `prd_` followed by a descriptive name. Tokens are named using the format you specified, `prd_<prod name>_tkn_<token name>`. This should make it easy to understand and modify the grammar as needed.
+#+end_src

@@ -1,0 +1,1 @@
+We are working on creating a GBNF grammar for a game. It follows a standard EBNF notation at the end of this message (see TARGET). We translating an dungeon into this EBNF in chunks. Consider the following chunk of the dungeon between BEGINSRC and ENDSRC for translation to EBNF. BEGINSRC  

@@ -1,0 +1,51 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you specified:
+
+EBNF Grammar:
+
+<folder> ::= prd\_folder\_tkn\_name ":" <group> "<new\_example>"
+
+<group> ::= prd\_group\_tkn\_open "{" (<rule> ";")* prd\_group\_tkn\_close "}"
+
+<rule> ::= prd\_rule\_tkn\_name ":" prd\_rule\_tkn\_type prd\_rule\_tkn\_equals prd\_rule\_tkn\_value
+
+<new\_example> ::= prd\_new\_example\_tkn\_text ":" <text>
+
+<type> ::= prd\_type\_tkn\_string | prd\_type\_tkn\_integer | prd\_type\_tkn\_real
+
+<value> ::= prd\_value\_tkn\_text | prd\_value\_tkn\_number | prd\_value\_tkn\_symbol
+
+<text> ::= prd\_text\_tkn\_double\_quote (prd\_text\_tkn\_character | prd\_text\_tkn\_escaped\_char)* prd\_text\_tkn\_double\_quote
+
+<character> ::= ~[prd\_character\_tkn\_newline]
+
+<escaped\_char> ::= "\\" (prd\_escaped\_char\_tkn\_n | prd\_escaped\_char\_tkn\_r | prd\_escaped\_char\_tkn\_t | prd\_escaped\_char\_tkn\_b | prd\_escaped\_char\_tkn\_f | prd\_escaped\_char\_tkn\_r | prd\_escaped\_char\_tkn\_v | prd\_escaped\_char\_tkn\_digit)*
+
+This EBNF grammar follows the naming conventions you specified and adds more explicit production names and token names to make it easier to understand. The `fold_left` function remains unchanged as it is a general-purpose higher-order function in functional programming languages like OCaml.
+#+end_src

@@ -1,0 +1,78 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's the updated code following your naming conventions:
+
+```ebnf
+(*
+  Folder EBNF grammar
+
+  take inputs :
+    - Grammar: A
+    - Previous Results: D initially, Initial example: B
+    - New Example: C
+    - Created new output D.
+    - Test D. If good, repeat loop with new D. Otherwise feed error back to create new D up to 3 times.
+*)
+
+module Folder = struct
+
+  type t = {
+    grammar : Grammar.t;
+    prev_results : Results.t;
+    initial_example : Example.t;
+    new_example : Example.t;
+  }
+
+  let tkn_grammar = prd_Folder_tkn_grammar;
+  let tkn_prev_results = prd_Folder_tkn_prev_results;
+  let tkn_initial_example = prd_Folder_tkn_initial_example;
+  let tkn_new_example = prd_Folder_tkn_new_example;
+
+  let start folder =
+    [prd_start_stmt;
+     sequence [tkn_grammar; optional (seq [prd_assign_op; tkn_prev_results])];
+     tkn_initial_example;
+     tkn_new_example;
+     prd_process_input_stmt;
+     prd_update_results_stmt;
+     prd_test_results_stmt;
+     repeat (prd_loop_stmt zeroOrMoreTimes);
+     prd_end_stmt]
+    |> List.flatten
+
+  let rec fold_left op acc = function
+    | []   -> acc
+    | h :: t -> fold_left op (op acc h) t
+
+end
+
+(* Other modules and types definitions go here *)
+```
+
+I've added the naming conventions to each token used in the `Folder` module. Also, I created a starting point for the grammar by defining a `start` function that constructs a list of statements representing the high-level structure of your algorithm using EBNF rules. The `fold_left` function is left unchanged, as it does not need to be updated based on your naming conventions.
+#+end_src

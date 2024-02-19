@@ -1,0 +1,47 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your detailed EBNF grammar with the naming conventions you described:
+```ebnf
+<prd_folder_rule> ::= 'folder' <prd_takeinputs_rule>
+
+<prd_takeinputs_rule> ::= 'take inputs :' <prd_grammar_tkn_identifier> ',' <prd_previousresults_tkn_identifier> ',' <prd_nextexample_tkn_identifier> ',' <prd_creatednewoutput_tkn_identifier>
+
+<prd_grammar_tkn_identifier> ::= 'grammar' <tkn_identifier>
+<prd_previousresults_tkn_identifier> ::= 'Previous Results' <tkn_identifier>
+<prd_nextexample_tkn_identifier> ::= 'New Example' <tkn_identifier>
+<prd_creatednewoutput_tkn_identifier> ::= 'Created new output' <tkn_identifier>
+
+<tkn_identifier> ::= <alpha> {<alpha> | <digit>}
+
+<alpha> ::= 'A' | 'B' | 'C' | ... | 'Z' | 'a' | 'b' | 'c' | ... | 'z'
+<digit> ::= '0' | '1' | '2' | ... | '9'
+```
+This EBNF grammar defines the `folder` rule, which consists of the `takeinputs` rule. The `takeinputs` rule takes four inputs represented by the `grammar`, `previousresults`, `nextexample`, and `creatednewoutput` rules respectively. Each of these rules is an identifier rule (`prd_grammar_tkn_identifier`, `prd_previousresults_tkn_identifier`, etc.) that consists of a literal token followed by an `identifier` rule, which matches any sequence of letters or digits starting with a letter.
+
+You can continue defining the rest of your grammar in this manner, making sure to follow your naming conventions for rules and tokens.
+#+end_src

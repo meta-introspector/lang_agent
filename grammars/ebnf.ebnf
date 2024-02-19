@@ -2,9 +2,9 @@
 # Backus-Naur Form (BNF) is a notation for describing the syntax of formal languages like programming languages, file formats, and protocols. GBNF is an extension of BNF that primarily adds a few modern regex-like features.
 # In GBNF, we define production rules that specify how a non-terminal (rule name) can be replaced with sequences of terminals (characters, specifically Unicode code points) and other non-terminals. The basic format of a production rule is nonterminal ::= sequence....
 
-rhs ::= alternation
+production_rule ::= alternation
 lhs ::= identifier
-rule ::= lhs   S   "="   S   rhs   S    | comment
+rule ::= lhs   S   "="   S   production_rule   S    | comment
 root ::= ( S   rule   S ) *
 
 # Terminals support the full range of Unicode. Unicode characters can be specified directly in the grammar, for example hiragana ::= [ぁ-ゟ], or with escapes: 8-bit (\xXX), 16-bit (\uXXXX) or 32-bit (\UXXXXXXXX).
@@ -28,7 +28,7 @@ parens_close ::=  ")"
 parens ::= parens_open | parens_close
 
 #Repetition and Optional Symbols
-occurance ::= repetition_plus | repetition_star | repetition_optional
+repetition_symbols ::= repetition_plus | repetition_star | repetition_optional
 
 #* after a symbol or sequence means that it can be repeated zero or more times.
 repetition_star ::=  "*" 
@@ -57,15 +57,15 @@ braces_symbol ::= braces_open | braces_close
 quote ::=  "\""
 assignment ::= "::="
  
-symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | occurrence  | negate
+symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | repetition_symbols  | negate
  
 character ::= letter | digit | symbol | "_" | " "
 identifier ::= letter ( letter | digit | "_" )*
 terminal ::= quote character+  quote 
-group_term ::= parens_open   S   rhs   S   parens_close
-range_term ::=  braces_open   S   rhs   S   braces_close
-term ::= group_term |range_term | terminal      | identifier
+group ::= parens_open   S   production_rule   S   parens_close
+range_term ::=  braces_open   S   production_rule   S   braces_close
+term ::= group |range_term | terminal      | identifier
 
-factor_occurence ::= term   S   occurence  
+repetition ::= term   S   occurence  
 factor_negate ::= negate S factor
-factor ::= factor_occurence |factor_range | term   S
+factor ::= repetition |factor_range | term   S

@@ -1,0 +1,54 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+```
+<prd_folder_rules> ::= <prd_take_inputs_rule> | <prd_loop_rule>
+
+<prd_take_inputs_rule> ::= 'take inputs : ' <tkn_grammar_identifier> ' ' <tkn_previous_results_identifier> ' , ' <tkn_new_example_identifier> ' ;'
+
+<prd_loop_rule> ::= "Created new output " <tkn_previous_results_identifier> "." <nl>
+                    "Test " <tkn_previous_results_identifier> "." <opt_if_good_then_repeat_loop_rule>
+                    "otherwise feed error back to create new" <tkn_previous_results_identifier> "up to 3 times." <nl>
+                    "start with this following code and rewrite it to suit our needs." <nl>
+
+<opt_if_good_then_repeat_loop_rule> ::= 'If good, ' <rep_repeat_loop_rule> | epsilon
+
+<rep_repeat_loop_rule> ::= 'repeat loop with new' <tkn_previous_results_identifier> '.'
+
+<nl> ::= '\n'
+```
+This EBNF grammar defines two rules: `prd_folder_rules` and `prd_take_inputs_rule`. The first one is a choice between `prd_take_inputs_rule` and `prd_loop_rule`, while the second one describes how to parse the string that represents the inputs taken by the folder.
+
+The other rules in the grammar are used to define the structure of the `prd_loop_rule`. The `opt_if_good_then_repeat_loop_rule` rule is an optional production, and it can be either empty (epsilon) or the 'rep\_repeat\_loop\_rule' production.
+
+This grammar also uses some additional rules to define non-terminals that are not part of the syntax but are used for readability purposes. The `<nl>` rule is an example of this, it represents a newline character.
+
+Please note that this grammar does not include all the possible elements in the previous code snippet, only the ones that were explicitly defined with names. It's also missing some rules that are used to define the structure of `prd_loop_rule`, for example how to parse a repetition or an alternative.
+
+You can continue expanding this grammar by adding more rules and non-terminals as needed, following the naming conventions you specified.
+#+end_src

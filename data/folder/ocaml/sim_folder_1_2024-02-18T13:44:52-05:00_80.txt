@@ -1,0 +1,79 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided:
+```ocaml
+type input = { grammar : string; prev_results : string; new_example : string }
+
+let merge_inputs input1 input2 =
+  {
+    grammar = input1.grammar ^ " " ^ input2.grammar;
+    prev_results = input2.prev_results;
+    new_example = input2.new_example;
+  }
+
+let rec generate_prompt acc input =
+  let open Input in
+  let new_output =
+    LanguageModel.generate ~grammar:grammar ~prev_results:prev_results ~new_example:new_example ()
+  in
+  if LanguageModel.test new_output then
+    generate_prompt (merge_inputs acc input) input
+  else if List.length acc < 3 then
+    generate_prompt acc { grammar; prev_results = new_output; new_example }
+  else failwith "Failed to generate a valid prompt after 3 attempts"
+
+let main () =
+  let open Input in
+  let initial_input = { grammar = A; prev_results = D; new_example = B } in
+  let final_prompt = generate_prompt [] initial_input in
+  printf "Final prompt: %s\n" final_prompt.new_example
+
+let () = main ()
+```
+This code defines a type for the input to the `generate_prompt` function, which consists of the grammar, previous results, and new example provided to the function. The `merge_inputs` function is used to merge two inputs into one by concatenating their grammars and using the second input's previous results and new example.
+
+The `generate_prompt` function takes an accumulator (which is used to keep track of the previous attempts) and an input, and generates a new prompt using the language model based on the input's grammar, previous results, and new example. If the generated prompt passes the test function, it is used as the new input for another iteration of the function. If not, and if there are less than 3 attempts so far, a new attempt is made with an updated input. If there have been 3 failed attempts, the function throws an exception.
+
+The `main` function initializes the language model, defines an initial input, and starts the recursive process of generating prompts by calling the `generate_prompt` function with an empty accumulator and the initial input. Once a valid prompt has been generated, it is printed to the console.
+
+You can customize this code to suit your needs by modifying the types, functions, and logic as necessary.
+#+end_src

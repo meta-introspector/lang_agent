@@ -1,0 +1,61 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you can define your EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::= <prd_take_inputs_rule> | <prd_loop_rule> | <prd_start_with_rule>
+
+<prd_take_inputs_rule> ::= 'take' 'inputs' ':' ('grammar' ':' <tkn_identifier_rule>) (',' <prd_previous_results_rule>) (',' <prd_new_example_rule>) ';'
+
+<prd_previous_results_rule> ::= 'Previous' 'Results' ':' <tkn_identifier_rule> ';'
+
+<prd_new_example_rule> ::= 'New' 'Example' ':' <tkn_identifier_rule> ';'
+
+<prd_loop_rule> ::= 'Loop' '{' <prd_test_rule> <prd_operation_rules> '}'
+
+<prd_test_rule> ::= 'Test' <tkn_identifier_rule> ';' <prd_if_then_else_rule>
+
+<prd_if_then_else_rule> ::= 'If' 'good' 'Then' 'repeat' 'loop' 'With' <prd_new_previous_results_rule> 'Else' 'feed' 'error' 'back' 'to' 'create' 'new' <tkn_identifier_rule> 'Up' 'to' <tkn_number_literal_rule> 'Times' ';'
+
+<prd_new_previous_results_rule> ::= 'New' 'D' ';'
+
+<prd_operation_rules> ::= <prd_create_new_output_rule> | <prd_fold_left_rule>
+
+<prd_create_new_output_rule> ::= 'Created' 'new' 'output' <tkn_identifier_rule> ';'
+
+<prd_fold_left_rule> ::= 'fold_left' <tkn_identifier_literal_rule> <tkn_identifier_literal_rule> 'acc' '=' <tkn_identifier_literal_rule> 'function' <prd_operation_args_rule> ';'
+
+<prd_operation_args_rule> ::= '|' ['['] <tkn_identifier_literal_rule> ['.' <tkn_identifier_literal_rule>]* [']'] '::' <tkn_identifier_literal_rule> ('(' <prd_operation_body_rule> ')')?
+
+<prd_operation_body_rule> ::= <tkn_identifier_literal_rule> <tkn_identifier_literal_rule> 'op' <tkn_identifier_literal_rule> (<tkn_identifier_literal_rule> <tkn_identifier_literal_rule>) | <tkn_identifier_literal_rule>
+
+<prd_start_with_rule> ::= 'start' 'with' <prd_this_following_code_rule> ';'
+
+<prd_this_following_code_rule> ::= '<' '<' <tkn_identifier_literal_rule> ('.' <tkn_identifier_literal_rule>)* '>'
+```
+This is just a rough example and you might need to adjust it according to your needs. The main idea is to use the naming conventions you described to make the grammar more expressive and explicit.
+#+end_src

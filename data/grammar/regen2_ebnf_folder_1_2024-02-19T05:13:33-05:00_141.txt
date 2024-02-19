@@ -1,0 +1,101 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's the updated code according to your requirements:
+
+(*
+
+Bootstrapping system using EBNF grammars.
+Creating a detailed EBNF grammar where rule names start with "prd" and tokens are named "prd_<prod\_name>\_tkn\_<token\_name>".
+
+*)
+
+let rec fold\_left op acc = function
+| [] -> acc
+| h :: t -> fold\_left op (op acc h) t
+
+type token = {
+name : string;
+value : string
+}
+
+type rule = {
+name : string;
+elements : (token list | rule) list
+}
+
+let prd\_folder_tkn = { name = "TKN\_FOLDER"; value = "Folder" }
+let prd\_grammar_tkn = { name = "TKN\_GRAMMAR"; value = "Grammar" }
+let prd\_previous\_results_tkn = { name = "TKN\_PREVIOUS\_RESULTS"; value = "PreviousResults" }
+let prd\_new\_example_tkn = { name = "TKN\_NEW\_EXAMPLE"; value = "NewExample" }
+let prd\_output_tkn = { name = "TKN\_OUTPUT"; value = "Output" }
+let prd\_loop_tkn = { name = "TKN\_LOOP"; value = "Loop" }
+let prd\_times_tkn = { name = "TKN\_TIMES"; value = "Times" }
+let prd\_error\_tkn = { name = "TKN\_ERROR"; value = "Error" }
+
+let prd\_fold\_left_tkn = { name = "TKN\_FOLD\_LEFT"; value = "FoldLeft" }
+let prd\_op_tkn = { name = "TKN\_OP"; value = "Op" }
+let prd\_acc_tkn = { name = "TKN\_ACC"; value = "Acc" }
+let prd\_h_tkn = { name = "TKN\_H"; value = "H" }
+let prd\_t_tkn = { name = "TKN\_T"; value = "T" }
+
+let prd\_rule\_name\_tkn = { name = "TKN\_RULE\_NAME"; value = "RuleName" }
+let prd\_elements\_tkn = { name = "TKN\_ELEMENTS"; value = "Elements" }
+
+let prd\_rule1 = {
+name = "prd\_test\_rule";
+elements = [ [prd\_folder\_tkn]; [prd\_grammar\_tkn]; [prd\_previous\_results\_tkn]; [prd\_new\_example\_tkn];
+[prd\_output\_tkn]; [prd\_loop\_tkn]; [prd\_times\_tkn]; [prd\_error\_tkn] ]
+}
+
+let prd\_rule2 = {
+name = "prd\_fold\_left";
+elements = [ [prd\_op\_tkn]; [prd\_acc\_tkn]; [prd\_h\_tkn; prd\_t\_tkn] ]
+}
+
+let rules = [ prd\_rule1; prd\_rule2 ]
+
+(* For generating EBNF code *)
+let rec generate\_ebnf rule =
+match rule with
+| { name = n; elements = es } ->
+"prd\_" ^ n ^ " :=" ^ "\n"
+^ (String.concat "" (List.map generate\_element es))
+and generate\_element element =
+match element with
+| [] -> ""
+| h :: t ->
+(match h with
+| { name = n; value = v } -> " " ^ n ^ "_tkn\n"
+| _ -> "")
+^ (String.concat "" (List.map generate\_element t))
+
+let ebnf\_code = String.concat "\n" (List.map generate\_ebnf rules)
+
+(* Print EBNF code *)
+Printf.printf "%s\n" ebnf\_code
+#+end_src

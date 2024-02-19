@@ -1,0 +1,64 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you might define your detailed EBNF grammar with the naming conventions you described:
+
+```ebnf
+<prd_grammar_tkn_A> ::= <prd_previous_results_tkn_D>
+                       | <prd_new_example_tkn_C>
+
+<prd_previous_results_tkn_D> ::= <prd_initial_example_tkn_B>
+
+<prd_new_example_tkn_C> ::= <any_token_sequence_that_matches_the_new_example>
+
+<prd_test_tkn> ::= <prd_grammar_tkn_A>
+                  | <prd_previous_results_tkn_D>
+                  | <prd_new_example_tkn_C>
+                  | <any_other_valid_token_sequence>
+                  ;
+
+<prd_test_result_tkn> ::= "good"
+                          | "error"
+                          ;
+
+<prd_create_new_output_tkn> ::= <prd_grammar_tkn_A>
+                                | <prd_previous_results_tkn_D>
+                                | <prd_test_result_tkn>
+                                ;
+
+<prd_start_with_code_tkn> ::= <any_valid_code_sequence>
+                              ;
+```
+
+This EBNF grammar defines a set of rules for your system, with each rule starting with `prd_`. Tokens within the rules are named using the format `prd_<rule_name>_tkn_<token_name>`, as you specified. For example, the token representing the previous results in this grammar is named `prd_previous_results_tkn_D`.
+
+This EBNF also includes a `test` rule that matches any valid combination of tokens (i.e., any combination of tokens defined in the grammar), and a `test result` rule that can only match one of two possible strings: "good" or "error". This allows you to test your system and determine if it is working correctly, and provides a way to indicate whether the test was successful or not.
+
+Finally, the `create new output` rule defines how the system should create a new output based on the input grammar, previous results, and test result. This rule can be customized to suit your specific needs. The `start with code` rule allows you to specify any valid code sequence that you want the system to start with, providing flexibility in how you use the system.
+
+With this detailed EBNF grammar, you can clearly define the rules and tokens used by your system, making it easier to understand and maintain. You can also customize the rules and tokens as needed to suit your specific requirements.
+#+end_src

@@ -1,0 +1,86 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you might define your detailed EBNF grammar with the specified naming conventions:
+```
+(* Define token categories *)
+prd_token_tkn_identifier = [a-zA-Z]+ ;
+prd_token_tkn_integer = [0-9]+ ;
+
+(* Define non-terminal symbols *)
+prd_rule_start_symbol = 'folder' ;
+
+(* Define rules *)
+prd_rule_folder = 
+  'take'
+  prd_token_tkn_inputs
+  ':'
+  prd_token_tkn_grammar
+  prd_token_tkn_previousResults
+  prd_token_tkn_newExample
+  prd_token_tkn_createdNewOutput
+  prd_token_tkn_testOutput
+  'if'
+  prd_token_tkn_good
+  'repeat'
+  prd_token_tkn_loop
+  prd_token_tkn_newD
+  'otherwise'
+  prd_token_tkn_feedError
+  'to'
+  prd_token_tkn_createNewD
+  'up'
+  prd_token_tkn_maxTries
+  'times'
+  'start'
+  'with'
+  prd_token_tkn_code
+  'and'
+  prd_token_tkn_rewrite
+  'to'
+  prd_token_tkn_suitedNeeds ;
+
+prd_token_tkn_inputs = prd_token_tkn_identifier ;
+prd_token_tkn_grammar = prd_token_tkn_identifier ;
+prd_token_tkn_previousResults = prd_token_tkn_identifier ;
+prd_token_tkn_newExample = prd_token_tkn_identifier ;
+prd_token_tkn_createdNewOutput = prd_token_tkn_identifier ;
+prd_token_tkn_testOutput = prd_token_tkn_identifier ;
+prd_token_tkn_good = prd_token_tkn_identifier ;
+prd_token_tkn_loop = prd_token_tkn_identifier ;
+prd_token_tkn_newD = prd_token_tkn_identifier ;
+prd_token_tkn_feedError = prd_token_tkn_identifier ;
+prd_token_tkn_createNewD = prd_token_tkn_identifier ;
+prd_token_tkn_maxTries = prd_token_tkn_integer ;
+prd_token_tkn_code = prd_rule_code ;
+prd_token_tkn_suitedNeeds = '.' ;
+
+prd_rule_code = 
+  (* code definition goes here *) ;
+```
+You can then use this EBNF grammar to parse and analyze your input using a parser generator tool such as ANTLR or Menhir.
+#+end_src

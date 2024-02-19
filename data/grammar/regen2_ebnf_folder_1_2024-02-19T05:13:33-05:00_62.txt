@@ -1,0 +1,83 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I can help you create an EBNF grammar that meets your specified naming conventions. Here's an example of how you could define some basic rules:
+```ebnf
+<prd_start_prod> ::= 'folder' { <prd_rule_definition> }+
+
+<prd_rule_definition> ::= <prd_rule_name> '::=' <rule_expression>
+
+<prd_rule_name> ::= 'prd'_ <identifier>
+
+<rule_expression> ::= <sequence_expression> | <alternative_expression> | <option_expression> | <group_expression> | <token_expression>
+
+<sequence_expression> ::= '(' { <rule_expression> }+ ')'
+
+<alternative_expression> ::= '[' { <rule_expression> }+ ']'
+
+<option_expression> ::= '{' <rule_expression> '}'
+
+<group_expression> ::= '(' <rule_expression> ')'
+
+<token_expression> ::= <prd_terminal_symbol> | <prd_nonterminal_symbol> | '<' <character_set> '>'
+
+<prd_terminal_symbol> ::= 'tkn'_ <identifier>
+
+<prd_nonterminal_symbol> ::= 'prd'_ <identifier> '_ntk'_ <identifier>
+
+<identifier> ::= [a-zA-Z_] [a-zA-Z0-9_]*
+
+<character_set> ::= <character> { <character> }
+
+<character> ::= '.' | [a-zA-Z0-9]
+```
+This EBNF grammar defines the following rules:
+
+* `<prd_start_prod>` is the start production and represents a folder that contains a sequence of rule definitions.
+* `<prd_rule_definition>` defines a single rule, with a name (`<prd_rule_name>`) and an expression (`<rule_expression>`).
+* `<prd_rule_name>` defines the naming convention for rules, where the name starts with "prd\_".
+* `<rule_expression>` represents a single rule expression, which can be a sequence expression (`<sequence_expression>`), an alternative expression (`<alternative_expression>`), an option expression (`<option_expression>`), a group expression (`<group_expression>`), or a terminal symbol (`<token_expression>`).
+* `<sequence_expression>`, `<alternative_expression>`, and `<group_expression>` represent sequences of expressions, which can be used to define complex rules.
+* `<option_expression>` represents an optional expression, where the expression inside the braces is optional.
+* `<token_expression>` represents a terminal symbol, which can be a `<prd_terminal_symbol>`, a `<prd_nonterminal_symbol>`, or a character set (`<character_set>`).
+* `<prd_terminal_symbol>` defines the naming convention for tokens, where the name starts with "tkn\_".
+* `<prd_nonterminal_symbol>` defines the naming convention for non-terminal symbols, where the name starts with "prd\_" followed by the rule name and "_ntk\_".
+* `<identifier>` is used to define identifiers (names) in the grammar. It can consist of any letter, number, or underscore character, but must start with a letter or underscore.
+* `<character_set>` represents a set of characters enclosed in angle brackets. This can be used to define ranges of characters or specific sets of characters.
+* `<character>` is used to define individual characters in the grammar. It can be any single character, including a dot (.) or a letter or number.
+
+With this EBNF grammar, you could define your existing rule like this:
+```ebnf
+<prd_take_inputs_prod> ::= 
+  'prd_take_inputs_ntk' '::=' 
+    '<prd_grammar_tkn' ', ' 'prd_previous_results_ntk' ',' 
+      'prd_new_example_ntk'>'
+```
+This defines a rule with the name "take\_inputs" that takes three arguments: `<prd\_grammar_tkn>`, `<prd\_previous\_results\_ntk>`, and `<prd\_new\_example\_ntk>`. The naming convention for tokens is used to ensure that each token has a unique name.
+
+Similarly, you could define the other rules in your grammar using this naming convention. By following these conventions, you can create a more expressive and explicit EBNF grammar that meets your needs.
+#+end_src

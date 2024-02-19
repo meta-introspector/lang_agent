@@ -1,0 +1,71 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you specified:
+```
+<prd_folder_tkn_grammar> ::= <prd_sequence_of_rules_tkn_rules>
+
+<prd_sequence_of_rules_tkn_rules> ::= <prd_rule> { <prd_rule> }
+
+<prd_rule> ::= <prd_identifier_tkn_identifier> ':' <prd_sequence_of_alternatives_tkn_seqalt> ';'
+
+<prd_identifier_tkn_identifier> ::= 'prd'_ <identifier_tkn_id>
+
+<prd_sequence_of_alternatives_tkn_seqalt> ::= <prd_alternative> { '|' <prd_alternative> }
+
+<prd_alternative> ::= <prd_sequence_of_elements_tkn_seqelt>
+
+<prd_sequence_of_elements_tkn_seqelt> ::= <prd_element> { <prd_element> }
+
+<prd_element> ::= <prd_terminal_tkn_terminal>
+                 | <prd_nonterminal_tkn_nonterminal>
+                 | <prd_group_tkn_group>
+                 | <prd_option_tkn_option>
+                 | <prd_repeat_tkn_repeat>
+
+<prd_terminal_tkn_terminal> ::= "'" <character_tkn_char> "'"
+                                | '"' <character_tkn_char> '"'
+                                | '<' <character_tkn_char> '>'
+
+<prd_nonterminal_tkn_nonterminal> ::= '<' <identifier_tkn_id> '>'
+
+<prd_group_tkn_group> ::= '(' <prd_sequence_of_elements_tkn_seqelt> ')'
+
+<prd_option_tkn_option> ::= '[' <prd_sequence_of_elements_tkn_seqelt> ']'
+
+<prd_repeat_tkn_repeat> ::= '{' <prd_sequence_of_elements_tkn_seqelt> '}'
+
+<identifier_tkn_id> ::= <character_tkn_lowercase> { <character_tkn_lowercase> }
+
+<character_tkn_char> ::= /* any character */
+
+<character_tkn_lowercase> ::= 'a' .. 'z'
+```
+This grammar defines a set of rules for defining a sequence of elements, where each element can be a terminal (represented by single quotes, double quotes, or angle brackets), a nonterminal (represented by angle brackets and an identifier), a group (represented by parentheses), an option (represented by square brackets), or a repeat (represented by curly braces). Each rule has a name that starts with "prd" followed by the name of the rule, and each terminal and nonterminal in the grammar is represented by a token that starts with "tkn" followed by the name of the terminal or nonterminal.
+
+You can use this EBNF grammar to parse and analyze your input files, and you can use it as a starting point for defining more complex grammars that suit your needs. Just be sure to update the token definitions (e.g., `<character_tkn_char>`) to match the actual characters you want to allow in your grammar.
+#+end_src

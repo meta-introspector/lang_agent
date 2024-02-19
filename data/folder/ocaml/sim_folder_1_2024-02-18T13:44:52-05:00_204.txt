@@ -1,0 +1,105 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example OCaml code that implements a meta magical folder for merging large language model prompt workflows:
+```ocaml
+open List
+
+type input = {
+  grammar : string;
+  prev_results : string option;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_good : bool;
+}
+
+let merge_inputs inputs =
+  let grammars = List.map (fun i -> i.grammar) inputs in
+  let prev_results = List.filter_map (fun i -> i.prev_results) inputs in
+  let new_examples = List.map (fun i -> i.new_example) inputs in
+  (grammars, prev_results, new_examples)
+
+let merge_outputs outputs =
+  let results = List.map (fun o -> o.result) outputs in
+  let good = List.for_all (fun o -> o.is_good) outputs in
+  { result = String.concat "\n" results; is_good = good }
+
+let rec merge_workflows workflows input =
+  let op acc input =
+    let output = run_workflow input in
+    { acc with result = output.result; is_good = output.is_good } in
+  match workflows with
+  | [] -> { result = ""; is_good = false }
+  | h :: t ->
+    let merged = fold_left op input t in
+    if merged.is_good then merged else merge_workflows (h :: workflows) input
+
+let rec merge_three_times workflow input =
+  let output = merge_workflows [workflow; workflow; workflow] input in
+  if output.is_good then output else
+    let input' = { input with new_example = output.result } in
+    merge_three_times workflow input'
+
+let meta_magical_folder inputs =
+  let (grammars, prev_results, new_examples) = merge_inputs inputs in
+  let initial_example = List.hd new_examples in
+  let workflow = {
+    grammar = List.hd grammars;
+    prev_results = Some (List.hd prev_results);
+    new_example = initial_example;
+  } in
+  let output = merge_three_times workflow {
+    grammar = List.hd grammars;
+    prev_results = None;
+    new_example = "";
+  } in
+  if output.is_good then output else
+    failwith "Failed to generate a good output after three attempts."
+```
+This code defines several types for the inputs, outputs, and functions used in the merging process. The `merge_inputs` function takes a list of inputs and returns the merged grammars, previous results, and new examples as separate lists. The `merge_outputs` function takes a list of outputs and returns a single output with the merged result and a boolean indicating whether it is good or not.
+
+The `merge_workflows` function recursively applies the given workflow to an input until a good output is obtained. If all attempts fail, it raises an exception. The `merge_three_times` function calls `merge_workflows` three times and returns the result of the last successful attempt.
+
+Finally, the `meta_magical_folder` function takes a list of inputs and returns the merged output after applying the workflow three times. If all attempts fail, it raises an exception. The input for this function is assumed to have a specific format with one grammar, previous results, and new examples per line. This format can be customized by modifying the `merge_inputs` and `meta_magical_folder` functions.
+#+end_src

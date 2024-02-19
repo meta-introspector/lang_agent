@@ -1,0 +1,57 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you can define your EBNF grammar with the specified naming conventions:
+```
+<prd_folder_rule> ::= 'folder' <prd_take_inputs_rule>
+
+<prd_take_inputs_rule> ::= 'take' 'inputs' ':' <prd_grammar_tkn_token> ',' <prd_previous_results_tkn_token> ',' <prd_new_example_tkn_token> ',' <prd_created_new_output_tkn_token> '.'
+
+<prd_grammar_tkn_token> ::= 'A'
+<prd_previous_results_tkn_token> ::= 'D'
+<prd_initial_example_tkn_token> ::= 'B'
+<prd_new_example_tkn_token> ::= 'C'
+<prd_created_new_output_tkn_token> ::= 'D'
+
+<prd_test_rule> ::= 'Test' <prd_created_new_output_tkn_token> '.'
+<prd_if_good_repeat_loop_rule> ::= 'If' 'good,' 'repeat' 'loop' 'with' <prd_new_created_output_token> '.'
+<prd_otherwise_create_new_D_rule> ::= 'Otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' <prd_created_new_output_tkn_token> 'up' 'to' '3' 'times' '.'
+
+<prd_start_rule> ::= 'start' 'with' <prd_this_following_code_token> 'and' 'rewrite' 'it' 'to' 'suit' 'our' 'needs' '.'
+
+<prd_this_following_code_token> ::= <commented_text>
+
+<commented_text> ::= '(*' <any_character_but_right_parenthesis> '*)'
+<any_character_but_right_parenthesis> ::= . | <any_character_but_right_parenthesis> <any_character_but_right_parenthesis>
+                                             - except for ')'
+```
+You can use the above defined grammar to parse your code and check if it adheres to the specified conventions.
+
+Note that I have used the convention you described to name the tokens and rules, but I added some additional rules and tokens to make the grammar more expressive and explicit. For example, I added a rule for comments (`<commented_text>`) and a token for the code that should be rewritten (`<prd_this_following_code_token>`).
+
+You can further extend this grammar to include more production rules and tokens as needed.
+#+end_src

@@ -1,0 +1,144 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's a possible OCaml code to implement the meta magical folder that merges streams of the matrix together into one:
+```ocaml
+let rec merge_matrices grammar previous_results new_example max_errors =
+  let open Option in
+  let merged = List.fold_left (fun acc x -> merge_examples grammar acc x) previous_results [new_example] in
+  match merged with
+  | Some merged_result ->
+      if is_valid_output grammar merged_result then
+        merged_result
+      else if max_errors > 0 then
+        merge_matrices grammar previous_results (Some new_example) (max_errors - 1)
+      else
+        raise (Failure "Max errors reached")
+  | None ->
+      if max_errors > 0 then
+        merge_matrices grammar previous_results None (max_errors - 1)
+      else
+        raise (Failure "No valid output found")
+
+and merge_examples grammar acc example =
+  let open Option in
+  match create_output grammar acc example with
+  | Some output -> Some (merge_two_outputs grammar acc output)
+  | None ->
+      if List.mem example acc then
+        None
+      else
+        merge_examples grammar (example :: acc) example
+
+and merge_two_outputs grammar acc1 acc2 =
+  let open Option in
+  match (acc1, acc2) with
+  | Some a, Some b -> Some (merge_two_results grammar a b)
+  | _ , Some b -> Some b
+  | Some a, _ -> Some a
+  | None, None -> None
+
+and merge_two_results grammar res1 res2 =
+  let open Option in
+  match (res1, res2) with
+  | Some r1, Some r2 -> Some (merge_individual_results grammar r1 r2)
+  | _ , Some r2 -> Some r2
+  | Some r1, _ -> Some r1
+  | None, None -> None
+
+and merge_individual_results grammar res1 res2 =
+  let open Option in
+  match (res1, res2) with
+  | Some (Code a), Some (Code b) -> Some (Code (merge_code grammar a b))
+  | _ , Some r2 -> Some r2
+  | Some r1, _ -> Some r1
+  | None, None -> None
+
+and merge_code grammar code1 code2 =
+  let open Option in
+  match (code1, code2) with
+  | Some c1, Some c2 -> Some (merge_code_parts grammar c1 c2)
+  | _ , Some c2 -> Some c2
+  | Some c1, _ -> Some c1
+  | None, None -> None
+
+and merge_code_parts grammar code1 code2 =
+  let open Option in
+  match (code1, code2) with
+  | Some (Function f1), Some (Function f2) -> Some (Function (merge_functions grammar f1 f2))
+  | _ , Some c2 -> Some c2
+  | Some c1, _ -> Some c1
+  | None, None -> None
+
+and merge_functions grammar f1 f2 =
+  let open Option in
+  match (f1, f2) with
+  | Some (Name n1), Some (Name n2) -> Some (Name (merge_names grammar n1 n2))
+  | _ , Some f2 -> Some f2
+  | Some f1, _ -> Some f1
+  | None, None -> None
+
+and merge_names grammar n1 n2 =
+  let open Option in
+  match (n1, n2) with
+  | Some (NamePart p1), Some (NamePart p2) ->
+      if p1 = p2 then
+        Some (NamePart p1)
+      else if is_compatible grammar p1 p2 then
+        Some (NamePart (merge_parts grammar p1 p2))
+      else
+        None
+  | _ , Some n2 -> Some n2
+  | Some n1, _ -> Some n1
+  | None, None -> None
+
+and merge_parts grammar p1 p2 =
+  let open Option in
+  match (p1, p2) with
+  | Some PartA, Some PartB -> Some (PartAB)
+  | _ , Some p2 -> Some p2
+  | Some p1, _ -> Some p1
+  | None, None -> None
+```
+The `merge_matrices` function takes as input the current grammar, the previous results, a new example to merge with, and the maximum number of errors allowed. It returns a valid output that satisfies the grammar or raises an exception if no valid output can be found after the maximum number of errors has been reached.
+
+The `merge_examples`, `merge_two\_outputs`, `merge
+#+end_src

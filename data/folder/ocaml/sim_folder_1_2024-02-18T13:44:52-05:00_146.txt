@@ -1,0 +1,78 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a language model, based on the fold\_left function:
+```ocaml
+type example = string (* replace with the actual type of examples *)
+type result = string (* replace with the actual type of results *)
+type grammar = string (* replace with the actual type of grammars *)
+
+exception Error
+
+let rec generate_prompt_workflow
+    (grammar : grammar)
+    (previous_results : result list)
+    (new_example : example)
+  : result =
+  let new_result = LangModel.generate ~grammar ~input:new_example in
+  let all_results = previous_results @ [new_result] in
+  List.iter (fun r -> TestEngine.test r) all_results;
+  List.filter_map TestEngine.is_good all_results
+  |> function
+    | []   -> raise Error
+    | h::t -> h
+
+and fold_left op acc examples =
+  let rec loop acc examples =
+    match examples with
+    | []   -> acc
+    | h::t ->
+      let new_result = generate_prompt_workflow grammar acc h in
+      loop (op acc new_result) t
+  in
+  loop acc examples
+```
+The `generate_prompt_workflow` function takes a grammar, a list of previous results, and a new example as input. It generates a new result using the large language model with the given grammar and input. It then tests all results (including the new one) using the test engine. If none of the results pass the test, it raises an error. Otherwise, it returns the first good result.
+
+The `fold_left` function is a recursive function that takes an operator, an accumulator, and a list of examples as input. It applies the `generate_prompt_workflow` function to each example in the list, using the current accumulator value as the grammar. The result of applying the `generate_prompt_workflow` function is used as the new accumulator value.
+
+You can customize this code by replacing the types and functions with your actual types and functions. For example, you can replace the `string` type with a custom type that represents a grammar, an example, or a result. You can also replace the `LangModel.generate` and `TestEngine.test` functions with your own implementations.
+#+end_src

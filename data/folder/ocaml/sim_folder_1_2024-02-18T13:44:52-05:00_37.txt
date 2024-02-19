@@ -1,0 +1,85 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the code snippet. We will define additional functions to handle taking inputs, testing outputs, and handling errors. Here is an example of how this could be implemented in OCaml:
+
+```ocaml
+(* Util functions *)
+let rec merge_lists lst1 lst2 =
+  match lst1, lst2 with
+  | [], _ -> lst2
+  | _, [] -> lst1
+  | h1::t1, h2::t2 -> h1 :: h2 :: merge_lists t1 t2
+
+let rec assoc_list_merge k assoc1 assoc2 =
+  match assoc1, assoc2 with
+  | [], _ -> assoc2
+  | _, [] -> assoc1
+  | (k', v')::tl1, (k'', v'')::tl2 ->
+    if k' = k then (k', merge_lists v' v'') :: assoc_list_merge k tl1 tl2
+    else if k'' = k then (k'', merge_lists v' v'') :: assoc_list_merge k assoc1 tl2
+    else assoc_list_merge k tl1 tl2
+
+(* Main functions *)
+let rec process_streams grammar prev_results new_example max_errors =
+  let acc = List.assoc "acc" prev_results in
+  (* Perform the main processing here using `fold_left` and `grammar` as inputs *)
+  let result = fold_left (fun acc x -> process_element grammar acc x) acc new_example in
+  (* Test the output using a custom test function or predicate *)
+  if is_valid_result result then
+    let new_prev_results = ("acc", result) :: List.remove_assoc "acc" prev_results in
+    process_streams grammar new_prev_results new_example max_errors
+  else if max_errors > 0 then
+    let new_prev_results = ("acc", result) :: List.remove_assoc "acc" prev_results in
+    process_streams grammar new_prev_results new_example (max_errors - 1)
+  else
+    failwith "Max errors reached, unable to generate valid output."
+
+(* Example usage: *)
+let initial_grammar = ...
+let initial_example = ...
+let initial_results = [("acc", [])]
+let max_errors = 3
+process_streams initial_grammar initial_results initial_example max_errors
+```
+
+In this example, the `process_element` function represents the main processing of each input element from `new_example`. The `is_valid_result` is a custom test function that checks if the output is valid or not. You can replace these functions with your own specific processing and testing logic for generating creative and imaginative descriptions of code in a high tech code-based hacking game.
+#+end_src

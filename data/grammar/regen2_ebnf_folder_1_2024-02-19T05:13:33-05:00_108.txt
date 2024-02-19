@@ -1,0 +1,59 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```ebnf
+<folder> ::= prd_folder_tkn_rules { prd_folder_tkn_rule }
+
+<rule> ::= prd_rule_tkn_name '::=' <expression>
+
+<expression> ::= <sequence> | <sequence> '|' <expression>
+
+<sequence> ::= <item> { ',' <item> }
+
+<item> ::= <token> | <group> | <option> | <repeat>
+
+<token> ::= prd_tkn_<name>
+
+<group> ::= '(' <expression> ')'
+
+<option> ::= '[' <expression> ']'
+
+<repeat> ::= '{' <expression> '}'
+          | '{' <expression> ',' <expression> '}'
+          | '{' <expression> '}' '?'
+          | '{' <expression> '}' '*'
+          | '{' <expression> '}' '+'
+```
+
+In this example, `<folder>` is the top-level rule and represents a collection of rules. Each rule has a name, which is used as the value of the `name` token in the `<rule>` non-terminal. The `<expression>` non-terminal represents a choice between multiple sequences, where each sequence is represented by the `<sequence>` non-terminal. A sequence consists of one or more items, which can be tokens, groups, options, or repeats.
+
+You can replace the `<name>` token in the `<token>` non-terminal with the actual name of the token. For example, if you have a token named `Identifier`, you would use `prd_tkn_Identifier` instead of `prd_tkn_<name>`.
+
+You can also add additional non-terminals and rules to the grammar as needed. Just make sure to follow the naming conventions you described for consistency.
+#+end_src

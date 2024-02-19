@@ -1,0 +1,59 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the naming conventions you specified:
+```
+<prd_folder_rules> ::= 
+  'folder' '{' <prd_take_inputs_rules> '}'
+
+<prd_take_inputs_rules> ::= 
+  'take' 'inputs' ':' <prd_grammar_token> ',' <prd_previous_results_token> ',' <prd_new_example_token> ',' <prd_created_new_output_token> ',' <prd_test_output_rules>
+
+<prd_grammar_token> ::= 
+  'grammar' ':' <tnk_identifier>
+
+<prd_previous_results_token> ::= 
+  'Previous' 'Results' ':' <tnk_identifier> 'initially,' <tnk_initial_example>
+
+<prd_new_example_token> ::= 
+  'New' 'Example' ':' <tnk_identifier>
+
+<prd_created_new_output_token> ::= 
+  'Created' 'new' 'output' <tnk_identifier> '.'
+
+<prd_test_output_rules> ::= 
+  'Test' <prd_output_rules> '.'
+
+<prd_output_rules> ::= 
+  'If' 'good,' 'repeat' 'loop' 'with' 'new' <prd_output_rules> 'Othewise' 'feed' 'error' 'back' 'to' 'create' 'new' <prd_output_rules> 'up' 'to' '3' 'times.'
+  
+<tnk_identifier> ::=  [a-zA-Z][a-zA-Z0-9]*
+```
+This EBNF grammar defines the rules for a folder, which takes inputs including a grammar (represented by a token), previous results (also represented by a token), a new example (represented by a token), and created new output (represented by a token). It also includes rules for testing the output and repeating the loop if necessary. The non-terminal `<tnk_identifier>` is used to match any sequence of letters or digits that starts with a letter, which can be used to represent identifiers in your language.
+
+You can use this EBNF grammar as a starting point and modify it to suit the specific needs of your system.
+#+end_src

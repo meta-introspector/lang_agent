@@ -1,0 +1,118 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed and self expressive.
+Here is the code we wrote so far 
+# GBNF (GGML BNF) is a format for defining formal grammars to constrain model outputs in llama.cpp. 
+# Backus-Naur Form (BNF) is a notation for describing the syntax of formal languages like programming languages, file formats, and protocols. GBNF is an extension of BNF that primarily adds a few modern regex-like features.
+# In GBNF, we define production rules that specify how a non-terminal (rule name) can be replaced with sequences of terminals (characters, specifically Unicode code points) and other non-terminals. The basic format of a production rule is nonterminal ::= sequence....
+
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S    | comment
+root ::= ( S   rule   S ) *
+
+# Terminals support the full range of Unicode. Unicode characters can be specified directly in the grammar, for example hiragana ::= [ぁ-ゟ], or with escapes: 8-bit (\xXX), 16-bit (\uXXXX) or 32-bit (\UXXXXXXXX).
+range ::=  "-"
+factor_range ::= term   S   range   S   term
+
+# Character ranges can be negated with ^:
+negate ::=  "^"
+
+#Sequences and Alternatives
+#The order of symbols in a sequence matter. For example, in "1. " move " " move "\n", the "1. " must come before the first move, etc.
+concatenation ::= ( S   factor   S   ? ) +
+
+# Alternatives, denoted by |, give different sequences that are acceptable. 
+alternation ::=  "|"
+alternation ::= ( S   concatenation   S   alternation ? ) +
+
+# Parentheses () can be used to group sequences, which allows for embedding alternatives in a larger rule or applying repetition and optional symbols (below) to a sequence.
+parens_open ::= "("
+parens_close ::=  ")"
+parens ::= parens_open | parens_close
+
+#Repetition and Optional Symbols
+occurance ::= repetition_plus | repetition_star | repetition_optional
+
+#* after a symbol or sequence means that it can be repeated zero or more times.
+repetition_star ::=  "*" 
+
+#+ denotes that the symbol or sequence should appear one or more times.
+repetition_plus ::=  "+" 
+
+#? makes the preceding symbol or sequence optional.
+repetition_optional ::=  "?" 
+
+
+#Comments and newlines
+#Comments can be specified with #:
+comment ::= "#" [a-zA-Z0-9 \t]*
+
+# Newlines are allowed between rules and between symbols or sequences nested inside parentheses. Additionally, a newline after an alternate marker | will continue the current rule, even outside of parentheses.
+
+
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+braces_open ::= "[" 
+braces_close ::= "]"
+braces_symbol ::= braces_open | braces_close
+
+quote ::=  "\""
+assignment ::= "::="
+ 
+symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | occurrence  | negate
+ 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= quote character+  quote 
+group_term ::= parens_open   S   rhs   S   parens_close
+range_term ::=  braces_open   S   rhs   S   braces_close
+term ::= group_term |range_term | terminal      | identifier
+
+factor_occurence ::= term   S   occurence  
+factor_negate ::= negate S factor
+factor ::= factor_occurence |factor_range | term   S
+ ENDSRC . Lets rewrite this  EBNF to be more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is a possible way to rewrite the given BNF grammar for GBNF in a more expressive and explicit manner using EBNF:
+```css
+digit         ::= [0-9]
+letter        ::= [a-zA-Z]
+unicode_char  ::= digit | letter | "_" | " " | symbol
+symbol        ::= "(" | ")" | "[" | "]" | "\"" | "::=" | "|" | "-" | "^" | "?" | "*" | "+"
+unicode_range ::= unicode_char "-" unicode_char
+terminal      ::= "\"" (unicode_char | unicode_range)* "\""
+identifier    ::= letter (unicode_char | "_")*
+rhs           ::= alternation
+lhs           ::= identifier
+rule          ::= lhs "::=" rhs ";"
+root          ::= "{" ( rule ";" )* "}"
+comment       ::= "#" [a-zA-Z0-9 \t]* "\n"
+S             ::= [ \t\r\n]
+```
+In this EBNF grammar, we use the `::=` symbol to define the non-terminals and their possible expansions. The `|` symbol is used to represent alternatives in a production, while the `*` and `+` symbols are used for repetition (zero or more times and one or more times, respectively).
+
+We have also added some new productions to make the grammar more explicit:
+
+* We define a new non-terminal `unicode_char` that includes all possible characters that can appear in a GBNF rule.
+* We introduce a new non-terminal `unicode_range` for character ranges, which are enclosed between square brackets (`[]`) and have two unicode\_chars separated by a dash (`-`).
+* We define a new non-terminal `terminal` that represents a sequence of unicode\_chars enclosed between double quotes (`"`). This is equivalent to the previous definition of terminal in BNF, but we make it more explicit by using EBNF syntax.
+* We introduce a new non-terminal `identifier` for rule names. It consists of a letter followed by zero or more unicode\_chars or underscores (`_`).
+* We define the production for `rhs` as an alternation (sequence separated by the `|` symbol), which can include any combination of concatenations, parentheses, ranges, negations, and occurrences. This is similar to the previous definition in BNF, but we use EBNF syntax to make it more expressive and explicit.
+* We define the production for `rule` as a sequence consisting of an identifier (lhs), followed by the `::=` symbol, then rhs, and finally the `;` symbol. This is equivalent to the previous definition in BNF, but we use EBNF syntax to make it more explicit.
+* We define the production for `root` as a sequence consisting of an opening curly brace (`{`), followed by zero or more rules separated by semicolons (`;`), and finally a closing curly brace (`}`). This is equivalent to the previous definition in BNF, but we use EBNF syntax to make it more explicit.
+* We define the production for `comment` as a sequence consisting of the `#` symbol followed by any number of alphanumeric characters or whitespace and ending with a newline (`\n`). This is similar to the previous definition in BNF, but we use EBNF syntax to make it more explicit.
+* We define the production for `S` as a sequence consisting of one or more whitespace characters, including spaces, tabs, carriage returns, and line feeds. This is equivalent to the previous definition in BNF, but we use EBNF syntax to make it more explicit.
+
+Using this EBNF grammar, we can now define GBNF grammars in a more expressive and explicit way. For example, the production for `factor` in the original BNF grammar can be rewritten as:
+```css
+factor ::= ( term occurence ) | range_term | terminal
+```
+This EBNF expression makes it clear that a factor consists of either a sequence of a term followed by an occurrence, or a range\_term enclosed between square brackets, or a terminal enclosed between double quotes. The previous BNF expression was less explicit and required more interpretation to understand its meaning.
+
+Overall, using EBNF syntax can help make grammar productions more expressive and explicit, making it easier for users to understand and use them.
+#+end_src

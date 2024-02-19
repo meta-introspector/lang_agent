@@ -1,0 +1,62 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```ebnf
+<folder> ::= prd_folder_tkn_name ':' prd_folder_tkn_inputs '{'
+                  (prd_folder_tkn_grammar ',' prd_folder_tkn_previous_results ','
+                   prd_folder_tkn_new_example)
+                  '}' prd_folder_tkn_test ';'
+                  (prd_folder_tkn_loop prd_folder_tkn_error ';')?
+
+<prd_folder_tkn_grammar> ::= 'A'
+<prd_folder_tkn_previous_results> ::= 'D'
+<prd_folder_tkn_new_example> ::= 'C'
+<prd_folder_tkn_test> ::= 'test'
+<prd_folder_tkn_loop> ::= 'loop'
+<prd_folder_tkn_error> ::= 'error'
+```
+
+You can continue defining the other rules in a similar manner, making sure to use the `prd_` prefix for all production names and the `tkn_` prefix for all token names. Also, you can use the conventions you described for naming tokens used in productions.
+
+For example:
+```ebnf
+<prd_example_tkn_A> ::= 'a' | 'b' | 'c'
+<prd_example_tkn_B> ::= 'x' | 'y' | 'z'
+<prd_example_tkn_C> ::= prd_example_tkn_A prd_example_tkn_B
+```
+Here, `prd_example_tkn_A`, `prd_example_tkn_B` and `prd_example_tkn_C` are the names of the productions, and `prd_example_tkn_A`, `prd_example_tkn_B` are the tokens used in production C.
+
+You can also use this naming convention for terminals:
+```ebnf
+<prd_terminal_tkn_semi_colon> ::= ';'
+<prd_terminal_tkn_left_parenthesis> ::= '('
+<prd_terminal_tkn_right_parenthesis> ::= ')'
+```
+This way, your grammar will be more expressive and explicit.
+#+end_src

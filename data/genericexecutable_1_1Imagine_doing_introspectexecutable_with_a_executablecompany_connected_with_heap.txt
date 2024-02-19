@@ -1,0 +1,16 @@
+
+#+begin_src input
+We are building a software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing introspect; Type Name: executable with a executable; Place: company connected with heap . What is your response? Please generate variant array of size 1
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I'll do my best to creatively interpret the context provided and generate a variant array of size 1.
+
+Context:
+Verb: Imagine doing introspect
+Type Name: executable with an executable
+Place: company connected with heap
+
+Variant array of size 1:
+
+[| "Imagine executing an introspection tool as a company, connected to a heap data structure, where the introspection is implemented as a single self-contained program with its own dependencies and runtime environment." |]
+#+end_src

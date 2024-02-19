@@ -1,0 +1,84 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a large language model, we can build upon the `fold_left` function provided in the OCaml code sample. Here's a more detailed implementation based on the description:
+
+1. Define a type for prompt workflows and their associated data.
+2. Implement functions to create prompts from grammar, previous results, and new examples.
+3. Implement functions to test and evaluate the generated output.
+4. Use `fold_left` to iterate through workflows, generating and testing outputs until a satisfactory one is found.
+
+Here's an example implementation:
+
+```ocaml
+type ('a, 'b) workflow = {
+  grammar : 'a;
+  prev_results : 'b list;
+  new_example : 'b;
+}
+
+(* Create a prompt for the given workflow *)
+let create_prompt wf =
+  let { grammar; prev_results; new_example } = wf in
+  ... (* Generate and return a string using the provided data *)
+
+(* Test the generated output, returning true if it's good enough *)
+let test_output output =
+  ... (* Implement your testing logic here *)
+
+let rec generate_output workflows acc =
+  match workflows with
+  | [] -> acc (* No more workflows, return accumulator *)
+  | h :: t ->
+    let prompt = create_prompt h in
+    let new_results = LanguageModel.generate_text prompt in
+    let tested_results = if test_output (List.hd new_results) then new_results else [] in
+    generate_output (t @ tested_results) (acc @ [h])
+
+(* Initialize workflows, run the generator, and process results *)
+let init_workflows =
+  ... (* Define your initial set of workflows here *)
+let results, failed_attempts = generate_output init_workflows []
+... (* Process the results or feed errors back into the system as needed *)
+```
+
+This implementation provides a flexible structure for generating prompts and testing their outputs. You can customize it further by adjusting the `workflow` type, modifying the `create_prompt` function to generate different types of prompts, and changing the `test_output` function to suit your specific requirements.
+#+end_src

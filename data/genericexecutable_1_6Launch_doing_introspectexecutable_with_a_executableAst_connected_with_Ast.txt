@@ -1,0 +1,14 @@
+
+#+begin_src input
+We are building a prompt software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Launch doing introspect; Type Name: executable with a executable; Place: Ast connected with Ast . What is your response? Please generate prompt variant array of size 6
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I understand that you want me to create six variations of a prompt using the given context in a creative and forgiving manner. Here are six prompts based on the provided context:
+
+1. "Imagine you are building a software generator for OCaml with Coq proofs. How would you 'Launch doing introspect' when dealing with an executable named 'Type Name' that is connected to an Ast place?"
+2. "Suppose we are using a large language model and a proof engine in our adaptive language agent architecture to generate prompts for OCaml with Coq proofs. Can you describe what it means to 'Launch doing introspect' on a executable named 'Type Name' that is Ast connected with Ast?"
+3. "You are working on an exciting project that involves combining a large language model and a proof engine in an adaptive language agent architecture to generate prompts for OCaml with Coq proofs. Can you come up with a creative use of the phrase 'Launch doing introspect' when dealing with an executable named 'Type Name' that is Ast connected with Ast?"
+4. "As you build a software generator for OCaml with Coq proofs using a large language model and a proof engine in an adaptive language agent architecture, how would you creatively interpret the phrase 'Launch doing introspect' when working with an executable named 'Type Name' that is Ast connected with Ast?"
+5. "In your own creative way, how would you use the phrase 'Launch doing introspect' when dealing with an executable named 'Type Name' that is Ast connected with Ast in the context of building a prompt software generator for OCaml with Coq proofs using a large language model and a proof engine in an adaptive language agent architecture?"
+6. "Can you think of a fun and engaging way to use the phrase 'Launch doing introspect' when working with an executable named 'Type Name' that is Ast connected with Ast while building a prompt software generator for OCaml with Coq proofs using a large language model and a proof engine in an adaptive language agent architecture?"
+#+end_src

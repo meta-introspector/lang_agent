@@ -1,0 +1,89 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, I can help you create an EBNF grammar that meets your specified naming conventions. Here's an example of how you could define some basic EBNF productions:
+```bnf
+<prd_ebnf_grammar> ::= ( <prd_ebnf_production> )+ ;
+
+<prd_ebnf_production> ::= [ <prd_production_name> '=' ] { <ebnf_element> }+ [ ';' ] ;
+
+<ebnf_element> ::=   <terminal_symbol>
+                |   <non_terminal_symbol>
+                |   <group>
+                |   <option>
+                |   <concatenation>
+                |   <kleene_star>
+                |   <kleene_plus>
+                |   <positive_closure> ;
+
+<terminal_symbol> ::= "'" { <character> } "'"
+                    | '"' { <character> } '"' ;
+
+<non_terminal_symbol> ::= <identifier> ;
+
+<group> ::= '(' { <ebnf_element> } ')' ;
+
+<option> ::= '[' { <ebnf_element> } ']' ;
+
+<concatenation> ::= { <ebnf_element> } ;
+
+<kleene_star> ::= { <ebnf_element> } '*' ;
+
+<kleene_plus> ::= { <ebnf_element> } '+' ;
+
+<positive_closure> ::= { <ebnf_element> } '?' ;
+
+<identifier> ::= <prd_production_name> | <tnk_token_name> ;
+
+<character> ::=  <any_unicode_character_except_LF_and_double_quote>
+              |  <escaped_sequence> ;
+
+<escaped_sequence> ::= '\' { <escaped_character> } ;
+
+<escaped_character> ::=  'n'    -> newline
+                      |  'r'    -> carriage return
+                      |  't'    -> tab
+                      |  '''    -> single quote
+                      |  '"'    -> double quote
+                      |  '\\'   -> backslash ;
+```
+In this example, the `<prd_ebnf_grammar>` production represents an EBNF grammar, which consists of one or more productions (`<prd_ebnf_production>`). Each production has a name (`<prd_production_name>`) followed by zero or more elements, separated by whitespace. The production may optionally end with a semicolon.
+
+The `<ebnf_element>` non-terminal symbol represents any of the possible EBNF syntax elements, including terminal symbols (`<terminal_symbol>`), non-terminal symbols (`<non_terminal_symbol>`), groups (`<group>`), options (`<option>`), concatenations (`<concatenation>`), Kleene stars (`<kleene_star>`), Kleene pluses (`<kleene_plus>`), and positive closures (`<positive_closure>`).
+
+Terminal symbols are defined as either a single character enclosed in single or double quotes, or an escaped sequence. An escaped sequence starts with a backslash, followed by an escaped character. The `<escaped_character>` non-terminal symbol includes the following possible escaped characters: newline (`\n`), carriage return (`\r`), tab (`\t`), single quote (`\'`), double quote (`\"`), or backslash (`\\`).
+
+Non-terminal symbols are defined as an identifier, which may be a production name (`<prd_production_name>`) or a token name (`<tnk_token_name>`). The latter is not defined in this example but could be added as needed.
+
+The remaining EBNF syntax elements are defined as follows:
+
+* `<group>`: A group starts with an opening parenthesis, followed by zero or more elements, and ends with a closing parenthesis.
+* `<option>`: An option starts with an opening square bracket, followed by zero or more elements, and ends with a closing square bracket. The option is optional, meaning that it may appear zero or one times in the input.
+* `<concatenation>`: A concatenation consists of one or more elements, separated by whitespace. Concatenation is the default operation in EBNF syntax, meaning that if two or more elements are adjacent to each other, they are implicitly concatenated.
+* `<kleene_star>`: A Kleene star represents zero or more occurrences of a given element. It consists of an element followed by an asterisk (`*`).
+* `<kleene_plus>`: A Kleene plus represents one or more occurrences of a given element
+#+end_src

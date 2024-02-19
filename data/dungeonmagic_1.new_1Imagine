@@ -1,0 +1,21 @@
+
+#+begin_src input
+Imagine doing specify a magic items in the country What is your response? Please generate variant array of size 1
+#+end_src
+#+begin_src output mixtral
+ Result: Certainly! Here's an example of a magic item from a fictional country:
+
+Magic Item: Amulet of the Sun
+
+Country of Origin: Zanaria, a desert kingdom known for its powerful sun magic.
+
+Description: The Amulet of the Sun is a golden locket containing a small sunstone, a rare and magical gem that harnesses the power of the sun. When worn around the neck, the amulet grants the wearer increased stamina and endurance, allowing them to resist fatigue and thrive in hot environments. Additionally, the amulet can be used to channel powerful blasts of sunlight, dealing fire damage to enemies and igniting flammable objects.
+
+Variants:
+
+1. Amulet of the Moon - Country of origin: Lunaria, a kingdom of moon worshippers and night magic. This amulet is made of silver and contains a small crescent moonstone, granting the wearer increased agility and perception in low-light conditions. The amulet can also be used to summon bolts of moonlight, dealing cold damage to enemies and extinguishing flames.
+2. Amulet of the Stars - Country of origin: Astraria, a kingdom of stargazers and celestial magic. This amulet is made of platinum and contains a small star sapphire, granting the wearer increased intelligence and wisdom. The amulet can also be used to summon bursts of starlight, dealing force damage to enemies and revealing hidden objects.
+3. Amulet of the Earth - Country of origin: Terrania, a kingdom of druids and earth magic. This amulet is made of stone and contains a small earth crystal, granting the wearer increased strength and resilience. The amulet can also be used to summon tremors, knocking enemies prone and disrupting their movements.
+4. Amulet of the Seas - Country of origin: Marinia, a kingdom of sailors and water magic. This amulet is made of coral and contains a small pearl, granting the wearer increased constitution and resistance to drowning. The amulet can also be used to summon waves, pushing enemies back and sweeping them off their feet.
+5. Amulet of the Skies - Country of origin: Aeraria, a kingdom of aviators and air magic. This amulet is made of feathers and contains a small wind crystal, granting the wearer increased dexterity and speed. The amulet can also be used to summon gusts of wind, knocking enemies off balance and carrying the wearer aloft.
+#+end_src

@@ -1,0 +1,54 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you can define your EBNF grammar with the naming conventions you specified:
+```
+<prd_folder_rules> ::=
+    'take' 'inputs' ':' <prd_grammar_tkn_grammar>
+        <prd_previous_results_tkn_previous_results> 'initially,'
+        <prd_initial_example_tkn_initial_example> ':' <prd_new_example_tkn_new_example>
+    <prd_created_new_output_tkn_created_new_output> '.'
+    <prd_test_tkn_test> <prd_if_good_tkn_if_good> ','
+    <prd_repeat_loop_tkn_repeat_loop> 'with' <prd_new_D_tkn_new_D> '.'
+    <prd_start_with_tkn_start_with> this <prd_following_code_tkn_following_code> 'and'
+    <prd_rewrite_it_tkn_rewrite_it> 'to' <prd_suit_needs_tkn_suit_needs> '.'
+
+<prd_grammar_tkn_grammar> ::= <'A'>
+<prd_previous_results_tkn_previous_results> ::= <'D'>
+<prd_initial_example_tkn_initial_example> ::= <'B'>
+<prd_new_example_tkn_new_example> ::= <'C'>
+<prd_created_new_output_tkn_created_new_output> ::= <'D'>
+<prd_test_tkn_test> ::= <'Test'>
+<prd_if_good_tkn_if_good> ::= <'If'> <prd_good_tkn_good> ','
+<prd_repeat_loop_tkn_repeat_loop> ::= <'repeat'>
+<prd_new_D_tkn_new_D> ::= <'D'>
+<prd_following_code_tkn_following_code> ::= <this> <prd_following_code_tkn_following_code>
+<prd_rewrite_it_tkn_rewrite_it> ::= <'rewrite'>
+<prd_suit_needs_tkn_suit_needs> ::= <'to'> <prd_suit_needs_tkn_suit_needs>
+```
+You can continue defining the rest of your grammar using this naming convention. This way, all of your rules and tokens will be easily identifiable and consistent throughout your grammar.
+#+end_src

@@ -1,0 +1,106 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a language model, we can build upon the `fold_left` function provided in the code snippet. Here is an example of how this might look in OCaml:
+
+```ocaml
+type prompt = string
+type result = string
+type error = string
+type example = string
+type workflow = prompt -> (result * example) option
+
+let rec merge_workflows workflows =
+  let op (acc : workflow) wf =
+    match acc, wf with
+    | None, _ -> Some wf
+    | Some acc', Some wf' -> Some (fun prompt ->
+        match acc' prompt, wf' prompt with
+        | Some res1, Some res2 -> Some (res1 ^ "\n" ^ res2)
+        | Some res, None | None, Some res -> Some res
+        | None, None -> None)
+    | _ -> assert false
+  in
+  fold_left op (Some (fun _ -> None)) workflows
+
+let rec generate_prompts grammar prev_results =
+  let example =
+    match prev_results with
+    | [] -> ""
+    | h :: _ -> h
+  in
+  let prompt = Grammar.generate_prompt grammar example in
+  (prompt, Some (prompt, example))
+
+let rec generate_and_test_descriptions grammar workflow prev_results max_attempts =
+  let (prompt, wf) =
+    match prev_results with
+    | [] -> generate_prompts grammar prev_results
+    | _ -> (List.hd prev_results, None)
+  in
+  let rec aux i =
+    if i >= max_attempts then failwith "Max attempts reached"
+    else
+      match wf prompt with
+      | Some desc -> desc, true
+      | None ->
+        let new_wf = Workflow.create grammar desc in
+        aux (i + 1)
+  in
+  let desc, succeeded = aux 0 in
+  if succeeded then
+    generate_and_test_descriptions grammar workflow [desc] max_attempts
+  else begin
+    let new_workflows =
+      match wf with
+      | Some _ -> [wf]
+      | None -> []
+    in
+    merge_workflows (workflow :: new_workflows)
+  end
+```
+
+This code defines several types to represent prompts, results, errors, and examples. It also includes a `merge_workflows` function that merges a list of workflows into a single one using the provided `fold_left` function. The `generate_prompts` function generates a new prompt based on a given grammar and previous results.
+
+The `generate_and_test_descriptions` function is responsible for generating and testing descriptions using a given workflow and previous results. If the description passes the test, it recursively calls itself with the updated workflow. Otherwise, it merges the current workflow with any new ones generated from errors and repeats the process up to three times.
+
+This code can be used as a starting point for building a system that generates creative and imaginative descriptions of code in a high-tech code-based hacking game. It can be further customized and extended to suit the specific needs of the game.
+#+end_src

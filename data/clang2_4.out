@@ -1,0 +1,7 @@
+
+#+begin_src input
+consider a consecutive series of types to describe the universe and universe of universes, what is your ordering? please create .c language declarations. 
+#+end_src
+#+begin_src output mistral
+ Result: int UniverseType1D_t_field1_type1D_t_value1D_size_t_data1D_t_universe1D_name_char_t_universe1D_description_char_t_nextUniverseType_UniverseTypeXD_t_or_NULL_t_data1D_t_universe1D_type1D_array_UniverseType1D_t_count_size_t_universeCount_t_data1D_t_universeOfUniverses1D_name_char_t
+#+end_src

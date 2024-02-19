@@ -1,0 +1,74 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Sure, here's an example of how you can define an EBNF grammar with your naming conventions:
+```kotlin
+<prd_folder_rules> ::= 
+  'folder' '{' <prd_take_input_rules> '}'
+
+<prd_take_input_rules> ::= 
+  <prd_take_input_rule> { ';' <prd_take_input_rule> }
+
+<prd_take_input_rule> ::= 
+    'grammar' ':' <tkn_identifier>
+  |   'previous_results' ':' <tkn_identifier>
+  |   'new_example' ':' <tkn_identifier>
+  |   'created_new_output' ':' <tkn_identifier>
+  |   'test' ':' <tkn_identifier>
+  |   'start_with' ':' <prd_start_with_rules>
+
+<prd_start_with_rules> ::= 
+    '<' <tkn_identifier> '>'
+
+<prd_loop_rules> ::= 
+    'if' 'good' 'repeat' 'loop' 'with' 'new' <tkn_identifier>
+  |   'otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' <tkn_identifier> 'up' 'to' <tkn_integer> 'times'
+
+<prd_example_rules> ::= 
+    'start' 'with' <tkn_example_content>
+
+<tkn_example_content> ::= 
+    <any_characters>
+
+<prd_rewrite_rules> ::= 
+    'rewrite' 'it' 'to' 'suit' <tkn_needs> '.'
+
+<any_characters> ::= 
+    [^}]+
+
+<tkn_identifier> ::= 
+    [a-zA-Z_][a-zA-Z0-9_]*
+
+<tkn_integer> ::= 
+    [0-9]+
+```
+In this EBNF grammar, each rule starts with `prd_` followed by the name of the rule, and each token is called `tkn`. If a token is used in a rule, it is named `prd_<prod name>_tkn_<token name>`. For example, the token for the identifier `grammar` is named `prd_take_input_rules_tkn_grammar`.
+
+The grammar includes rules for defining folders, taking inputs, starting with certain content, looping with conditions, and rewriting code. It also includes rules for specifying identifiers, examples, and integers. The `<any_characters>` rule matches any characters except the closing curly brace `}`.
+
+This is just an example of how you can define your EBNF grammar. You can modify it to suit your needs by adding or removing rules, changing the naming conventions, or adjusting the syntax.
+#+end_src

@@ -1,0 +1,76 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a language model, we can build an OCaml module that provides functions to fold different types of inputs using a specified operation. Here's an example of how this module might look like:
+```ocaml
+module Folder = struct
+  type 'a t = {
+    grammar : string;
+    prev_results : 'a list;
+    new_example : 'a;
+    op : 'a -> 'a -> 'a;
+  }
+
+  let create ~grammar ~prev_results ~new_example ~op = { grammar; prev_results; new_example; op }
+
+  let rec fold stream acc folder =
+    match stream with
+    | [] -> acc
+    | h :: t ->
+      let acc' = folder.op acc h in
+      fold t acc' folder
+
+  let run folder =
+    let initial_acc = List.fold_left folder.op folder.prev_results folder.new_example in
+    fold folder.grammar initial_acc folder
+end
+```
+The `Folder` module provides a flexible interface to fold streams of different types of inputs using a specified operation. The `t` type represents a folder with four fields: `grammar`, `prev_results`, `new_example`, and `op`. The `create` function creates a new folder instance with the given parameters.
+
+The `fold` function takes a stream, an accumulator, and a folder as arguments and folds the elements of the stream using the specified operation. The `run` function runs the folder on a given grammar string by first computing the initial accumulator value based on the previous results and new example provided to the folder.
+
+To use this module, we can create a new folder instance with our desired parameters and call the `run` function:
+```ocaml
+let my_folder = Folder.create ~grammar:"a programming language" ~prev_results:[] ~new_example:"OCaml" ~op:( ^ ) in
+Folder.run my_folder
+```
+This will concatenate the `new_example` ("OCaml") to the result of folding the empty list (`[]`) with the specified operation (concatenation) on the given grammar string ("a programming language").
+#+end_src

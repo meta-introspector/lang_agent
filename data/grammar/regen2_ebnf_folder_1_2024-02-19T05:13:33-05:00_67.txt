@@ -1,0 +1,79 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```
+<prd_folder_tkn_grammar> ::= <prd_sequence_tkn_sequence> | <prd_epsilon_tkn> .
+
+<prd_sequence_tkn_sequence> ::= <prd_sequence_tkn> ',' <prd_sequence_tkn_sequence> | <prd_sequence_tkn> .
+
+<prd_sequence_tkn> ::= <prd_folder_tkn_take_inputs> | <prd_symbol_tkn_semicolon> .
+
+<prd_take_inputs_tkn_take_inputs> ::= 'take' <prd_symbol_tkn_left_parenthesis> <prd_folder_tkn_grammar> <prd_symbol_tkn_comma> <prd_folder_tkn_previous_results> <prd_symbol_tkn_comma> <prd_folder_tkn_initial_example> <prd_symbol_tkn_comma> <prd_folder_tkn_new_example> <prd_symbol_tkn_right_parenthesis> .
+
+<prd_previous_results_tkn_previous_results> ::= 'Previous' <prd_symbol_tkn_results> .
+
+<prd_initial_example_tkn_initial_example> ::= 'Initial' <prd_symbol_tkn_example> .
+
+<prd_new_example_tkn_new_example> ::= 'New' <prd_symbol_tkn_example> .
+
+<prd_created_new_output_tkn_created_new_output> ::= 'Created' <prd_symbol_tkn_new_output> .
+
+<prd_test_tkn_test> ::= 'Test' <prd_symbol_tkn_left_parenthesis> <prd_folder_tkn_created_new_output> <prd_symbol_tkn_right_parenthesis> .
+
+<prd_if_good_tkn_if_good> ::= 'If' <prd_symbol_tkn_space> 'good' <prd_symbol_tkn_space> ',' <prd_symbol_tkn_space> <prd_repeat_loop_tkn_repeat_loop> .
+
+<prd_repeat_loop_tkn_repeat_loop> ::= 'repeat' <prd_symbol_tkn_space> 'loop' <prd_symbol_tkn_space> 'with' <prd_symbol_tkn_space> 'new' <prd_folder_tkn_created_new_output> .
+
+<prd_otherwise_tkn_otherwise> ::= 'Otherwise' <prd_symbol_tkn_space> 'feed' <prd_symbol_tkn_space> 'error' <prd_symbol_tkn_space> 'back' <prd_symbol_tkn_space> 'to' <prd_symbol_tkn_space> 'create' <prd_symbol_tkn_space> 'new' <prd_folder_tkn_created_new_output> <prd_symbol_tkn_space> 'up' <prd_symbol_tkn_space> 'to' <prd_symbol_tkn_space> '3' <prd_symbol_tkn_space> 'times' .
+
+<prd_start_with_tkn_start_with> ::= 'start' <prd_symbol_tkn_space> 'with' <prd_symbol_tkn_space> <prd_sequence_tkn_sequence> .
+
+<prd_epsilon_tkn> ::= 'ε' .
+
+<prd_symbol_tkn_semicolon> ::= ';' .
+
+<prd_symbol_tkn_left_parenthesis> ::= '(' .
+
+<prd_symbol_tkn_right_parenthesis> ::= ')' .
+
+<prd_symbol_tkn_comma> ::= ',' .
+
+<prd_symbol_tkn_space> ::= ' ' .
+```
+
+This EBNF grammar defines a `folder` production, which can be either a sequence of elements or the epsilon symbol (indicating an empty sequence). The sequence itself can consist of one or more `sequence` productions separated by commas. Each `sequence` production can be either a `take_inputs`, a semicolon symbol, or the epsilon symbol.
+
+The `take_inputs` production is defined as the string "take" followed by a left parenthesis, a grammar, a comma, the previous results, another comma, the initial example, another comma, and the new example, all followed by a right parenthesis. The `previous_results`, `initial_example`, and `new_example` productions are defined as the strings "Previous Results", "Initial example", and "New example", respectively.
+
+The `created_new_output` production is defined as the string "Created new output". The `test` production is defined as the string "Test" followed by a left parenthesis, the `created_new_output` production, and a right parenthesis. The `if_good` production is defined as the string "If good," followed by the `repeat_loop` production.
+
+The `repeat_loop` production is defined as the string "repeat loop with new" followed by the `created_new_output` production, all followed by a period. The `otherwise` production is defined as the string "Otherwise feed error back to create new created\_new\_output up to 3 times". The `start_with` production is defined as the string "start with" followed by a sequence production.
+
+The `epsilon` symbol is defined as the Greek letter epsilon, and the various symbol productions (semicolon, left parenthesis, right parenthesis, comma, and space) are defined as their corresponding characters.
+#+end_src

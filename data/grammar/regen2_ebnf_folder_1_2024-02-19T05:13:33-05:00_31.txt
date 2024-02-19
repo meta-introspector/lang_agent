@@ -1,0 +1,60 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you can define your detailed EBNF grammar with the naming conventions you described:
+```ebnf
+<prd_grammar_tkn_A> ::= <prd_take_inputs_tkn_A>
+                     | <prd_previous_results_tkn_D>
+                     | <prd_new_example_tkn_C>
+
+<prd_take_inputs_tkn_A> ::= 'take' 'inputs' ':' <prd_grammar_tkn_A>
+                          | <prd_previous_results_tkn_D>
+                          | <prd_new_example_tkn_C>
+
+<prd_previous_results_tkn_D> ::= 'Previous' 'Results' ':' <prd_token_tkn_D>
+
+<prd_initial_example_tkn_B> ::= 'Initial' 'example' ':' <prd_token_tkn_B>
+
+<prd_new_example_tkn_C> ::= 'New' 'Example' ':' <prd_token_tkn_C>
+
+<prd_created_new_output_tkn_D> ::= 'Created' 'new' 'output' <prd_token_tkn_D> '.'
+
+<prd_test_tkn_D> ::= 'Test' <prd_token_tkn_D> '.'
+                   | 'If' 'good,' 'repeat' 'loop' 'with' 'new' <prd_token_tkn_D> '.'
+                   | 'Otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' <prd_token_tkn_D> 'up' 'to' '3' 'times' '.'
+
+<prd_start_with_this_following_code_tkn_A> ::= 'start' 'with' 'this' 'following' 'code' 'and' 'rewrite' 'it' 'to' 'suit' 'our' 'needs' '.'
+                                             | <prd_grammar_tkn_A>
+
+<prd_token_tkn_B> ::= <B>
+<prd_token_tkn_C> ::= <C>
+<prd_token_tkn_D> ::= <D>
+```
+Here, `<B>`, `<C>` and `<D>` are the actual tokens. Also for any rule if a token is used in multiple rules with the same name then you should use the naming convention prd\_rule\_name\_tkn\_token\_name to avoid confusion.
+
+It's important to note that this is just an example, and depending on your specific requirements you may need to adjust it accordingly. But this will give you a good starting point for creating a more expressive and explicit EBNF grammar with the naming conventions you described.
+#+end_src

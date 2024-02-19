@@ -1,0 +1,55 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+<bnf>
+= { prd\_rule ::= production; }
+production = prd\_name '=' ( alternative { '|' alternative } ) ';' ;
+alternative = sequence { ('*' | '+') sequence } ;
+sequence = term { term } ;
+term = tkn\_identifier | tkn\_literal | group | option ;
+group = '[' bnf ']' ;
+option = '{' bnf '}' ;
+</bnf>
+
+<prd\_name> = identifier ;
+<prd\_rule\_tkn\_identifier> = identifier ;
+<prd\_rule\_tkn\_literal> = literal ;
+<identifier> = <letter> { <letter> | <digit> } ;
+<letter> = 'a' ... 'z' | 'A' ... 'Z' ;
+<digit> = '0' ... '9' ;
+<literal> = '\'' <character> '\'' | '<' <character> '>' ;
+<group\_tkn> = '[' | ']' ;
+<option\_tkn> = '{' | '}' ;
+<alternative\_tkn> = '|' ;
+<sequence\_tkn> = ',' ;
+
+In this EBNF grammar, all rule names start with "prd\_" and all token names are prefixed with the name of the rule they belong to and the type of the token. This naming convention should make it easy to understand the structure of your grammars and trace the use of tokens throughout the rules.
+
+You can then use this EBNF grammar as a starting point for defining your own grammars, using the `fold_left` function you provided to recursively apply operations to the productions in the grammar.
+#+end_src

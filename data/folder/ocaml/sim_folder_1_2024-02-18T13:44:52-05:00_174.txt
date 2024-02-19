@@ -1,0 +1,80 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided:
+
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_good : bool;
+}
+
+let rec generate_prompt ~max_attempts input =
+  let open Option.Monad_in in
+  let* () = if max_attempts <= 0 then None else return () in
+  let* output = run_language_model ~grammar:input.grammar input.prev_results input.new_example in
+  if output.is_good then return output
+  else generate_prompt ~max_attempts:{ input with prev_results = output.result }
+
+and run_language_model ~grammar prev_results new_example =
+  (* Simulate running the language model with the given inputs and return the result *)
+  let open Option.Monad_in in
+  let* _ = print_endline ("Generating prompt with grammar: " ^ grammar) in
+  let* _ = print_endline ("Previous results: " ^ prev_results) in
+  let* _ = print_endline ("New example: " ^ new_example) in
+  (* Generate a random result for demonstration purposes *)
+  let result = "This is the generated prompt: " ^ String.init 20 (fun _ -> Char.chr (Random.int 256)) in
+  let is_good = String.length result > 10 && String.contains result ':' in
+  return { result; is_good }
+```
+
+In this code, we define two types `input` and `output` to represent the inputs to the `generate_prompt` function and the outputs returned by the language model, respectively. The `generate_prompt` function takes an input and recursively calls itself with decreasing `max_attempts` until a good output is generated or `max_attempts` reaches 0.
+
+The `run_language_model` function simulates running the language model with the given inputs and returns a random result for demonstration purposes. In a real implementation, this function would make a call to an actual large language model API. The `is_good` field is set based on some criteria that determine whether the generated prompt is good or not.
+
+The code uses the `Option.Monad_in` module to handle the possibility of failing to generate a good prompt within the given number of attempts. In a real implementation, error handling would need to be added to handle any errors returned by the language model API or other parts of the system.
+#+end_src

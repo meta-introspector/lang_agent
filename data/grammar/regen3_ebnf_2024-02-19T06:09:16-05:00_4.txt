@@ -1,0 +1,116 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed and self expressive.
+Here is the code we wrote so far 
+# GBNF (GGML BNF) is a format for defining formal grammars to constrain model outputs in llama.cpp. 
+# Backus-Naur Form (BNF) is a notation for describing the syntax of formal languages like programming languages, file formats, and protocols. GBNF is an extension of BNF that primarily adds a few modern regex-like features.
+# In GBNF, we define production rules that specify how a non-terminal (rule name) can be replaced with sequences of terminals (characters, specifically Unicode code points) and other non-terminals. The basic format of a production rule is nonterminal ::= sequence....
+
+rhs ::= alternation
+lhs ::= identifier
+rule ::= lhs   S   "="   S   rhs   S    | comment
+root ::= ( S   rule   S ) *
+
+# Terminals support the full range of Unicode. Unicode characters can be specified directly in the grammar, for example hiragana ::= [ぁ-ゟ], or with escapes: 8-bit (\xXX), 16-bit (\uXXXX) or 32-bit (\UXXXXXXXX).
+range ::=  "-"
+factor_range ::= term   S   range   S   term
+
+# Character ranges can be negated with ^:
+negate ::=  "^"
+
+#Sequences and Alternatives
+#The order of symbols in a sequence matter. For example, in "1. " move " " move "\n", the "1. " must come before the first move, etc.
+concatenation ::= ( S   factor   S   ? ) +
+
+# Alternatives, denoted by |, give different sequences that are acceptable. 
+alternation ::=  "|"
+alternation ::= ( S   concatenation   S   alternation ? ) +
+
+# Parentheses () can be used to group sequences, which allows for embedding alternatives in a larger rule or applying repetition and optional symbols (below) to a sequence.
+parens_open ::= "("
+parens_close ::=  ")"
+parens ::= parens_open | parens_close
+
+#Repetition and Optional Symbols
+occurance ::= repetition_plus | repetition_star | repetition_optional
+
+#* after a symbol or sequence means that it can be repeated zero or more times.
+repetition_star ::=  "*" 
+
+#+ denotes that the symbol or sequence should appear one or more times.
+repetition_plus ::=  "+" 
+
+#? makes the preceding symbol or sequence optional.
+repetition_optional ::=  "?" 
+
+
+#Comments and newlines
+#Comments can be specified with #:
+comment ::= "#" [a-zA-Z0-9 \t]*
+
+# Newlines are allowed between rules and between symbols or sequences nested inside parentheses. Additionally, a newline after an alternate marker | will continue the current rule, even outside of parentheses.
+
+
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r"  )
+braces_open ::= "[" 
+braces_close ::= "]"
+braces_symbol ::= braces_open | braces_close
+
+quote ::=  "\""
+assignment ::= "::="
+ 
+symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | occurrence  | negate
+ 
+character ::= letter | digit | symbol | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= quote character+  quote 
+group_term ::= parens_open   S   rhs   S   parens_close
+range_term ::=  braces_open   S   rhs   S   braces_close
+term ::= group_term |range_term | terminal      | identifier
+
+factor_occurence ::= term   S   occurence  
+factor_negate ::= negate S factor
+factor ::= factor_occurence |factor_range | term   S
+ ENDSRC . Lets rewrite this  EBNF to be more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is a revised version of the GBNF grammar that aims to be more self-expressive:
+```css
+rule                   ::= lhs "::=" rhs ";"
+lhs                    ::= identifier
+rhs                   ::= concatenation | alternation
+concatenation          ::= sequence ("|" sequence)*
+sequence               ::= factor*
+factor                 ::= negation? term repetition?
+repetition             ::= "*" | "+" | "?"
+negation               ::= "^"
+alternation            ::= concatenation ("|" concatenation)*
+
+comment                ::= "#" ~[\r\n]*
+terminal              ::= quotes char+ quotes
+range                 ::= braces_open rhs braces_close
+group                 ::= parens_open rhs parens_close
+quotes                ::= "\""
+braces_open           ::= "["
+braces_close          ::= "]"
+parens_open           ::= "("
+parens_close          ::= ")"
+identifier             ::= letter (letter | digit | "_")*
+char                  ::= letter | digit | symbol | whitespace | "_"
+whitespace            ::= " " | "\t" | "\n" | "\r"
+letter                ::= [a-zA-Z]
+digit                 ::= [0-9]
+symbol                ::= group | range | negation | repetition | alternation
+```
+In this version, I've introduced new non-terminals like `repetition`, `negation`, and `sequence` to make the grammar more self-explanatory. I've also renamed some existing non-terminals for clarity (e.g., `factor` instead of `factor_range`). Additionally, I've combined the two separate rules for alternation into one by allowing sequences within an alternation to repeat.
+
+I've also made use of the `~` escape character in comments to allow multiple lines without terminating the comment. This is useful for long rules or explanations.
+
+Finally, I've removed unnecessary whitespace symbols and used the standard regex notation for repetition (e.g., `*`, `+`, and `?`) instead of abbreviated forms like `repetition_star` and `repetition_plus`. This makes the grammar more recognizable to those familiar with regular expressions.
+
+Note that this revised version may not be compatible with your current implementation, but it should provide a good starting point for creating a new system based on EBNF grammars.
+#+end_src

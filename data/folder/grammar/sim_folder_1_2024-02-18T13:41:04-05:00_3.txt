@@ -1,0 +1,51 @@
+<game> ::= <dungeon> | <monster> | <treasure> | <challenge> | <weapon> | <spell> | <artifact>
+
+<dungeon> ::= #dungeon + <path> + <objects> + <NPCs>
+
+<path> ::= #path + (<direction> | #quasifibers) + *<path_segment>
+
+<path_segment> ::= #path_segment + <direction> + #node
+
+<direction> ::= #north | #south | #east | #west | #up | #down
+
+<objects> ::= #objects + (<object> | #empty) *<object_property>
+
+<object_property> ::= #color | #size | #weight | #material | #texture
+
+<NPCs> ::= #NPCs + (<NPC> | #none) *<NPC_property>
+
+<NPC_property> ::= #race | #alignment | #affiliation | #rank
+
+<monster> ::= #monster + <name> + #level + <attributes> + #behavior
+
+<attributes> ::= #attributes + (<attribute> | #none) *<value>
+
+<attribute> ::= #strength | #intelligence | #dexterity | #constitution | #wisdom | #charisma
+
+<value> ::= <number> | <percentage> | <text>
+
+<behavior> ::= #behavior + (<action> | #none) *<condition>
+
+<action> ::= #attack | #defend | #flee | #parley | #cast | #use
+
+<condition> ::= #condition + (<situation> | #always)
+
+<situation> ::= #low_health | #high_health | #low_mana | #high_mana | #surrounded | #backstabbed
+
+<treasure> ::= #treasure + <item> + #value
+
+<item> ::= #item + (<object> | #none) *<property>
+
+<property> ::= #rarity | #curse | #blessing
+
+<challenge> ::= #challenge + <task> + #reward
+
+<task> ::= #task + (<puzzle> | #fight)
+
+<puzzle> ::= #puzzle + <question> + #answer
+
+<weapon> ::= #weapon + <name> + #damage + #attack_type
+
+<spell> ::= #spell + <name> + #mana_cost + #effect
+
+<artifact> ::= #artifact + <name> + #description + #ability

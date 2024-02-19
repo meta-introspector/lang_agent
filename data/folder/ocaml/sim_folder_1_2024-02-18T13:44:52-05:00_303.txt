@@ -1,0 +1,93 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: To create a flexible and customizable system for generating prompts and functional workflows for a language model, we can build upon the `fold_left` function provided in the OCaml code snippet. The `fold_library` function will take in an accumulator, a list of elements to process, and a function that defines how to combine each element with the accumulator.
+
+Let's define some types to better represent our game objects:
+
+```ocaml
+type example = string * string
+type result = Example of example | Error of string
+type fold_input = {
+  grammar : string;
+  prev_results : result list;
+  new_example : example;
+}
+```
+
+Now, let's implement the `fold_library` function:
+
+```ocaml
+let rec fold_library ~max_attempts:max_attempts ~test_output acc input =
+  let { grammar; prev_results; new_example } = input in
+  let new_result =
+    match prev_results with
+    | [] -> Example (new_example)
+    | Error _ :: _ -> Example (new_example)
+    | Example e :: _ -> Example (e)
+  in
+  let acc' = new_result :: acc in
+  match List.length prev_results with
+  | 0 -> fold_library ~max_attempts ~test_output acc' input
+  | n when n >= max_attempts -> acc'
+  | _ ->
+      let rec merge_and_test results =
+        match results with
+        | [] -> acc'
+        | h :: t -> (
+            match test_output h with
+            | true -> merge_and_test t
+            | false -> fold_library ~max_attempts ~test_output (h :: acc') input )
+      in
+      merge_and_test prev_results
+```
+
+Here, we take the accumulator `acc`, a `fold_input` with properties `grammar`, `prev_results`, and `new_example`. The function will process the elements until it reaches the maximum number of attempts or when there are no more errors. We use a helper function `merge_and_test` to iterate over previous results, test their validity, and merge them with the accumulator.
+
+To initialize the system, we can create a function that combines all necessary input components:
+
+```ocaml
+let init_fold_input grammar prev_results new_example =
+  { grammar; prev_results; new_example }
+```
+
+Now you can use `init_fold_input` to initialize the system with appropriate parameters and call `fold_library` to start generating prompts and functional workflows.
+#+end_src

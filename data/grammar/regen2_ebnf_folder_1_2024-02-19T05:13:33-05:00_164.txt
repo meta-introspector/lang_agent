@@ -1,0 +1,60 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+```kotlin
+<prd_folder_rules> ::= <prd_take_inputs_rule> <prd_previous_results_rule> <prd_new_example_rule> <prd_output_creation_rule> <prd_testing_rule>
+
+<prd_take_inputs_rule> ::= 'take' 'inputs' ':' ('grammar' ':' <tkn_grammar_tkn>) (';' <tkn_semicolon_tkn>) (<prd_previous_results_rule_ref> | <tkn_epsilon_tkn>)
+                          (<prd_new_example_rule_ref> | <tkn_epsilon_tkn>)
+
+<prd_previous_results_rule> ::= 'Previous' 'Results' ':' ('D' | <prd_D_tkn>) (';' <tkn_semicolon_tkn>)
+
+<prd_new_example_rule> ::= 'New' 'Example' ':' ('C' | <prd_C_tkn>) (';' <tkn_semicolon_tkn>)
+
+<prd_output_creation_rule> ::= 'Created' 'new' 'output' 'D' '.' (';' <tkn_semicolon_tkn>)
+
+<prd_testing_rule> ::= 'Test' 'D' '.' ('if' 'good' ',') ('repeat' 'loop' 'with' 'new' 'D' '.') ('Otherwise' 'feed' 'error' 'back' 'to' 'create' 'new' 'D' 'up' 'to' '3' 'times' '.')
+
+<prd_previous_results_rule_ref> ::= 'D'
+
+<prd_D_tkn> ::= 'D'
+
+<prd_new_example_rule_ref> ::= 'C'
+
+<prd_C_tkn> ::= 'C'
+
+<tkn_grammar_tkn> ::= 'A'
+
+<tkn_semicolon_tkn> ::= ';'
+
+<tkn_epsilon_tkn> ::= <epsilon>
+```
+This EBNF grammar defines the rules for a "folder" which takes inputs consisting of a grammar, previous results and new example. It then creates output D, tests it and if good repeat the loop with new D or otherwise feed error back to create new D up to 3 times. Each rule and token is named according to the conventions you provided.
+
+Please note that <epsilon> symbol is used to represent empty string, this symbol is not defined in this example but should be added as a terminal symbol in your grammar.
+#+end_src

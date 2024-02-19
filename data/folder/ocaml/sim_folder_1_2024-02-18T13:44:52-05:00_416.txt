@@ -1,0 +1,104 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of OCaml code that implements a flexible and customizable system for generating prompts and functional workflows for a large language model, based on the description provided. This code uses the `fold_left` function to iteratively apply an operation to each element of a list, accumulating the results in a "running total" value.
+
+```ocaml
+type example = string
+type result = string
+type error = string
+type 'a workflow = example -> ('a * error) option
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t ->
+    match op acc h with
+    | Some (acc', _) -> fold_left op acc' t
+    | None            -> acc
+
+(* The initial example and result. *)
+let initial_example = "A simple program that prints 'Hello, world!'"
+let initial_result = "print('Hello, world!')"
+
+(* A workflow for generating a new result from an example. *)
+let rec generate_result : example -> (result * error) option = fun example ->
+  (* Use the large language model to generate a new result from the example. *)
+  let result = LargeLanguageModel.generate_code example in
+  (* Test the result to see if it is valid. If so, return it. Otherwise, return an error message. *)
+  if Result.is_valid result then
+    Some (result, "")
+  else
+    None
+
+(* The main loop of the system. *)
+let rec main_loop : unit -> unit = fun () ->
+  (* Initialize the example and result. *)
+  let example = initial_example in
+  let result = initial_result in
+  let mutable num_errors = 0 in
+  (* Iterate until a valid result is generated, or until we have tried three times. *)
+  while num_errors < 3 do
+    (* Generate a new result from the current example. *)
+    match generate_result example with
+    | Some (new_result, _) ->
+      (* If the new result is valid, update the example and result and break out of the loop. *)
+      example = new_result;
+      result = new_result;
+      num_errors = 0;
+    | None ->
+      (* If the new result is invalid, increment the error counter and continue the loop. *)
+      num_errors <- succ num_errors
+  done;
+  (* Print the final result. *)
+  print_endline result;
+  (* Continue to the next example by calling the main loop again. *)
+  main_loop ()
+
+(* Start the system by calling the main loop. *)
+main_loop ()
+```
+
+This code defines a type for examples, results, and errors, as well as a type for workflows, which are functions that take an example and return either a new result and error, or `None` if the example cannot be processed. The main loop of the system uses a recursive function called `main_loop` to iteratively generate new results from examples, testing each result to see if it is valid. If a valid result is found, it is printed and the process starts again with a new example. If three invalid results are generated in a row, the system gives up and stops.
+
+This code can be easily customized and extended by defining new workflows or modifying the existing one. For example, you could define a workflow that generates new examples from old ones, allowing the system to explore a space of possible programs or descriptions. You could also add additional tests to the result validation step, or use a different method for generating results, such as a proof engine or a different type of language model.
+
+I hope this helps! Let me know if you have any questions or need further clarification.
+#+end_src

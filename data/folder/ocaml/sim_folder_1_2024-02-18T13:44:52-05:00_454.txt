@@ -1,0 +1,92 @@
+
+#+begin_src input
+The goal is to create a flexible and customizable system for generating prompts and functional workflows for a language model that can be used to generate creative and imaginative descriptions of code in a high tech code based hacking game.
+the game would involve exploring a dungeon of knowledge generated using a large language model and a proof engine. The player would navigate through the dungeon, encountering various objects and NPCs along the way, each with their own set of properties and behaviors defined by the terms used in the script.
+
+the game would involve exploring a dungeon and encountering various types of monsters, treasures, and challenges. The player would use weapons, spells, and artifacts to defeat the monsters and complete quests, all while navigating a labyrinthine cave or other underground environment. The game might also include elements of drama, music, and art, as well as secrets and occult themes.
+
+The code of the world is written using the languages and grammars generated.
+each function or spell of object can be encoded into an emoji string which
+is its quasi quine quotation that can be vectorized into a number of tensors.
+
+These tensor can become code and code can become tensors.
+we can visualize the tensors in the game using shaders
+and mathpylib.
+the game is like an augmented reality matrix game where we neo
+write our own story.
+
+In this task we want to craft the meta magical folder that will fold
+streams of the matrix togehter into one.
+
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example OCaml code that implements a meta magical folder for merging streams of the matrix:
+
+```ocaml
+type input = {
+  grammar : string;
+  prev_results : string;
+  new_example : string;
+}
+
+type output = {
+  result : string;
+  is_good : bool;
+}
+
+let merge_inputs inputs =
+  List.map (fun i -> (i.grammar, i.prev_results, i.new_example)) inputs
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | (grammar, prev_results, new_example) :: t ->
+    let new_output = generate_description grammar prev_results new_example in
+    if new_output.is_good then
+      fold_left op { result = new_output.result; is_good = true } t
+    else if List.length t > 0 then
+      let rest = List.tl inputs in
+      fold_left op { result = acc.result; is_good = false } (merge_inputs rest)
+    else
+      { result = acc.result; is_good = false }
+
+and generate_description grammar prev_results new_example =
+  (* Use a large language model and proof engine to generate a description
+     based on the given grammar, previous results, and new example *)
+  ...
+
+let rec test_output output =
+  if output.is_good then true
+  else if List.length output.errors > 3 then false
+  else (
+    let fixed_output = fix_output output.result in
+    test_output { result = fixed_output; is_good = true }
+  )
+
+and fix_output description =
+  (* Use error correction techniques to fix the description based on any errors detected *)
+  ...
+```
+
+This code defines types for inputs and outputs, a function for merging lists of inputs, and a `fold_left` function that applies a `generate_description` function to each input in the list. The `generate_description` function uses a large language model and proof engine to generate a description based on the given grammar, previous results, and new example. If the generated description is good, it is returned as the output. If not, the code checks if there are any errors, and if so, tries to fix them using error correction techniques. If there are more than three errors, the function returns an error message. The `test_output` function checks if the output is good, and if not, tries to fix it using the `fix_output` function.
+
+This code can be customized further based on specific requirements of the game, such as adding more functions for visualizing tensors, handling errors, or generating new examples. The `fold_left` function can also be modified to use a different accumulator type or function depending on the desired behavior.
+#+end_src

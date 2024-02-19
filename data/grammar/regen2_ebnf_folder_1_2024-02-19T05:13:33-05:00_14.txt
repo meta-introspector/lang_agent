@@ -1,0 +1,89 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```ebnf
+<folder> ::= prd_folder_tkn_name ':' prd_folder_tkn_inputs '{' <sequence> '}'
+
+<sequence> ::= <element> {',' <element>}
+
+<element> ::= <terminal> | <group> | <option> | <repeat>
+
+<terminal> ::= prd_terminal_tkn_name
+
+<group> ::= '{' <sequence> '}'
+
+<option> ::= '[' <sequence> ']'
+
+<repeat> ::= '*' <sequence>
+           | '+' <sequence>
+           | '?' <sequence>
+
+<name> ::= <letter> {<letter> | <digit>}
+
+<inputs> ::= prd_inputs_tkn_grammar ':' <terminal> prd_inputs_tkn_previous_results ':' <terminal> prd_inputs_tkn_new_example ':' <terminal>
+
+<letter> ::= 'a' .. 'z' | 'A' .. 'Z'
+
+<digit> ::= '0' .. '9'
+```
+
+This EBNF grammar defines a `folder` which consists of a name and a sequence of elements. Each element can be a terminal, group, option or repeat. A `terminal` is simply a named token. A `group` contains a sequence of elements enclosed in curly braces. An `option` contains a sequence of elements enclosed in square brackets, which means that the sequence is optional. A `repeat` consists of a sequence followed by a quantifier (`*`, `+`, or `?`) where `*` means zero or more occurrences, `+` means one or more occurrences and `?` means zero or one occurrence.
+
+The `name`, `inputs`, `letter` and `digit` non-terminals are used for defining the structure of other non-terminals.
+
+For example, using this EBNF grammar, you could define a folder as follows:
+```ebnf
+<folder> ::= prd_folder_tkn_example ':' prd_folder_tkn_name ':' prd_folder_tkn_inputs '{' <sequence> '}'
+
+<sequence> ::= prd_sequence_tkn_grammar ',' prd_sequence_tkn_previous_results ',' prd_sequence_tkn_new_example
+
+<element> ::= prd_element_tkn_name | <group> | <option> | <repeat>
+
+<terminal> ::= prd_terminal_tkn_name
+
+<group> ::= '{' prd_group_tkn_sequence '}'
+
+<option> ::= '[' prd_option_tkn_sequence ']'
+
+<repeat> ::= '*' <sequence>
+           | '+' <sequence>
+           | '?' <sequence>
+
+<name> ::= <letter> {<letter> | <digit>}
+
+<inputs> ::= prd_inputs_tkn_grammar ':' <terminal> prd_inputs_tkn_previous_results ':' <terminal> prd_inputs_tkn_new_example ':' <terminal>
+
+<letter> ::= 'a' .. 'z' | 'A' .. 'Z'
+
+<digit> ::= '0' .. '9'
+```
+This EBNF grammar defines a `folder` which consists of a name, and a sequence of elements where the first element is the grammar, the second element is the previous results and the third element is the new example. The `sequence` non-terminal is used to define the structure of the sequence of inputs. Each element in the sequence can be a named terminal, group, option or repeat.
+
+Note that this EBNF grammar uses the naming conventions you described, where each rule starts with "prd" and each token starts with "tkn". Also, when a token is used in a rule, its name is prefixed with "prd\_<prod name>\_tkn\_<token name>".
+#+end_src

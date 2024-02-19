@@ -1,0 +1,59 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of an EBNF grammar with the requested naming conventions:
+```
+<prd_folder_rules> ::= 
+  'take' <prd_input_list_tkn_inputs> ':' 
+    ( <prd_grammar_tkn_grammar> | <prd_previous_results_tkn_previous_results> ) 
+    <prd_new_example_tkn_new_example> 
+    <prd_created_output_tkn_created_output> '.' ';' <prd_test_tkn_test> ';'
+
+<prd_input_list_tkn_inputs> ::= 
+  <prd_grammar_tkn_input> ( ',' <prd_input_list_tkn_inputs> )?
+
+<prd_grammar_tkn_grammar> ::= 
+  <tkn_identifier>
+
+<prd_previous_results_tkn_previous_results> ::= 
+  <tkn_identifier>
+
+<prd_new_example_tkn_new_example> ::= 
+  <tkn_identifier>
+
+<prd_created_output_tkn_created_output> ::= 
+  <tkn_identifier>
+
+<prd_test_tkn_test> ::= 
+  'Test' <prd_created_output_tkn_created_output> '.'
+
+-- Additional rules for the system can be added below this line
+```
+In this EBNF, all rule names start with "prd\_" to indicate that they are production rules. Each token in a rule is also prefixed with "prd\_" followed by the name of the rule it belongs to and "\_tkn\_". This naming convention makes it clear which tokens belong to which rules and allows for easy identification and manipulation of the components of the grammar.
+
+You can add more rules for your system below the line `-- Additional rules for the system can be added below this line`. Remember to follow the same naming conventions.
+#+end_src

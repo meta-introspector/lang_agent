@@ -1,0 +1,67 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's an example of how you could define your EBNF grammar with the naming conventions you described:
+
+```ebnf
+<folder> ::= prd_folder_tkn_name ':' prd_folder_tkn_inputs '(' prd_folder_tkn_grammar ',' prd_folder_tkn_previous_results ',' prd_folder_tkn_new_example ')'
+                  prd_folder_tkn_body '{'
+                    prd_folder_tkn_loop '('
+                      prd_folder_tkn_test ';'
+                      prd_folder_tkn_new_d ';'
+                      prd_folder_tkn_error ')'
+                    ')'
+                  '}'
+
+<inputs> ::= prd_inputs_tkn_grammar ':' tkn_A
+            | prd_inputs_tkn_previous_results ':' tkn_D
+            | prd_inputs_tkn_new_example ':' tkn_C
+
+<body> ::= <rule>+
+
+<rule> ::= <identifier> ':' <expression> ';'
+
+<identifier> ::= tkn_a | tkn_b | tkn_c | ...
+
+<expression> ::= <sequence> | <choice> | <opt> | <rep> | <group>
+
+<sequence> ::= prd_sequence_tkn_expr ':' tkn_expr1 tkn_[expr2...]
+
+<choice> ::= prd_choice_tkn_expr ':' tkn_(expr1 | expr2 | ...)
+
+<opt> ::= prd_opt_tkn_expr '?' ':' tkn_expr
+
+<rep> ::= prd_rep_tkn_expr '*' ':' tkn_expr
+         | prd_rep_tkn_expr '+' ':' tkn_expr
+
+<group> ::= '(' <expression> ')'
+```
+
+This is a very detailed and explicit EBNF grammar for a folder, with rules starting with `prd`, tokens starting with `tkn`, and specific naming conventions. It includes definitions for inputs, body, identifier, expression, sequence, choice, opt, rep and group.
+
+Please note that this is just an example, you can adjust it according to your needs.
+#+end_src

@@ -1,0 +1,43 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define an EBNF grammar with your naming conventions based on the `fold_left` function:
+```
+<prd_fold_left_tkn_function> ::= <tkn_list> | <tkn_op> <tkn_acc> <tkn_function> <tkn_list>
+<prd_list_tkn_list> ::= '[' <tkn_entry> {',' <tkn_entry>} ']'
+<prd_entry_tkn_entry> ::= <tkn_element> | <tkn_empty>
+<prd_element_tkn_element> ::= <any_token>
+<prd_op_tkn_op> ::= <any_operator>
+<prd_acc_tkn_acc> ::= <any_variable>
+<prd_function_tkn_function> ::= 'fold_left'
+```
+In this example, `<tkn_*>` represents the tokens named according to your convention. The `<any_*>` represents any valid token that fits the description in the rule.
+
+You can continue defining the rest of the grammar following the same naming conventions and rules.
+
+Please note that this is just an example, you may need to adjust it based on the specific requirements and context of your system.
+#+end_src

@@ -1,0 +1,56 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you might define your detailed EBNF grammar with the naming conventions you described:
+```
+<prd_folder_rules> ::=
+    'folder' '{' <prd_take_input_rules> '}'
+
+<prd_take_input_rules> ::=
+    <prd_take_input_rule> [ ';' <prd_take_input_rules> ]
+
+<prd_take_input_rule> ::=
+    'grammar' ':' <prd_grammar_tkn_A>
+    | 'Previous Results' ':' <prd_previous_results_tkn_D> ';' 'Initial example' ':' <prd_initial_example_tkn_B>
+    | 'New Example' ':' <prd_new_example_tkn_C>
+    | 'Created new output' ':' <prd_created_new_output_tkn_D>
+    | 'Test' '.'
+    | 'if good' ',' 'repeat loop' 'with new' <prd_new_D_tkn_D> '.' 'otherwise feed error' 'back to create new' <prd_new_D_tkn_D> 'up to 3 times' '.'
+    | <prd_start_rules>
+
+<prd_grammar_tkn_A> ::= 'A'
+<prd_previous_results_tkn_D> ::= 'D'
+<prd_initial_example_tkn_B> ::= 'B'
+<prd_new_example_tkn_C> ::= 'C'
+<prd_created_new_output_tkn_D> ::= 'D'
+<prd_new_D_tkn_D> ::= 'D'
+<prd_start_rules> ::= <prd_folder_rules>
+```
+This EBNF grammar uses the naming conventions you described, with all rules starting with `prd_` and tokens being named `prd_*_tkn_*`. The main rule is `<prd_folder_rules>`, which contains a list of `<prd_take_input_rules>`. Each of these rules represents a single input in the original code, with tokens named according to their corresponding variable. The `<prd_start_rules>` rule at the end references the `<prd_folder_rules>` rule, creating a recursive structure that can represent multiple levels of nested folders.
+
+This is just an example and you may need to adjust it based on your specific needs.
+#+end_src

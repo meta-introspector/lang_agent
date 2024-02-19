@@ -1,0 +1,13 @@
+
+#+begin_src input
+meta-quote a  consecutive series  of sort to describe the universe and universe of universes what is your ordering? Please use variant number 1
+#+end_src
+#+begin_src output mixtral
+ Result: Variant 1:
+
+1. "The universe is all of space and time, and all the matter and energy in that space-time." (source: NASA)
+2. "A multiverse or universe of universes is a hypothetical group of multiple universes." (source: Britannica)
+3. "In modern cosmology, the observable universe is thought to be about 13.8 billion years old and to be expanding at an accelerating rate." (source: National Geographic)
+4. "The concept of a multiverse is not universally accepted in the scientific community, but it is considered plausible by some physicists and cosmologists." (source: Space.com)
+5. "The idea of multiple universes has been popularized in science fiction, leading to a wide range of interpretations and speculations about what a multiverse might look like or how it might function." (source: io9)
+#+end_src

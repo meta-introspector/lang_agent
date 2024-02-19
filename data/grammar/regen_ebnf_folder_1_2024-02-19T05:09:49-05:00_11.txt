@@ -1,0 +1,56 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here is an example of how you could define your EBNF grammar with the specified naming conventions:
+
+<PRODUCTIONS> ::=
+    prd\_folder
+    | ...
+
+prd\_folder ::= 'folder' '{' <RULES> '}' .
+
+<RULES> ::=
+    prd\_take\_inputs
+    | ...
+
+prd\_take\_inputs ::= 
+   'take' 'inputs' ':' tkn\_grammar ',' tkn\_Previous\_Results ',' tkn\_New\_Example ';' .
+
+<TOKEN NAMES> ::=
+    tkn\_grammar
+    | tkn\_Previous\_Results
+    | tkn\_New\_Example
+    | ...
+
+tkn\_grammar ::= <IDENTIFIER> .
+tkn\_Previous\_Results ::= <IDENTIFIER> .
+tkn\_New\_Example ::= <IDENTIFIER> .
+
+<IDENTIFIER> ::= [a-zA-Z][a-zA-Z0-9]* .
+
+You can continue this pattern for the rest of your grammar production rules and token names. This should make your grammar more explicit and expressive, following the naming conventions you specified.
+#+end_src

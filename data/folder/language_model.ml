@@ -1,0 +1,1 @@
+let generate f = f

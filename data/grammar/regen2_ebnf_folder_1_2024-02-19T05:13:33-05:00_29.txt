@@ -1,0 +1,88 @@
+
+#+begin_src input
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
+
+#+end_src
+#+begin_src output mixtral
+ Result: Here's the revised code following the naming conventions you provided:
+
+```ebnf
+(*
+  take inputs :
+    grammar : A
+    Previous Results : D initially, Initial example : B
+    New Example : C
+    Created new output D.
+    Test D. If good, repeat loop with new D. Otherwise feed error back to create new D up to 3 times.
+  start with this following code and rewrite it to suit our needs.
+*)
+
+let rec prd_fold_left_op_acc = fun
+  | []   -> acc
+  | h :: t -> prd_fold_left_op_acc (op acc h) t
+
+(*
+  Define the basic EBNF syntax for terminals and non-terminals.
+*)
+
+%token tkn_identifier
+%token tkn_string_literal
+%token tkn_integer
+%token tkn_assoc
+%token tkn_opt
+
+%start <prd_grammar>
+<prd_grammar> ::= ( <prd_production> )+
+
+<prd_production> ::= prd_identifier '=' <prd_sequence> ';'
+
+<prd_sequence> ::= <prd_sequence_element>*
+
+<prd_sequence_element> ::= <prd_optional_sequence>
+                        |  <prd_group>
+                        |  <prd_token>
+                        |  <prd_reference>
+
+<prd_optional_sequence> ::= '[' <prd_sequence> ']' { tkn_opt }
+
+<prd_group> ::= '(' <prd_sequence> ')'
+
+<prd_token> ::= tkn_identifier
+               |  tkn_string_literal
+               |  tkn_integer
+
+<prd_reference> ::= prd_identifier { tkn_identifier }
+
+(* helper rules for readability *)
+<prd_assoc_list> ::= ( tkn_assoc tkn_identifier )*
+<prd_opt_assoc_list> ::= tkn_opt <prd_assoc_list>
+
+(* Define the associativity of operators here. *)
+<prd_associativities> ::= { <prd_opt_assoc_list> }
+
+(* Add more non-terminals and terminals as needed. *)
+```
+
+This EBNF grammar follows your naming conventions. The `prd_*` prefix is used for production rules, and the `tkn_*` prefix is used for token names. The `op` and `acc` parameters in the `prd_fold_left_op_acc` rule are placeholders and should be replaced with appropriate operator and accumulator types/values as needed.
+#+end_src
