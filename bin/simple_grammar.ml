@@ -100,9 +100,12 @@ let aux dir suffix prompt1 client1 param_record =
 
 let process_prompt: backend -> 'client_t2 -> string -> string -> string -> string -> int ->unit =
   fun client1 param_record path model prompt1 suffix repeat ->
-  (print_endline ("Consider model: " ^  model ^ " path: "^ path ^ " prompt" ^ prompt1));
+  (print_endline ("Consider model: " ^  model ^ " path: "^ path ^ " prompt:" ^ prompt1));
   for i = 1 to repeat do
-    let _ = aux (path ^ "_" ^(string_of_int i)) (suffix ^ (string_of_int i)) prompt1 client1 param_record in
+    let newprompt = prompt1 ^ (". Generate variant number " ^ (string_of_int i)) ^ ". Your response:" in
+    let newpath = (path ^ "_" ^(string_of_int i)) in
+    let newsuffix = (suffix ^ (string_of_int i))  in
+    let _ = aux newpath newsuffix      newprompt  client1 param_record in
     ()
   done
 
