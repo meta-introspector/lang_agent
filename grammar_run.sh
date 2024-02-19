@@ -1,5 +1,8 @@
+
+# stop on error
+set -e
+
 GRAMMAR=./grammars/ebnf.ebnf
-GRAMMAR_C=$(cat $GRAMMAR)
 
 DS=$(date -Iseconds)
 
@@ -10,8 +13,11 @@ echo "Create an EBNF grammar. Consider the following chunk. BEGINSRC  " > $HPROM
 echo " ENDSRC . Please rewrite it to in the EBNF form." > $TPROMPT_NAME
 
 for PROMPT_NAME in data/folder/grammar/sim*.txt;
-do echo $PROMPT_NAME; 
-   dune exec bin/simple_grammar.exe -- \
+do
+    echo $PROMPT_NAME;
+    echo "${GRAMMAR}"
+    cat "${GRAMMAR}"
+    dune exec bin/simple_grammar.exe -- \
 	--llamacpp \
 	-u "http://localhost:8080" \
 	-s "data/folder/grammar/out/grammar_1_${DS}"   \
