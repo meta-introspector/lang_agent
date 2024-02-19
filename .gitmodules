@@ -1,3 +1,6 @@
 [submodule "huggingface"]
 	path = huggingface
 	url = https://huggingface.co/datasets/introspector/unimath/
+[submodule "data/huggingface_lang_agent"]
+	path = data/huggingface_lang_agent
+	url = https://huggingface.co/datasets/introspector/lang_agent

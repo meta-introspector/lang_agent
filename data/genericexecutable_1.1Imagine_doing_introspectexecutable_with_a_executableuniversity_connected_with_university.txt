@@ -1,9 +1,0 @@
-
-#+begin_src input
-We are building a software generator for ocaml with coq proofs with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing introspect; Type Name: executable with a executable; Place: university connected with university What is your response? Please generate variant array of size 1
-#+end_src
-#+begin_src output mixtral
- Result: Sure, I'll do my best to respond creatively while using the given context.
-
-Imagine doing introspect, you might reflect on the projects you've worked on in the past. At a university connected with other universities, one project that could be developed is an "executable executable generator." This generator would create customized OCaml software with verified Coq proofs using a large language model and a proof engine integrated through an adaptive language agent architecture. The resulting variant array of size 1 might contain this single executable program, which could then be shared with other universities to help them in their own development of verified software.
-#+end_src

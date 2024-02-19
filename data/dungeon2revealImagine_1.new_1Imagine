@@ -1,9 +1,0 @@
-
-#+begin_src input
-We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing role-play; Type Name: reveal; Place: the country What is your response? Please generate variant array of size 1
-#+end_src
-#+begin_src output mixtral
- Result: [
-"As you journey through the countryside, imagine engaging in a role-play where you take on the persona of a traveler exploring this beautiful land. The 'reveal' type name could refer to uncovering hidden secrets or treasures scattered throughout the country, as you delve deeper into the lore and history of this place."
-]
-#+end_src

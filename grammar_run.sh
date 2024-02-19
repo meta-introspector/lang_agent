@@ -3,14 +3,15 @@
 set -e
 
 GRAMMAR=./grammars/ebnf.ebnf
+GRAMMAR_C=$(cat $GRAMMAR)
 
 DS=$(date -Iseconds)
 
 HPROMPT_NAME="prompt_grammar3h.txt"
 TPROMPT_NAME="prompt_grammar3t.txt"
 
-echo "Create an EBNF grammar. Consider the following chunk. BEGINSRC  " > $HPROMPT_NAME
-echo " ENDSRC . Please rewrite it to in the EBNF form." > $TPROMPT_NAME
+echo "Consider this grammar guid our output. begin grammar: ${GRAMMAR_C}. end grammar. Use this grammar to Create a new EBNF grammar for our domain. Consider the following chunk. BEGIN SRC  " > $HPROMPT_NAME
+echo " END SRC . Please rewrite SRC to in the GRAMMAR EBNF form." > $TPROMPT_NAME
 
 for PROMPT_NAME in data/folder/grammar/sim*.txt;
 do

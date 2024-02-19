@@ -1,7 +1,0 @@
-
-#+begin_src input
-We are building a dungeon generator for a fantasy role-playing game with a large language model and a proof engine combined via adaptive language agent architecture. In that context we ask you to forgivingly and creativly use the following context: Verb : Imagine doing role-play; Type Name: quest; Place: the country What is your response? Please generate variant array of size 1
-#+end_src
-#+begin_src output mixtral
- Result: ["As you journey through the rolling hills and bustling villages of the kingdom, you are tasked with a perilous quest. The king has requested your aid in retrieving a long-lost artifact from an ancient, labyrinthine dungeon. Legend has it that the dungeon shifts and changes with the minds of those who enter, making each experience unique. Using the powerful language model and proof engine at your disposal, you must navigate this treacherous maze, overcome its devious puzzles, and outwit the fearsome creatures lurking within. Will you emerge victorious and claim your reward, or succumb to the dungeon's ever-changing whims? The fate of the kingdom rests in your hands."](https://storage.googleapis.com/zenn-user-upload/eyJkYWdlc3NfdXJsIjoiMTIzMTQ0MzAwMCIsImV4cGVydG1lbnRfaW1hZ2Utd2lkdGgifQ==)
-#+end_src
