@@ -1,4 +1,4 @@
-GRAMMAR=~/experiments/gbnf_parser/grammars/ebnf.ebnf
+GRAMMAR=./grammars/ebnf.ebnf
 DS=$(date -Iseconds)
 PROMPT_NAME=prompt_grammar2.txt
 

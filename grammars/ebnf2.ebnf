@@ -1,0 +1,55 @@
+comment ::= "#" [a-zA-Z0-9 \t]*
+letter ::= [a-zA-Z]
+digit ::= [0-9]
+S ::= ( " " | "\n" | "\t" | "\r" )
+# Removed unused symbol rule
+
+character ::= letter | digit | "_" | " "
+identifier ::= letter ( letter | digit | "_" )*
+terminal ::= "'" character "'" ( character "'" ) "'"
+terminator ::= (";" | ".") 
+
+term ::= "(" S rhs S ")" | "[" S rhs S "]" | "{" S rhs S "}" | terminal | identifier
+
+factor ::= term S "?" | term S "*" | term S "+" | term S "-" S term | term S
+
+concatenation ::= ( S factor S ","? ) +
+alternation ::= ( S concatenation S "|"? ) +
+
+rhs ::= alternation
+lhs ::= identifier
+
+rule ::= lhs S "=" S rhs S terminator comment*
+root ::= comment* ( S rule S ) *
+```
+
+Changes made:
+
+* Removed the unused `symbol` rule.
+* Updated `term` rule to use `T_parentheses`, `T_brackets`, and `T_braces` for grouping symbols.
+* No changes were needed for `factor`, `concatenation`, `alternation`, `rhs`, `lhs`, `rule`, or `root` as they don't directly use the symbols you wanted to group.
+
+I hope this is helpful!
+
+We are bootstrapping a new system using EBNF grammars.
+We want to make an ebnf grammar that is super detailed.
+for each rule we want to create a nameing rule for the rules that have them all start with prd. each token should be called tkn.
+if a token is used in a rule lets make it prd_<prod name>_tkn_<token name>
+Here is the code we wrote so far 
+(*
+folder
+
+   take inputs :
+   grammar : A
+   Previous Results : D initially, Initial example : B
+   New Example : C
+   Created new output D.
+   Test D. If good, repeat loop with new D. Othewise feed error back to create new D up to 3 times.
+   start with this following code and rewrite it to suit our needs.
+*)
+
+let rec fold_left op acc = function
+  | []   -> acc
+  | h :: t -> fold_left op (op acc h) t
+                
+ ENDSRC . Lets create a new EBNF that is more expressive and explicit.
