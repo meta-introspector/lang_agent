@@ -1,6 +1,5 @@
 open Lang_agent
 
-
 type backend =
   | BNone
   | BLlamaCpp of Llama_cpp.llama_cpp_lang_model
@@ -126,10 +125,13 @@ let lc_init lang_client aurl amodel agrammar=
   
 let read_whole_file filename =
   (print_endline ("DEBUG1 read :" ^ filename));
-  let ch = open_in_bin filename in
-  let s = really_input_string ch (in_channel_length ch) in
-  close_in ch;
-  s
+  if filename == "" then
+    ""
+  else
+    let ch = open_in_bin filename in
+    let s = really_input_string ch (in_channel_length ch) in
+    close_in ch;
+    s
         
 let () =
   let start = ref "" in
