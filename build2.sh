@@ -11,4 +11,5 @@ eval $(opam env --switch=4.1.13)
  dune build .
  echo the following are optional and may take a long time
  opam install --yes coq
-  opam install --yes serlib
+ opam install --yes ser-api
+ opam install --yes coq-hammer
