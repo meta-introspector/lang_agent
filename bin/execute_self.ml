@@ -87,14 +87,14 @@ let do_apply_list    run_cmd make_args type_terms =
       ) type_terms
   done
     
-let run_cmd args =
-  let cmd =  String.concat " " args in
-  Printf.printf "Cmd: %s\n" cmd;
-  let inp = Unix.open_process_in cmd in
-  let r = In_channel.input_lines inp in
-  In_channel.close inp;
-  let out = String.concat " " r in
-  Printf.printf "Output: %s\n" out
+(* let run_cmd args = *)
+(*   let cmd =  String.concat " " args in *)
+(*   Printf.printf "Cmd: %s\n" cmd; *)
+(*   let inp = Unix.open_process_in cmd in *)
+(*   let r = In_channel.input_lines inp in *)
+(*   In_channel.close inp; *)
+(*   let out = String.concat " " r in *)
+(*   Printf.printf "Output: %s\n" out *)
     
-let () =do_apply_list run_cmd make_args type_terms 
+let () =do_apply_list Lang_agent__Unix_handling.run_cmd make_args type_terms 
     

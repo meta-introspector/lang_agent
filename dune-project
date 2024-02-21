@@ -1,4 +1,4 @@
-(lang dune 3.8)
+(lang dune 3.7)
 
 (name lang_agent)
 
@@ -19,9 +19,7 @@
  (name lang_agent)
  (synopsis "functional access to llm via ollama and openai")
  (description "command line tools for processing text with llms")
- (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
-   
-   
+ (depends ocaml dune ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson stdio 
  )
 
  (tags

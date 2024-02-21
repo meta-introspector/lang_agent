@@ -38,7 +38,7 @@
  (public_name la-execute-self)
  (name execute_self )
  (modules execute_self )
- (libraries lang_agent str  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+ (libraries lang_agent str  uri  stdio lambdasoup lwt ezcurl-lwt ezcurl containers))
 (executable
  (public_name la-generate-dungeon)
  (name generate_dungeon )

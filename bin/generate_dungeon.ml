@@ -89,7 +89,7 @@ let make_args type_name i verb place= [
 ]
 
                  
-let do_apply_list    run_cmd make_args type_terms =
+let do_apply_list    run_cmd1 make_args type_terms =
   for i = 1 to count do
     List.iter (fun top ->
         List.iter (fun term ->
@@ -103,7 +103,7 @@ let do_apply_list    run_cmd make_args type_terms =
                             let args = make_args
                                 term3 i verb2
                                 place3 in
-                            run_cmd args
+                            run_cmd1 args
                           ) places
                       ) places
                   ) verbs
@@ -112,17 +112,17 @@ let do_apply_list    run_cmd make_args type_terms =
       ) top_terms
   done
     
-let run_cmd args =
-  let cmd =  String.concat " " args in
-  Printf.printf "Cmd: %s\n" cmd;
-  let inp = Unix.open_process_in cmd in
-  let r = In_channel.input_line inp in
-  In_channel.close inp;
-  match r with
-  |Some out ->
-    Printf.printf "Output: %s\n" out
-  |None ->
-    Printf.printf "Output: None\n"
+(* let run_cmd args = *)
+(*   let cmd =  String.concat " " args in *)
+(*   Printf.printf "Cmd: %s\n" cmd; *)
+(*   let inp = Unix.open_process_in cmd in *)
+(*   let r = In_channel.input_line inp in *)
+(*   In_channel.close inp; *)
+(*   match r with *)
+(*   |Some out -> *)
+(*     Printf.printf "Output: %s\n" out *)
+(*   |None -> *)
+(*     Printf.printf "Output: None\n" *)
     
-let () =do_apply_list run_cmd make_args type_terms 
+let () =do_apply_list Lang_agent__Unix_handling.run_cmd make_args type_terms 
     
