@@ -1,6 +1,4 @@
 GRAMMAR=./grammars/ebnf.ebnf
-GRAMMAR_C=$(cat $GRAMMAR)
-
 DS=$(date -Iseconds)
 PROMPT_NAME=grammars/ebnf.ebnf
 PROMPT_NAME2=grammars/ebnf.ebnf.prompt

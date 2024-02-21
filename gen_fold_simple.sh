@@ -1,5 +1,4 @@
 GRAMMAR=./grammars/ebnf.ebnf
-GRAMMAR_C=$(cat $GRAMMAR)
 
 DS=$(date -Iseconds)
 PROMPT_NAME=lib/folder.ml
