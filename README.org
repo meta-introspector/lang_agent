@@ -1,5 +1,11 @@
+
 * idea : create an ocaml functional agent for talking to llms.
 
+* nix
+#+begin_src shell
+nix shell --extra-experimental-features nix-command  --extra-experimental-features flakes
+#+end_src
+* normal
 #+begin_src shell
   opam install --yes ppx_yojson_conv_lib ppx_yojson_conv
   opam install --yes ppx_yojson lwt_ppx containers lambdasoup uri ezcurl ppx_yojson_conv ppx_yojson_conv_lib ezcurl-lwt yojson
