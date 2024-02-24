@@ -6,7 +6,7 @@
   };
   outputs = { self, flake-utils, opam-nix, nixpkgs }@inputs:
     # Don't forget to put the package name instead of `throw':
-    let package = "lang-agent"
+    let package = "lang-agent";
     in flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};

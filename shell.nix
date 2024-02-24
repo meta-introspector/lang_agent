@@ -8,5 +8,9 @@ pkgs.mkShellNoCC {
   emacs
   opam
   coq
+	
 ];
 }
+;; nixpkgs.emacsPackages.proofgeneral
+;; nixpkgs.emacsPackages.magit
+;; nixpkgs.emacsPackages.straight_HEAD
