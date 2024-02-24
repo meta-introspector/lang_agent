@@ -22,6 +22,7 @@ COPY lib /lang_agent/lib
 COPY bin /lang_agent/bin
 COPY dune-project /lang_agent/
 RUN opam install --yes --deps-only .
+RUN opam install --yes stdio
 RUN dune build .
 
 # sudo docker build . -t lang_agent
