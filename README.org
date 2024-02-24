@@ -5,6 +5,11 @@
 #+begin_src shell
 nix shell --extra-experimental-features nix-command  --extra-experimental-features flakes
 #+end_src
+
+#+begin_src shell
+nix build --extra-experimental-features nix-command --extra-experimental-features flakes
+#+end_src
+
 * normal
 #+begin_src shell
   opam install --yes ppx_yojson_conv_lib ppx_yojson_conv
