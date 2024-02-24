@@ -1,7 +1,7 @@
 set -e
-opam switch create 4.1.13
-opam switch 4.1.13
-eval $(opam env --switch=4.1.13)
+opam switch create 4.13.1 ||echo ignore error
+opam switch 4.13.1
+eval $(opam env --switch=4.13.1)
  opam repo add coq-released https://coq.inria.fr/opam/released
  opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 
@@ -12,5 +12,5 @@ eval $(opam env --switch=4.1.13)
  dune build .
  echo the following are optional and may take a long time
  opam install --yes coq
- opam install --yes ser-api
+ opam install --yes coq-serapi
  opam install --yes coq-hammer
