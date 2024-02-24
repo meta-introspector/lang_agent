@@ -1,5 +1,6 @@
 set -e
-
+opam switch create 4.1.13
+opam switch 4.1.13
 eval $(opam env --switch=4.1.13)
  opam repo add coq-released https://coq.inria.fr/opam/released
  opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
