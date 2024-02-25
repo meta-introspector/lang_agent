@@ -8,7 +8,7 @@ pkgs.mkShellNoCC {
   emacs
   opam
   coq
-	
+  niv	
 ];
 }
 ;; nixpkgs.emacsPackages.proofgeneral

@@ -1,75 +1,110 @@
 We are bootstrapping a new system using EBNF grammars.
 We want to make an ebnf grammar that is super detailed and self expressive.
 Here is the code we wrote so far 
-# GBNF (GGML BNF) is a format for defining formal grammars to constrain model outputs in llama.cpp. 
-# Backus-Naur Form (BNF) is a notation for describing the syntax of formal languages like programming languages, file formats, and protocols. GBNF is an extension of BNF that primarily adds a few modern regex-like features.
-# In GBNF, we define production rules that specify how a non-terminal (rule name) can be replaced with sequences of terminals (characters, specifically Unicode code points) and other non-terminals. The basic format of a production rule is nonterminal ::= sequence....
-
-production_rule ::= alternation
-lhs ::= identifier
-rule ::= lhs   S   "="   S   production_rule   S    | comment
-root ::= ( S   rule   S ) *
-
 # Terminals support the full range of Unicode. Unicode characters can be specified directly in the grammar, for example hiragana ::= [ぁ-ゟ], or with escapes: 8-bit (\xXX), 16-bit (\uXXXX) or 32-bit (\UXXXXXXXX).
+
 range ::=  "-"
-factor_range ::= term   S   range   S   term
 
 # Character ranges can be negated with ^:
-negate ::=  "^"
 
-#Sequences and Alternatives
-#The order of symbols in a sequence matter. For example, in "1. " move " " move "\n", the "1. " must come before the first move, etc.
-concatenation ::= ( S   factor   S   ? ) +
+negate ::= "^"
 
 # Alternatives, denoted by |, give different sequences that are acceptable. 
-alternation ::=  "|"
-alternation ::= ( S   concatenation   S   alternation ? ) +
+
+alternationsymbol ::= "|"
+
+
+#Sequences and Alternatives
 
 # Parentheses () can be used to group sequences, which allows for embedding alternatives in a larger rule or applying repetition and optional symbols (below) to a sequence.
-parens_open ::= "("
-parens_close ::=  ")"
-parens ::= parens_open | parens_close
+
+parensopen ::= "("
+
+parensclose ::=  ")"
+
+parens ::= parensopen | parensclose
 
 #Repetition and Optional Symbols
-repetition_symbols ::= repetition_plus | repetition_star | repetition_optional
+
+repetitionsymbols ::= repetitionplus | repetitionstar | repetitionoptional
 
 #* after a symbol or sequence means that it can be repeated zero or more times.
-repetition_star ::=  "*" 
+
+repetitionstar ::=  "*" 
 
 #+ denotes that the symbol or sequence should appear one or more times.
-repetition_plus ::=  "+" 
+
+repetitionplus ::=  "+" 
 
 #? makes the preceding symbol or sequence optional.
-repetition_optional ::=  "?" 
+
+repetitionoptional ::=  "?" 
 
 
 #Comments and newlines
 #Comments can be specified with #:
+
 comment ::= "#" [a-zA-Z0-9 \t]*
 
 # Newlines are allowed between rules and between symbols or sequences nested inside parentheses. Additionally, a newline after an alternate marker | will continue the current rule, even outside of parentheses.
 
-
 letter ::= [a-zA-Z]
+
 digit ::= [0-9]
-S ::= ( " " | "\n" | "\t" | "\r"  )
-braces_open ::= "[" 
-braces_close ::= "]"
-braces_symbol ::= braces_open | braces_close
+
+spacechar ::= " "
+S ::= ( spacechar | "\n" | "\t" | "\r"  )
+
+bracesopen ::= "[" 
+
+bracesclose ::= "]"
+
+bracessymbol ::= bracesopen | bracesclose
 
 quote ::=  "\""
-assignment ::= "::="
- 
-symbol ::= braces_symbol | parens | quotes |assignment | alternation | range | repetition_symbols  | negate
- 
-character ::= letter | digit | symbol | "_" | " "
-identifier ::= letter ( letter | digit | "_" )*
-terminal ::= quote character+  quote 
-group ::= parens_open   S   production_rule   S   parens_close
-range_term ::=  braces_open   S   production_rule   S   braces_close
-term ::= group |range_term | terminal      | identifier
 
-repetition ::= term   S   occurence  
-factor_negate ::= negate S factor
-factor ::= repetition |factor_range | term   S
+assignment ::= "::="
+
+underscorecharacter ::=  "_"
+
+character ::= letter | digit | symbol | underscorecharacter | spacechar
+
+symbol ::= bracessymbol | parens | quote | assignment | alternationsymbol | range | repetitionsymbols  | negate
+
+
+
+# no underscores in these name
+
+identifier ::= letter ( letter | digit  )*
+
+terminal ::= quote character+  quote 
+
+group ::= parensopen S productionrule S parensclose
+
+rangeterm ::=  bracesopen   S   productionrule   S   bracesclose
+
+term ::= group |rangeterm | terminal      | identifier
+
+repetition ::= term   S repetitionsymbols
+
+factornegate ::= negate S factor
+
+factorrange ::= term   S   range   S   term
+
+factor ::= repetition |factorrange | term   S
+
+#The order of symbols in a sequence matter. 
+
+concatenation ::= ( S   factor   S   ? ) +
+
+alternation ::= ( S   concatenation   S   alternationsymbol ? ) +
+
+productionrule ::= alternation
+
+
+lhs ::= identifier
+
+rule ::= lhs   S   assignment   S   productionrule   S    | comment
+
+root ::= ( S   rule   S ) *
  ENDSRC . Lets rewrite this  EBNF to be more expressive and explicit in its naming but keep the syntax the same for compatibility with GBNF and llama.cpp. 
