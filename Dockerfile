@@ -4,7 +4,10 @@
 FROM nixos/nix:latest AS builder
 
 # Copy our source and setup our working dir.
-COPY . /tmp/build
+COPY . /tmp/gitsub
+# nasty hack to work around git submodules
+COPY gitconfig.txt /tmp/gitsub/.git/config 
+RUN git clone --mirror /tmp/gitsub /tmp/build
 WORKDIR /tmp/build
 
 # Build our Nix environment
