@@ -11,7 +11,7 @@ doc: "https://github.com/meta-introspector/lang_agent"
 bug-reports: "https://github.com/meta-introspector/lang_agent/issues"
 depends: [
   "ocaml"
-  "dune" {>= "3.7"}
+  "dune" {>= "3.14"}
   "ppx_yojson"
   "lwt_ppx"
   "containers"
