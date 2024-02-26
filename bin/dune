@@ -11,11 +11,11 @@
  (modules chunker )
  (libraries lang_agent lwt))
 
-(executable
- (public_name la-argiope)
- (name argiope )
- (modules argiope )
- (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
+; (executable
+;  (public_name la-argiope)
+;  (name argiope )
+;  (modules argiope )
+;  (libraries lang_agent  uri lambdasoup lwt ezcurl-lwt ezcurl containers))
 (executable
  (public_name la-worker)
  (name worker )
