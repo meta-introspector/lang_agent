@@ -331,8 +331,8 @@
       },
       "original": {
         "owner": "meta-introspector",
+        "ref": "0.0.2",
         "repo": "openai-ocaml",
-        "rev": "da27c7644812ac6faed480b8a295830f920fcd3e",
         "type": "github"
       }
     },
