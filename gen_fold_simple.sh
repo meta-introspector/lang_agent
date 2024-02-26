@@ -30,9 +30,9 @@ cat $PROMPT_NAME >> $PROMPT_NAME2
 echo " ENDSRC . Please imagine the simulation its execution. Imagine running the code and all the output it would generate. Generate ocaml code to do the merge of large language model prompt workflows." >> $PROMPT_NAME2
 
 mkdir -p data/folder
-
+#      #     --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" \
 dune exec bin/simple.exe -- \
-     --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" \
+       --ollama -m "mixtral" -u "https://mixtral-agentartificial.ngrok.app" \
      -f $PROMPT_NAME2 \
     -s "data/folder/sim_folder_1_${DS}"   \
     -x ".txt" \
