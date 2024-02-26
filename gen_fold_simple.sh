@@ -31,7 +31,7 @@ echo " ENDSRC . Please imagine the simulation its execution. Imagine running the
 
 mkdir -p data/folder
 #      #     --openai -m "mixtral" -u "https://dev-hub.agentartificial.com" \
-dune exec bin/simple.exe -- \
+./_build/install/default/bin/simple.exe \
        --ollama -m "mixtral" -u "https://mixtral-agentartificial.ngrok.app" \
      -f $PROMPT_NAME2 \
     -s "data/folder/sim_folder_1_${DS}"   \
