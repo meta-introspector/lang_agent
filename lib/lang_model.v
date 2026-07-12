@@ -1,3 +1,19 @@
+(*
+  The following definitions (UU, empty, total2, tpair, pr1, pr2, dirprod,
+  and the ∑u/×u notations) are adapted from the UniMath library:
+
+  Voevodsky, V., Ahrens, B., Grayson, D., et al.
+  UniMath: Univalent Mathematics.
+  https://github.com/UniMath/UniMath
+
+  Conventions here also follow the univalent foundations approach developed by
+  Vladimir Voevodsky at the Institute for Advanced Study (IAS), Princeton, and
+  documented in:
+
+  The Univalent Foundations Program.
+  Homotopy Type Theory: Univalent Foundations of Mathematics.
+  Institute for Advanced Study, 2013. https://homotopytypetheory.org/book/
+*)
 (* Require Import MirrorSolve.FirstOrder. *)
 (* Require Import MirrorSolve.BV. *)
 (* Require Import MirrorSolve.SMT. *)
