@@ -1,4 +1,3 @@
-open Openai
 open Lang_model
 
 type (* 't_key, *) t_key_string = string

@@ -6,7 +6,7 @@
   ))))
 
 (library
- (libraries ezcurl-lwt yojson ppx_yojson_conv_lib openai str )
+ (libraries ezcurl-lwt yojson ppx_yojson_conv_lib str )
  (preprocess
   (pps ppx_yojson_conv ppx_yojson lwt_ppx ))
 

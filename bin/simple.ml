@@ -10,7 +10,7 @@ type backend2 =
 
   | B2None  
   | B2Ollama of Ollama.client_t Lang_model.client_t
-  | B2OpenAi of Openai.Client.t Lang_model.client_t
+  | B2OpenAi of Client.t Lang_model.client_t
   | B2LlamaCpp of Llama_cpp.client_t Lang_model.client_t
 
 let lc_lang_prompt lang_client  param_record prompt =

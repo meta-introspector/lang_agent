@@ -1,3 +1,5 @@
+nix:
+	nix shell --extra-experimental-features nix-command  --extra-experimental-features flakes
 tst:
 	dune build 
 	dune exec -- ./bin/argiope.exe http://mistral.ai

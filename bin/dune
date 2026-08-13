@@ -2,7 +2,6 @@
  (_
   (flags
    (:standard -warn-error -32
-     ;;-8-9-26-27-11-39
      -dtypedtree -dparsetree -dump-into-file -dlambda -annot -dlocations -dsource  -drawlambda  ))))
 
 (executable
